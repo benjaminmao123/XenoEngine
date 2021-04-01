@@ -158,7 +158,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Core\Application.cpp" />
+    <ClCompile Include="Code\Core\Input.cpp" />
     <ClCompile Include="Code\Core\Logger.cpp" />
+    <ClCompile Include="Code\Core\Time.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -174,7 +176,9 @@
   <ItemGroup>
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Core.h" />
+    <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Logger.h" />
+    <ClInclude Include="Code\Core\Time.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\pch.h" />
     <ClInclude Include="Code\Xeno.h" />

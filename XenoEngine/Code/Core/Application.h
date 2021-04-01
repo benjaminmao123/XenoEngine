@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
+#include "Core/Core.h"
+#include "Core/Window.h"
 
 #include <string>
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
 #include <vector>
 
 namespace Xeno

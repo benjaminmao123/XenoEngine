@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Logger.h"
+#include "Core/Logger.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>

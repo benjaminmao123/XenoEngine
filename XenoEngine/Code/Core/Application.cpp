@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "Application.h"
-#include "Logger.h"
+#include "Core/Application.h"
+#include "Core/Logger.h"
 
 #include <glad.h>
+#include <SDL2/SDL.h>
 
 Xeno::Application::Application(std::string name) :
     mAppName(std::move(name)),

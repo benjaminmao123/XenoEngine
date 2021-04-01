@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Core.h"
+#include "Core/Core.h"
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_pixels.h>
 #include <string>
 #include <GLM/vec2.hpp>
 
