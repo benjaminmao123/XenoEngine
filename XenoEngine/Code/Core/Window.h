@@ -9,19 +9,19 @@
 
 namespace Xeno
 {
-    struct WindowProperties
-    {
-        std::string mTitle = "My App";
-        int32_t mScreenLocationX = SDL_WINDOWPOS_CENTERED;
-        int32_t mScreenLocationY = SDL_WINDOWPOS_CENTERED;
-        uint32_t mFlags = SDL_WINDOW_OPENGL;
-        uint32_t mWidth = 800;
-        uint32_t mHeight = 600;
-    };
-
     class XENO_API Window
     {
     public:
+        struct WindowProperties
+        {
+            std::string mTitle = "My App";
+            int32_t mScreenLocationX = SDL_WINDOWPOS_CENTERED;
+            int32_t mScreenLocationY = SDL_WINDOWPOS_CENTERED;
+            uint32_t mFlags = SDL_WINDOW_OPENGL;
+            uint32_t mWidth = 800;
+            uint32_t mHeight = 600;
+        };
+
         ~Window();
 
         void Update();

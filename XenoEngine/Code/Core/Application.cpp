@@ -5,10 +5,8 @@
 #include <glad.h>
 #include <SDL2/SDL.h>
 
-Xeno::Application::Application(std::string name) :
-    mAppName(std::move(name)),
-    mWindow(WindowProperties{ mAppName, SDL_WINDOWPOS_CENTERED, 
-                SDL_WINDOWPOS_CENTERED, SDL_WINDOW_OPENGL })
+Xeno::Application::Application(const Window::WindowProperties& props) :
+    mWindow(props)
 { }
 
 Xeno::Application::~Application()

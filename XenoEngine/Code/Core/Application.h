@@ -15,11 +15,10 @@ namespace Xeno
     class XENO_API Application
     {
     public:
-        Application(std::string name = "My App");
+        Application(const Window::WindowProperties& props);
         virtual ~Application();
         
         void Run();
-
         void PollEvents();
         void OnExit();
 
@@ -31,7 +30,6 @@ namespace Xeno
         void Create();
         void Update();
 
-        std::string mAppName;
         Logger mLogger;
         Window mWindow;
         Input mInput;
