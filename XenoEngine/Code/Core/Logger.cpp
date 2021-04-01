@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Logger.h"
+#include "Core/Logger.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
@@ -7,7 +7,7 @@
 std::shared_ptr<spdlog::logger> Xeno::Logger::mCoreLogger;
 std::shared_ptr<spdlog::logger> Xeno::Logger::mClientLogger;
 
-void Xeno::Logger::Init()
+Xeno::Logger::Logger()
 {
 	std::vector<spdlog::sink_ptr> logSinks;
 	logSinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Core/Core.h"
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
@@ -11,16 +11,16 @@ namespace Xeno
     class XENO_API Logger
     {
 	public:
-		Logger() = delete;
-
-		static void Init();
-
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return mCoreLogger; }
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return mCoreLogger; }
 
 	private:
+		Logger();
+
 		static std::shared_ptr<spdlog::logger> mCoreLogger;
 		static std::shared_ptr<spdlog::logger> mClientLogger;
+
+		friend class Application;
     };
 }
 

@@ -1,5 +1,8 @@
 #include "pch.h"
-#include "Input.h"
+#include "Core/Input.h"
+#include "Core/Time.h"
+
+#include <SDL2/SDL_keyboard.h>
 
 Xeno::Input::~Input()
 {
@@ -54,6 +57,8 @@ void Xeno::Input::ProcessEvents(const SDL_Event& event)
 	switch (event.type)
 	{
 	case SDL_MOUSEMOTION:
+		mMouseAxis.x = event.motion.xrel * Time::GetDeltaTime();
+		mMouseAxis.y = event.motion.yrel * Time::GetDeltaTime();
 		break;
 	case SDL_JOYAXISMOTION:
 		mJoystickAxis.x = event.motion.xrel;

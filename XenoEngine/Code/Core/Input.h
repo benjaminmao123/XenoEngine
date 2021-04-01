@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Core.h"
+#include "Core/Core.h"
 
 #include <GLM/vec2.hpp>
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_scancode.h>
 
 namespace Xeno
 {
