@@ -6,14 +6,11 @@
 
 Xeno::Application::Application(std::string name) :
     mAppName(std::move(name)),
-    mWindow(WindowProperties
-            { 
-                mAppName, 
-                SDL_WINDOWPOS_CENTERED, 
-                SDL_WINDOWPOS_CENTERED, 
-                SDL_WINDOW_OPENGL 
-            })
-{ }
+    mWindow(WindowProperties{ mAppName, SDL_WINDOWPOS_CENTERED, 
+                SDL_WINDOWPOS_CENTERED, SDL_WINDOW_OPENGL })
+{
+    Logger::Init();
+}
 
 Xeno::Application::~Application()
 {
@@ -24,21 +21,14 @@ void Xeno::Application::Run()
 {
     if (!mIsRunning)
     {
-        if (!mWindow.ConstructWindow())
-        {
-            XN_CORE_ERROR("Failed to construct window.");
-
-            return;
-        }
-
-        mIsRunning = true;
+        Create();
 
         while (mIsRunning)
         {
+            mWindow.Clear(0, 0, 0, 255);
+            
             PollEvents();
-
-            mWindow.Clear(255, 0, 0, 255);
-            mWindow.Update();
+            Update();
         }
     }
 }
@@ -61,4 +51,31 @@ void Xeno::Application::PollEvents()
 void Xeno::Application::OnExit()
 {
     mIsRunning = false;
+}
+
+void Xeno::Application::OnCreate()
+{ }
+
+void Xeno::Application::OnUpdate()
+{ }
+
+void Xeno::Application::Create()
+{
+    if (!mWindow.ConstructWindow())
+    {
+        XN_CORE_ERROR("Failed to construct window.");
+
+        return;
+    }
+
+    OnCreate();
+
+    mIsRunning = true;
+}
+
+void Xeno::Application::Update()
+{
+    OnUpdate();
+
+    mWindow.Update();
 }

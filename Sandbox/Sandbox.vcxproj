@@ -163,6 +163,9 @@ xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64.lib" "$(ProjectDir)/Lib/Xeno
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\Vendor\Glad\glad.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code\Sandbox.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

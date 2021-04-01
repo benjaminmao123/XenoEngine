@@ -1,12 +1,10 @@
-#include <Xeno.h>
+#include "Sandbox.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    Logger::Init();
-
-    Application mApp;
+    Sandbox mApp;
     mApp.Run();
 
     return 0;
