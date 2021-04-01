@@ -7,7 +7,7 @@
 std::shared_ptr<spdlog::logger> Xeno::Logger::mCoreLogger;
 std::shared_ptr<spdlog::logger> Xeno::Logger::mClientLogger;
 
-void Xeno::Logger::Init()
+Xeno::Logger::Logger()
 {
 	std::vector<spdlog::sink_ptr> logSinks;
 	logSinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());

@@ -9,9 +9,7 @@ Xeno::Application::Application(std::string name) :
     mAppName(std::move(name)),
     mWindow(WindowProperties{ mAppName, SDL_WINDOWPOS_CENTERED, 
                 SDL_WINDOWPOS_CENTERED, SDL_WINDOW_OPENGL })
-{
-    Logger::Init();
-}
+{ }
 
 Xeno::Application::~Application()
 {
@@ -38,6 +36,8 @@ void Xeno::Application::PollEvents()
 {
     while (SDL_PollEvent(&mEvent))
     {
+        mInput.ProcessEvents(mEvent);
+
         switch (mEvent.type)
         {
         case SDL_QUIT:
@@ -76,7 +76,8 @@ void Xeno::Application::Create()
 
 void Xeno::Application::Update()
 {
+    mTime.Update();
+    mInput.Update();
     OnUpdate();
-
     mWindow.Update();
 }
