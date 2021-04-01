@@ -23,6 +23,17 @@ namespace Xeno
     public:
         ~Window();
 
+        void Update();
+
+        bool ConstructWindow();
+
+        void Clear(unsigned char r, 
+                   unsigned char g, 
+                   unsigned char b, 
+                   unsigned char a) const;
+
+        void Clear(const SDL_Color& color) const;
+
         static uint32_t GetWidth();
         static uint32_t GetHeight();
         static glm::vec2 GetCenter();
