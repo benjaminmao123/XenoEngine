@@ -2,7 +2,7 @@
 #include "Core/Application.h"
 #include "Core/Logger.h"
 
-#include <glad.h>
+#include <glad/glad.h>
 #include <SDL2/SDL.h>
 
 Xeno::Application::Application(const Window::WindowProperties& props) :
