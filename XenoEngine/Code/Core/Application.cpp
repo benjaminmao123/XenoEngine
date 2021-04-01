@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Application.h"
+#include "Logger.h"
 
 #include <glad.h>
 
@@ -23,16 +24,21 @@ void Xeno::Application::Run()
 {
     if (!mIsRunning)
     {
+        if (!mWindow.ConstructWindow())
+        {
+            XN_CORE_ERROR("Failed to construct window.");
+
+            return;
+        }
+
         mIsRunning = true;
 
         while (mIsRunning)
         {
             PollEvents();
 
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            SDL_GL_SwapWindow(mWindow.mWindow);
+            mWindow.Clear(255, 0, 0, 255);
+            mWindow.Update();
         }
     }
 }
