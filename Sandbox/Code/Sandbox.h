@@ -2,7 +2,6 @@
 
 #include <Xeno.h>
 #include <string>
-#include <glad.h>
 #include <iostream>
 
 using namespace std;
@@ -10,8 +9,8 @@ using namespace std;
 class Sandbox : public Application
 {
 public:
-    Sandbox(std::string name = "Sandbox") :
-        Application(name)
+    Sandbox(const Window::WindowProperties& props) :
+        Application(props)
     { }
 
 protected:

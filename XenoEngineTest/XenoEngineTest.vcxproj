@@ -76,7 +76,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor\Glad;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>

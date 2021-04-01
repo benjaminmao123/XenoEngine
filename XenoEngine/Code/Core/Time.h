@@ -2,6 +2,8 @@
 
 #include "Core/Core.h"
 
+#include <cstdint>
+
 namespace Xeno
 {
     class XENO_API Time

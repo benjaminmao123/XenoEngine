@@ -17,18 +17,6 @@ void Xeno::Window::Update()
 
 bool Xeno::Window::ConstructWindow()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        XN_CORE_ERROR(SDL_GetError());
-
-        return false;
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
     mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),
                                mWindowProps.mScreenLocationX, mWindowProps.mScreenLocationY,
                                mWindowProps.mWidth, mWindowProps.mHeight,

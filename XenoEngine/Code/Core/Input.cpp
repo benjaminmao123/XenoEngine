@@ -42,7 +42,7 @@ glm::vec2 Xeno::Input::GetAxis(const AxisType type)
 Xeno::Input::Input()
 {
 	mKeyboardState = SDL_GetKeyboardState(&mNumKeys);
-	mPrevKeyboardState = new Uint8[mNumKeys];
+	mPrevKeyboardState = new uint8_t[mNumKeys];
 	memcpy(mPrevKeyboardState, mKeyboardState, mNumKeys);
 }
 

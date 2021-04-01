@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;Code/Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor\Glad;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor\Glad;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;Code/Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor\Glad;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -160,6 +160,7 @@ xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64.lib" "$(ProjectDir)/Lib/Xeno
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\XenoEngine\Code\Vendor\Glad\glad.c" />
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\Vendor\Glad\glad.c" />
   </ItemGroup>

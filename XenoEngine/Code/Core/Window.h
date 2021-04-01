@@ -6,6 +6,7 @@
 #include <SDL2/SDL_pixels.h>
 #include <string>
 #include <GLM/vec2.hpp>
+#include <cstdint>
 
 namespace Xeno
 {
@@ -44,6 +45,7 @@ namespace Xeno
         Window(const WindowProperties& props);
 
         static inline WindowProperties mWindowProps;
+
         SDL_Window* mWindow;
         SDL_GLContext mContext;
 

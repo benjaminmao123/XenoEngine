@@ -5,6 +5,7 @@
 #include <GLM/vec2.hpp>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_scancode.h>
+#include <cstdint>
 
 namespace Xeno
 {
@@ -42,15 +43,15 @@ namespace Xeno
 		void ProcessEvents(const SDL_Event& event);
 
 		// @brief Stores the current keyboard state.
-		static inline const Uint8* mKeyboardState;
+		static inline const uint8_t* mKeyboardState;
 		// @brief Stores the last keyboard state.
-		static inline Uint8* mPrevKeyboardState;
+		static inline uint8_t* mPrevKeyboardState;
 		// @brief Number of valid keys.
 		static inline int mNumKeys;
 		// @brief Current mouse state.
-		static inline Uint32 mMouseState;
+		static inline uint32_t mMouseState;
 		// @brief Previous mouse state.
-		static inline Uint32 mPrevMouseState;
+		static inline uint32_t mPrevMouseState;
 		// @brief Stores the value of the mouse axis.
 		static inline glm::vec2 mMouseAxis;
 		// @brief Stores the value of the joystick axis.

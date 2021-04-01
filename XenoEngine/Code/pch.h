@@ -6,3 +6,6 @@
 #include <unordered_map>
 #include <deque>
 #include <iostream>
+#include <cstdint>
+#include <sstream>
+#include <fstream>

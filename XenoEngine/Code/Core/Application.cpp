@@ -7,7 +7,19 @@
 
 Xeno::Application::Application(const Window::WindowProperties& props) :
     mWindow(props)
-{ }
+{
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        XN_CORE_ERROR(SDL_GetError());
+
+        throw std::runtime_error("SDL failed to initialize.");
+    }
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+}
 
 Xeno::Application::~Application()
 {
