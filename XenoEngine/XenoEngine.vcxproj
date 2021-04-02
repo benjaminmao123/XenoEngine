@@ -181,6 +181,7 @@
     <ClInclude Include="Code\Core\Time.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\pch.h" />
+    <ClInclude Include="Code\Renderer\Renderer.h" />
     <ClInclude Include="Code\Xeno.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
