@@ -42,5 +42,4 @@ void Xeno::VertexArray::AddVertexBuffer(const VertexBuffer& buffer)
     mVertexBuffers.emplace_back(buffer);
 
     buffer.Unbind();
-    Unbind();
 }
