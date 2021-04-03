@@ -3,9 +3,26 @@
 
 #include <glad/glad.h>
 
-Xeno::VertexBuffer::VertexBuffer()
+Xeno::VertexBuffer::VertexBuffer(const uint32_t drawType) :
+    mDrawType(drawType)
 {
     glGenBuffers(1, &mObjectID);
+}
+
+Xeno::VertexBuffer::VertexBuffer(const uint32_t size, const uint32_t drawType) :
+    mDrawType(drawType)
+{
+    glGenBuffers(1, &mObjectID);
+    glBindBuffer(GL_ARRAY_BUFFER, mObjectID);
+    glBufferData(GL_ARRAY_BUFFER, size, nullptr, mDrawType);
+}
+
+Xeno::VertexBuffer::VertexBuffer(void* data, const uint32_t size, const uint32_t drawType) :
+    mDrawType(drawType)
+{
+    glGenBuffers(1, &mObjectID);
+    glBindBuffer(GL_ARRAY_BUFFER, mObjectID);
+    glBufferData(GL_ARRAY_BUFFER, size, data, mDrawType);
 }
 
 Xeno::VertexBuffer::~VertexBuffer()
@@ -28,10 +45,12 @@ void Xeno::VertexBuffer::PushElement(const VertexBufferLayout::VertexBufferEleme
     mLayout.PushElement(element);
 }
 
-void Xeno::VertexBuffer::SetDataNew(const void* data, const uint32_t size, const uint32_t drawType) const
+void Xeno::VertexBuffer::SetDataNew(const void* data, const uint32_t size, const uint32_t drawType)
 {
+    mDrawType = drawType;
+
     Bind();
-    glBufferData(GL_ARRAY_BUFFER, size, data, drawType);
+    glBufferData(GL_ARRAY_BUFFER, size, data, mDrawType);
     Unbind();
 }
 

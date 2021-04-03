@@ -43,3 +43,8 @@ void Xeno::VertexArray::AddVertexBuffer(const VertexBuffer& buffer)
 
     buffer.Unbind();
 }
+
+const std::vector<Xeno::VertexBuffer>& Xeno::VertexArray::GetVertexBuffers() const
+{
+    return mVertexBuffers;
+}
