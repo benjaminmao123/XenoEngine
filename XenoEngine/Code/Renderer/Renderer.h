@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Texture.h"
 
 #include <cstdint>
 
@@ -10,7 +9,7 @@ namespace Xeno
     class XENO_API Renderer
     {
     public:
-        //static void Draw();
+        static void DrawTriangle();
 
     private:
         Renderer() = default;
