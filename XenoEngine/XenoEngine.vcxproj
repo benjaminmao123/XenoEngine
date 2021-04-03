@@ -168,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Code\Renderer\Renderer.cpp" />
     <ClCompile Include="Code\Renderer\Texture.cpp" />
     <ClCompile Include="Code\Renderer\VertexArray.cpp" />
     <ClCompile Include="Code\Renderer\VertexBuffer.cpp" />
