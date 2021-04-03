@@ -11,7 +11,7 @@ namespace Xeno
 	public:
 		// @brief Gets the time between the last frame 
 		// and the current frame.
-		static float GetDeltaTime();
+		[[nodiscard]] static float GetDeltaTime();
 
 	private:
 		// @brief Default constructor.

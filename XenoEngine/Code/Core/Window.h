@@ -33,16 +33,15 @@ namespace Xeno
                    unsigned char g, 
                    unsigned char b, 
                    unsigned char a) const;
-
         void Clear(const SDL_Color& color) const;
 
-        static uint32_t GetWidth();
-        static uint32_t GetHeight();
-        static glm::vec2 GetCenter();
-        static float GetAspectRatio();
+        [[nodiscard]] static uint32_t GetWidth();
+        [[nodiscard]] static uint32_t GetHeight();
+        [[nodiscard]] static glm::vec2 GetCenter();
+        [[nodiscard]] static float GetAspectRatio();
 
     private:
-        Window(const WindowProperties& props);
+        explicit Window(const WindowProperties& props);
 
         static inline WindowProperties mWindowProps;
 

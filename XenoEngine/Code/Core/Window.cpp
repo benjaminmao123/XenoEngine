@@ -42,7 +42,10 @@ bool Xeno::Window::ConstructWindow()
     return true;
 }
 
-void Xeno::Window::Clear(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const
+void Xeno::Window::Clear(const unsigned char r, 
+                         const unsigned char g, 
+                         const unsigned char b, 
+                         const unsigned char a) const
 {
     glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
     glClear(GL_COLOR_BUFFER_BIT);

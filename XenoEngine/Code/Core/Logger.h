@@ -11,8 +11,8 @@ namespace Xeno
     class XENO_API Logger
     {
 	public:
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return mCoreLogger; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return mCoreLogger; }
+		[[nodiscard]] static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return mCoreLogger; }
+		[[nodiscard]] static std::shared_ptr<spdlog::logger>& GetClientLogger() { return mCoreLogger; }
 
 	private:
 		Logger();
