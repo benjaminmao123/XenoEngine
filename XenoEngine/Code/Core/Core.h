@@ -6,6 +6,6 @@
 #define XENO_API __declspec(dllimport)  
 #endif
 
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
+//#ifndef SDL_MAIN_HANDLED
+//#define SDL_MAIN_HANDLED
+//#endif
