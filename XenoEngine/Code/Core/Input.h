@@ -13,26 +13,26 @@ namespace Xeno
 	class XENO_API Input
 	{
 	public:
+		~Input();
+
 		enum class AxisType
 		{
 			MOUSE,
 			JOYSTICK
 		};
 
-		~Input();
-
 		// @brief Gets the key state.
 		// @return bool: True if key is pressed, else false.
-		[[nodiscard]] static bool GetKey(SDL_Scancode code);
+		static bool GetKey(SDL_Scancode code);
 		// @brief Returns true during the frame the user starts pressing down the key.
 		// @return bool: True if key is pressed, else false.
-		[[nodiscard]] static bool GetKeyDown(SDL_Scancode code);
+		static bool GetKeyDown(SDL_Scancode code);
 		// @brief Returns true during the frame the user releases the key.
 		// @return bool: True if key is released, else false.
-		[[nodiscard]] static bool GetKeyUp(SDL_Scancode code);
+		static bool GetKeyUp(SDL_Scancode code);
 		// @brief Gets the current mouse mPosition on the screen.
 		// @return glm::vec2: The mouse x and y mPosition.
-		[[nodiscard]] static glm::vec2 GetAxis(AxisType type);
+		static glm::vec2 GetAxis(AxisType type);
 
 	private:
 		// @brief Default constructor.
