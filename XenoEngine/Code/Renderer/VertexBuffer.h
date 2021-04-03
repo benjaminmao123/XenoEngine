@@ -18,6 +18,7 @@ namespace Xeno
 		public:
 			struct VertexBufferElement
 			{
+				std::string mName;
 				int32_t mSize = 0;
 				uint32_t mType = GL_FLOAT;
 				bool mNormalized = false;
