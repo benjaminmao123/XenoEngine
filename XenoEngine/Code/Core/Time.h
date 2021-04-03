@@ -25,7 +25,7 @@ namespace Xeno
 		uint64_t mElapsedTime = 0;
 		// @brief The time between the last frame and
 		// the current frame.
-		static inline float mDeltaTime = 0.0f;
+		static float mDeltaTime;
 
 		friend class Application;
     };

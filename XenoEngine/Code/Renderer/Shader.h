@@ -29,13 +29,14 @@ namespace Xeno
             ShaderType mType;
         };
 
-        Shader() = default;
+        Shader();
         Shader(const std::vector<ShaderSource>& sources);
-        Shader(const std::initializer_list<ShaderSource>& sources);
         ~Shader();
 
         void Bind() const;
         void Unbind() const;
+
+        void AddShader(const ShaderSource& source);
 
         void SetInt(const std::string& name, int32_t value);
         void SetFloat(const std::string& name, float value);

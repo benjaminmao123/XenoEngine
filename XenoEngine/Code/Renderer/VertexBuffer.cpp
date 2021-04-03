@@ -61,12 +61,17 @@ void Xeno::VertexBuffer::SetDataExisting(const void* data, const uint32_t size) 
     Unbind();
 }
 
+void Xeno::VertexBuffer::SetLayout(const VertexBufferLayout& layout)
+{
+    mLayout = layout;
+}
+
 const Xeno::VertexBuffer::VertexBufferLayout& Xeno::VertexBuffer::GetLayout() const
 {
     return mLayout;
 }
 
-void Xeno::VertexBuffer::SetLayout(const VertexBufferLayout& layout)
+void Xeno::VertexBuffer::ClearLayout()
 {
-    mLayout = layout;
+    mLayout.Clear();
 }

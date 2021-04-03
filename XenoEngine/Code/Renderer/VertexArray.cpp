@@ -21,27 +21,33 @@ void Xeno::VertexArray::Unbind() const
     glBindVertexArray(0);
 }
 
-void Xeno::VertexArray::AddVertexBuffer(const VertexBuffer& buffer)
+void Xeno::VertexArray::AddBuffer(const VertexBuffer* vbo, const ElementBuffer* ebo)
 {
+    if (!vbo)
+        return;
+
     Bind();
-    buffer.Bind();
+    vbo->Bind();
+
+    if (ebo)
+        ebo->Bind();
 
     uint32_t index = 0;
 
-    for (const auto& element : buffer.GetLayout())
+    for (const auto& element : vbo->GetLayout())
     {
         glEnableVertexAttribArray(index);
         glVertexAttribPointer(index++, 
                               element.mSize, 
                               element.mType, 
                               element.mNormalized, 
-                              buffer.GetLayout().GetStride(), 
+                              vbo->GetLayout().GetStride(),
                               (void*)element.mOffset);
     }
 
-    mVertexBuffers.emplace_back(buffer);
+    mVertexBuffers.emplace_back(*vbo);
 
-    buffer.Unbind();
+    vbo->Unbind();
 }
 
 const std::vector<Xeno::VertexBuffer>& Xeno::VertexArray::GetVertexBuffers() const

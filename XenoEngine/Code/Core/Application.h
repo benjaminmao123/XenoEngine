@@ -5,10 +5,9 @@
 #include "Core/Input.h"
 #include "Core/Time.h"
 #include "Core/Logger.h"
+#include "Renderer/Renderer.h"
 
-#include <string>
 #include <SDL2/SDL_events.h>
-#include <vector>
 
 namespace Xeno
 {
@@ -34,6 +33,7 @@ namespace Xeno
         Window mWindow;
         Input mInput;
         Time mTime;
+        Renderer mRenderer;
         SDL_Event mEvent;
         bool mIsRunning = false;
     };

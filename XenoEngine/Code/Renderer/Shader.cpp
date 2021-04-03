@@ -2,17 +2,16 @@
 #include "Shader.h"
 #include "Core/Logger.h"
 
-#include <filesystem>
 #include <fstream>
+
+Xeno::Shader::Shader() :
+    mObjectID(glCreateProgram())
+{ }
 
 Xeno::Shader::Shader(const std::vector<ShaderSource>& sources)
 {
-    for (const auto& source : sources)
-        ProcessShader(source);
-}
+    mObjectID = glCreateProgram();
 
-Xeno::Shader::Shader(const std::initializer_list<ShaderSource>& sources)
-{
     for (const auto& source : sources)
         ProcessShader(source);
 }
@@ -30,6 +29,11 @@ void Xeno::Shader::Bind() const
 void Xeno::Shader::Unbind() const
 {
     glUseProgram(0);
+}
+
+void Xeno::Shader::AddShader(const ShaderSource& source)
+{
+    ProcessShader(source);
 }
 
 void Xeno::Shader::SetInt(const std::string& name, const int32_t value)
@@ -72,6 +76,13 @@ void Xeno::Shader::ProcessShader(const ShaderSource& source)
 {
     const std::string sourceCode = ParseFile(source.mPath);
 
+    if (sourceCode.empty())
+    {
+        XN_CORE_ERROR("Shader failed to compile.");
+
+        return;
+    }
+
     switch (source.mType)
     {
     case ShaderType::VERTEX:
@@ -86,25 +97,26 @@ void Xeno::Shader::ProcessShader(const ShaderSource& source)
 
 std::string Xeno::Shader::ParseFile(const std::string& path) const
 {
-    // Open the stream to 'lock' the file.
-    std::ifstream f(path, std::ios::in | std::ios::binary);
+    std::ifstream ifs(path);
 
-    // Obtain the size of the file.
-    const auto sz = std::filesystem::file_size(std::filesystem::path());
+    if (!ifs.is_open())
+    {
+        XN_CORE_ERROR("Failed to open file: {0}", path);
 
-    // Create a buffer.
-    std::string result(sz, '\0');
+        return std::string();
+    }
 
-    // Read the whole file into the buffer.
-    f.read(result.data(), sz);
+    std::string content((std::istreambuf_iterator<char>(ifs)),
+                        (std::istreambuf_iterator<char>()));
 
-    return result;
+    return content;
 }
 
 void Xeno::Shader::CompileShader(const std::string& sourceCode, const ShaderType type)
 {
-    const uint32_t shader = glCreateShader((GLenum)type);
     const char* code = sourceCode.c_str();
+
+    const uint32_t shader = glCreateShader((GLenum)type);
     glShaderSource(shader, 1, &code, nullptr);
     glCompileShader(shader);
 
@@ -126,7 +138,6 @@ void Xeno::Shader::CompileShader(const std::string& sourceCode, const ShaderType
         return;
     }
 
-    mObjectID = glCreateProgram();
     glAttachShader(mObjectID, shader);
     glLinkProgram(mObjectID);
 
@@ -144,8 +155,9 @@ void Xeno::Shader::CompileShader(const std::string& sourceCode, const ShaderType
 
         // We don't need the program anymore.
         glDeleteProgram(mObjectID);
-        glDeleteShader(shader);
 
         XN_CORE_ERROR("Shader failed to compile: {0}", infoLog.data());
     }
+
+    glDeleteShader(shader);
 }

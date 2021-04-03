@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL_timer.h>
 
+float Xeno::Time::mDeltaTime = 0.0f;
+
 void Xeno::Time::Update()
 {
 	mElapsedTime = SDL_GetPerformanceCounter();
