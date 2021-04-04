@@ -11,6 +11,7 @@ namespace Xeno
     public:
         ElementBuffer(uint32_t drawType = GL_STATIC_DRAW);
         ~ElementBuffer();
+        ElementBuffer& operator=(const ElementBuffer& other) = delete;
 
         void Bind() const;
         void Unbind() const;

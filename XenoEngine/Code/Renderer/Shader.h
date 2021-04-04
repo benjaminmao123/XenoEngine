@@ -32,23 +32,24 @@ namespace Xeno
         Shader();
         Shader(const std::vector<ShaderSource>& sources);
         ~Shader();
+        Shader& operator=(const Shader& other) = delete;
 
         void Bind() const;
         void Unbind() const;
 
-        void AddShader(const ShaderSource& source);
+        void AddShader(const ShaderSource& source) const;
 
-        void SetInt(const std::string& name, int32_t value);
-        void SetFloat(const std::string& name, float value);
-        void SetFloat2(const std::string& name, const glm::vec2& value);
-        void SetFloat3(const std::string& name, const glm::vec3& value);
-        void SetFloat4(const std::string& name, const glm::vec4& value);
-        void SetMat4(const std::string& name, const glm::mat4& value);
+        void SetInt(const std::string& name, int32_t value) const;
+        void SetFloat(const std::string& name, float value) const;
+        void SetFloat2(const std::string& name, const glm::vec2& value) const;
+        void SetFloat3(const std::string& name, const glm::vec3& value) const;
+        void SetFloat4(const std::string& name, const glm::vec4& value) const;
+        void SetMat4(const std::string& name, const glm::mat4& value) const;
 
     private:
-        void ProcessShader(const ShaderSource& source);
+        void ProcessShader(const ShaderSource& source) const;
         std::string ParseFile(const std::string& path) const;
-        void CompileShader(const std::string& sourceCode, ShaderType type);
+        void CompileShader(const std::string& sourceCode, ShaderType type) const;
 
         uint32_t mObjectID;
     };

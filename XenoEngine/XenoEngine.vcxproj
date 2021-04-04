@@ -157,6 +157,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Component\CameraComponent.cpp" />
+    <ClCompile Include="Code\Component\TransformComponent.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\Input.cpp" />
     <ClCompile Include="Code\Core\Logger.cpp" />
@@ -184,6 +186,8 @@
     <ClCompile Include="Code\Renderer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Component\CameraComponent.h" />
+    <ClInclude Include="Code\Component\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Core.h" />
     <ClInclude Include="Code\Core\Input.h" />
@@ -195,6 +199,7 @@
     <ClInclude Include="Code\Renderer\Texture.h" />
     <ClInclude Include="Code\Renderer\VertexArray.h" />
     <ClInclude Include="Code\Renderer\VertexBuffer.h" />
+    <ClInclude Include="Code\Utility\NonCopyable.h" />
     <ClInclude Include="Code\Xeno.h" />
     <ClInclude Include="Code\Renderer\ElementBuffer.h" />
     <ClInclude Include="Code\Renderer\Shader.h" />

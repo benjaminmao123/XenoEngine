@@ -20,6 +20,7 @@ namespace Xeno
 
         VertexArray();
         ~VertexArray();
+        VertexArray& operator=(const VertexArray& other) = delete;
 
         void Bind() const;
         void Unbind() const;

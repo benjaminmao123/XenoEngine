@@ -29,6 +29,7 @@ namespace Xeno
                          bool mipMapping = true,
                          int32_t mipMapLevel = 0);
         ~Texture();
+        Texture& operator=(const Texture& other) = delete;
 
         void Bind(uint32_t slot = 0) const;
         void Unbind() const;

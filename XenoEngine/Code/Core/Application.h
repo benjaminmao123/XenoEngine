@@ -6,12 +6,13 @@
 #include "Core/Time.h"
 #include "Core/Logger.h"
 #include "Renderer/Renderer.h"
+#include "Utility/NonCopyable.h"
 
 #include <SDL2/SDL_events.h>
 
 namespace Xeno
 {
-    class XENO_API Application
+    class XENO_API Application : public NonCopyable
     {
     public:
         Application(const Window::WindowProperties& props);

@@ -10,11 +10,6 @@ Xeno::Window::~Window()
     SDL_DestroyWindow(mWindow);
 }
 
-void Xeno::Window::Update()
-{
-    SDL_GL_SwapWindow(mWindow);
-}
-
 bool Xeno::Window::ConstructWindow()
 {
     mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),

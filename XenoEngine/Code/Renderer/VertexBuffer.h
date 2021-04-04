@@ -8,6 +8,8 @@
 #include <vector>
 #include <initializer_list>
 
+#include "ElementBuffer.h"
+
 namespace Xeno
 {
     class XENO_API VertexBuffer
@@ -99,6 +101,7 @@ namespace Xeno
 		explicit VertexBuffer(uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
 		explicit VertexBuffer(void* data, uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
 		~VertexBuffer();
+		VertexBuffer& operator=(const VertexBuffer& other) = delete;
 
         void Bind() const;
         void Unbind() const;

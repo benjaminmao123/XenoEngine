@@ -31,48 +31,96 @@ void Xeno::Shader::Unbind() const
     glUseProgram(0);
 }
 
-void Xeno::Shader::AddShader(const ShaderSource& source)
+void Xeno::Shader::AddShader(const ShaderSource& source) const
 {
     ProcessShader(source);
 }
 
-void Xeno::Shader::SetInt(const std::string& name, const int32_t value)
+void Xeno::Shader::SetInt(const std::string& name, const int32_t value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniform1i(location, value);
 }
 
-void Xeno::Shader::SetFloat(const std::string& name, const float value)
+void Xeno::Shader::SetFloat(const std::string& name, const float value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniform1f(location, value);
 }
 
-void Xeno::Shader::SetFloat2(const std::string& name, const glm::vec2& value)
+void Xeno::Shader::SetFloat2(const std::string& name, const glm::vec2& value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniform2f(location, value.x, value.y);
 }
 
-void Xeno::Shader::SetFloat3(const std::string& name, const glm::vec3& value)
+void Xeno::Shader::SetFloat3(const std::string& name, const glm::vec3& value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniform3f(location, value.x, value.y, value.z);
 }
 
-void Xeno::Shader::SetFloat4(const std::string& name, const glm::vec4& value)
+void Xeno::Shader::SetFloat4(const std::string& name, const glm::vec4& value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
-void Xeno::Shader::SetMat4(const std::string& name, const glm::mat4& value)
+void Xeno::Shader::SetMat4(const std::string& name, const glm::mat4& value) const
 {
     const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
     glUniformMatrix4fv(location, 1, false, value_ptr(value));
 }
 
-void Xeno::Shader::ProcessShader(const ShaderSource& source)
+void Xeno::Shader::ProcessShader(const ShaderSource& source) const
 {
     const std::string sourceCode = ParseFile(source.mPath);
 
@@ -112,7 +160,7 @@ std::string Xeno::Shader::ParseFile(const std::string& path) const
     return content;
 }
 
-void Xeno::Shader::CompileShader(const std::string& sourceCode, const ShaderType type)
+void Xeno::Shader::CompileShader(const std::string& sourceCode, const ShaderType type) const
 {
     const char* code = sourceCode.c_str();
 

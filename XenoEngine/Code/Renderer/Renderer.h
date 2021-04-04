@@ -6,6 +6,9 @@
 #include "Renderer/Texture.h"
 #include "Renderer/Shader.h"
 #include "Renderer/ElementBuffer.h"
+#include "Component/TransformComponent.h"
+#include "Utility/NonCopyable.h"
+#include "Component/CameraComponent.h"
 
 #include <vector>
 #include <glm/glm.hpp>
@@ -13,11 +16,12 @@
 
 namespace Xeno
 {
-    class XENO_API Renderer
+    class XENO_API Renderer : public NonCopyable
     {
     public:
-        static void DrawQuad(const glm::vec2& position, const SDL_Color& color);
-        static void DrawQuad();
+        static void DrawQuad(const TransformComponent& transform, 
+                             const CameraComponent& camera, 
+                             const SDL_Color& color);
 
     private:
         Renderer() = default;
