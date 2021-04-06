@@ -4,13 +4,13 @@
 
 #include <cstdint>
 #include <vector>
-#include <initializer_list>
 #include <glad/glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string>
 
 namespace Xeno
 {
@@ -29,28 +29,33 @@ namespace Xeno
             ShaderType mType;
         };
 
-        Shader();
-        Shader(const std::vector<ShaderSource>& sources);
+        explicit Shader(std::string name);
+        Shader(const std::string& name, const std::vector<ShaderSource>& sources);
         ~Shader();
+        Shader& operator=(const Shader& other) = delete;
 
         void Bind() const;
         void Unbind() const;
 
-        void AddShader(const ShaderSource& source);
+        void AddShader(const ShaderSource& source) const;
 
-        void SetInt(const std::string& name, int32_t value);
-        void SetFloat(const std::string& name, float value);
-        void SetFloat2(const std::string& name, const glm::vec2& value);
-        void SetFloat3(const std::string& name, const glm::vec3& value);
-        void SetFloat4(const std::string& name, const glm::vec4& value);
-        void SetMat4(const std::string& name, const glm::mat4& value);
+        void SetInt(const std::string& name, int32_t value) const;
+        void SetFloat(const std::string& name, float value) const;
+        void SetFloat2(const std::string& name, const glm::vec2& value) const;
+        void SetFloat3(const std::string& name, const glm::vec3& value) const;
+        void SetFloat4(const std::string& name, const glm::vec4& value) const;
+        void SetMat4(const std::string& name, const glm::mat4& value) const;
+
+        const std::string& GetName() const;
 
     private:
-        void ProcessShader(const ShaderSource& source);
-        std::string ParseFile(const std::string& path) const;
-        void CompileShader(const std::string& sourceCode, ShaderType type);
+        void ProcessShader(const ShaderSource& source) const;
+        [[nodiscard]] std::string ParseFile(const std::string& path) const;
+        [[nodiscard ]] uint32_t CompileShader(const std::string& sourceCode, ShaderType type) const;
+        [[nodiscard]] bool LinkShader(uint32_t shader) const;
 
         uint32_t mObjectID;
+        std::string mName;
     };
 }
 

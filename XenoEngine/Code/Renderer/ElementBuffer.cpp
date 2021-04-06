@@ -27,15 +27,23 @@ void Xeno::ElementBuffer::Unbind() const
 void Xeno::ElementBuffer::SetIndicesNew(const uint32_t* indices, const uint32_t count, const uint32_t drawType)
 {
     mDrawType = drawType;
+    mCount = count;
 
     Bind();
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, mDrawType);
     Unbind();
 }
 
-void Xeno::ElementBuffer::SetIndicesExisting(const uint32_t* indices, const uint32_t count) const
+void Xeno::ElementBuffer::SetIndicesExisting(const uint32_t* indices, const uint32_t count)
 {
+    mCount = count;
+
     Bind();
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, count * sizeof(uint32_t), indices);
     Unbind();
+}
+
+uint32_t Xeno::ElementBuffer::GetCount() const
+{
+    return mCount;
 }

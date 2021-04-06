@@ -10,11 +10,6 @@ Xeno::Window::~Window()
     SDL_DestroyWindow(mWindow);
 }
 
-void Xeno::Window::Update()
-{
-    SDL_GL_SwapWindow(mWindow);
-}
-
 bool Xeno::Window::ConstructWindow()
 {
     mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),
@@ -55,6 +50,11 @@ void Xeno::Window::Clear(const SDL_Color& color) const
 {
     glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Xeno::Window::Display() const
+{
+    SDL_GL_SwapWindow(mWindow);
 }
 
 uint32_t Xeno::Window::GetWidth()

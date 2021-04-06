@@ -1,99 +1,70 @@
 #include "pch.h"
 #include "Renderer/Renderer.h"
+#include "Core/Window.h"
+#include "Resource/ResourceManager.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/VertexBuffer.h"
+#include "Renderer/Texture.h"
+#include "Renderer/Shader.h"
+#include "Renderer/ElementBuffer.h"
 
-std::vector<float> Xeno::Renderer::mQuad;
-std::vector<uint32_t> Xeno::Renderer::mIndices;
+#include <memory>
 
-void Xeno::Renderer::DrawQuad(const glm::vec2& position, const SDL_Color& color)
+Xeno::Renderer::RendererData Xeno::Renderer::mData;
+
+void Xeno::Renderer::DrawQuad(const TransformComponent& transform, 
+                              const CameraComponent& camera, 
+                              const Color& color)
 {
-    GetShader().Bind();
-    GetVAO().Bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
+    mData.mVAO->Bind();
 
-void Xeno::Renderer::DrawQuad()
-{
-    GetShader().Bind();
-    GetVAO().Bind();
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    const glm::mat4 mvp = camera.GetViewProjection() * transform.GetModelMatrix();
+    const auto shader = ResourceManager::GetShader("sprite");
+
+    if (shader)
+    {
+        shader->Bind();
+        shader->SetMat4("uMVP", mvp);
+        shader->SetFloat4("uColor", color.ToVec4());
+    }
+
+    glDrawElements(GL_TRIANGLES, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Xeno::Renderer::Init()
 {
-    //mQuad =
-    //{   //position          //color
-    //     0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // top right
-    //     0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // bottom right
-    //    -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // bottom left
-    //    -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // top left
-    //};
-
-    //mQuad = 
-    //{
-    //     0.5f,  0.5f, 0.0f,  // top right
-    //     0.5f, -0.5f, 0.0f,  // bottom right
-    //    -0.5f, -0.5f, 0.0f,  // bottom left
-    //    -0.5f,  0.5f, 0.0f   // top left 
-    //};
-
-    mQuad =
+    mData.mQuad =
     {
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+         // positions       // uvs
+         1.0f,  1.0f, 0.0f, 1.0f, 1.0f,   // top right
+         1.0f, -1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f    // top left 
     };
 
-    mIndices =
+    mData.mIndices =
     {
         0, 1, 3,
         1, 2, 3
     };
 
-    GetShader().AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
-    GetShader().AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
+    const auto shader = std::make_shared<Shader>("sprite");
+    shader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
+    shader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
+    ResourceManager::AddShader(shader);
 
-    GetVAO().Bind();
+    const auto texture = std::make_shared<Texture>("Assets/Textures/container.jpg");
+    ResourceManager::AddTexture(texture);
 
-    GetVBO().SetDataNew(&mQuad[0], mQuad.size() * sizeof(float), GL_STATIC_DRAW);
-    GetVBO().PushElement({ "aPosition", 3, GL_FLOAT, sizeof(float) });
-    GetVBO().PushElement({ "aColor", 3, GL_FLOAT, sizeof(float) });
-    
-    //GetEBO().SetIndicesNew(&mIndices[0], mIndices.size(), GL_STATIC_DRAW);
+    mData.mVAO = std::make_shared<VertexArray>();
+    mData.mVBO = std::make_shared<VertexBuffer>();
+    mData.mEBO = std::make_shared<ElementBuffer>();
 
-    GetVAO().AddBuffer(&GetVBO(), nullptr);
-}
+    mData.mVBO->SetDataNew(&mData.mQuad[0], mData.mQuad.size() * sizeof(float), GL_STATIC_DRAW);
+    mData.mVBO->PushElement({ "aPosition", 3, GL_FLOAT, sizeof(float) });
+    mData.mVBO->PushElement({ "aTexCoords", 2, GL_FLOAT, sizeof(float) });
 
-Xeno::VertexArray& Xeno::Renderer::GetVAO()
-{
-    static VertexArray VAO;
+    mData.mEBO->SetIndicesNew(&mData.mIndices[0], mData.mIndices.size(), GL_STATIC_DRAW);
 
-    return VAO;
-}
-
-Xeno::VertexBuffer& Xeno::Renderer::GetVBO()
-{
-    static VertexBuffer VBO;
-
-    return VBO;
-}
-
-Xeno::ElementBuffer& Xeno::Renderer::GetEBO()
-{
-    static ElementBuffer EBO;
-
-    return EBO;
-}
-
-Xeno::Texture& Xeno::Renderer::GetTexture()
-{
-    static Texture texture;
-
-    return texture;
-}
-
-Xeno::Shader& Xeno::Renderer::GetShader()
-{
-    static Shader shader;
-
-    return shader;
+    mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
 }

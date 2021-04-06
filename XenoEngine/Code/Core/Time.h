@@ -1,17 +1,18 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Utility/NonCopyable.h"
 
 #include <cstdint>
 
 namespace Xeno
 {
-    class XENO_API Time
+    class XENO_API Time : public NonCopyable
     {
 	public:
 		// @brief Gets the time between the last frame 
 		// and the current frame.
-		[[nodiscard]] static float GetDeltaTime();
+		static float GetDeltaTime();
 
 	private:
 		// @brief Default constructor.
