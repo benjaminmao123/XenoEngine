@@ -88,7 +88,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>XN_DEBUG;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>XN_ENABLE_ASSERTS;SDL_MAIN_HANDLED;XENO_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>XN_DEBUG;XN_ENABLE_ASSERTS;SDL_MAIN_HANDLED;XENO_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Code/Vendor/Glad;Code;Code/Vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -192,6 +192,7 @@
     <ClInclude Include="Code\Component\CameraComponent.h" />
     <ClInclude Include="Code\Component\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
+    <ClInclude Include="Code\Core\Assert.h" />
     <ClInclude Include="Code\Core\Core.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Logger.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Code\Renderer\Texture.h" />
     <ClInclude Include="Code\Renderer\VertexArray.h" />
     <ClInclude Include="Code\Renderer\VertexBuffer.h" />
+    <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Utility\NonCopyable.h" />
     <ClInclude Include="Code\Xeno.h" />
     <ClInclude Include="Code\Renderer\ElementBuffer.h" />
