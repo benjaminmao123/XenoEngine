@@ -33,6 +33,7 @@ namespace Xeno
                    unsigned char b, 
                    unsigned char a) const;
         void Clear(const SDL_Color& color) const;
+        void Display() const;
 
         static uint32_t GetWidth();
         static uint32_t GetHeight();

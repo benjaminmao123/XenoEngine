@@ -25,23 +25,6 @@ Xeno::Application::~Application()
     SDL_Quit();
 }
 
-std::string ParseFile(const std::string& path)
-{
-    std::ifstream ifs(path);
-
-    if (!ifs.is_open())
-    {
-        XN_CORE_ERROR("Failed to open file: {0}", path);
-
-        return std::string();
-    }
-
-    std::string content((std::istreambuf_iterator<char>(ifs)),
-                        (std::istreambuf_iterator<char>()));
-
-    return content;
-}
-
 void Xeno::Application::Run()
 {
     if (!mIsRunning)
@@ -58,9 +41,10 @@ void Xeno::Application::Run()
 
             PollEvents();
             Update();
-            Renderer::DrawQuad(transform, camera, SDL_Color(255, 255, 255, 255));
 
-            SDL_GL_SwapWindow(mWindow.mWindow);
+            Renderer::DrawQuad(transform, camera, Color::Green().ToFloat());
+
+            mWindow.Display();
         }
     }
 }

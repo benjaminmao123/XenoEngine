@@ -52,6 +52,11 @@ void Xeno::Window::Clear(const SDL_Color& color) const
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void Xeno::Window::Display() const
+{
+    SDL_GL_SwapWindow(mWindow);
+}
+
 uint32_t Xeno::Window::GetWidth()
 {
     return mWindowProps.mWidth;

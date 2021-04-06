@@ -5,6 +5,7 @@
 #include "Renderer/ElementBuffer.h"
 
 #include <vector>
+#include <memory>
 
 namespace Xeno
 {
@@ -25,13 +26,15 @@ namespace Xeno
         void Bind() const;
         void Unbind() const;
 
-        void AddBuffer(const VertexBuffer* vbo, const ElementBuffer* ebo);
+        void AddBuffer(const std::shared_ptr<VertexBuffer>& vbo, 
+                       const std::shared_ptr<ElementBuffer>& ebo);
 
-        [[nodiscard]] const std::vector<VertexBuffer>& GetVertexBuffers() const;
+        [[nodiscard]] const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const;
 
     private:
         uint32_t mObjectID;
 
-        std::vector<VertexBuffer> mVertexBuffers;
+        std::vector<std::shared_ptr<VertexBuffer>> mVertexBuffers;
+        std::shared_ptr<ElementBuffer> mElementBuffer;
     };
 }

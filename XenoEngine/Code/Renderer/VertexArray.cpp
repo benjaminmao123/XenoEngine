@@ -21,7 +21,8 @@ void Xeno::VertexArray::Unbind() const
     glBindVertexArray(0);
 }
 
-void Xeno::VertexArray::AddBuffer(const VertexBuffer* vbo, const ElementBuffer* ebo)
+void Xeno::VertexArray::AddBuffer(const std::shared_ptr<VertexBuffer>& vbo,
+                                  const std::shared_ptr<ElementBuffer>& ebo)
 {
     if (!vbo)
         return;
@@ -30,7 +31,10 @@ void Xeno::VertexArray::AddBuffer(const VertexBuffer* vbo, const ElementBuffer* 
     vbo->Bind();
 
     if (ebo)
+    {
         ebo->Bind();
+        mElementBuffer = ebo;
+    }
 
     uint32_t index = 0;
 
@@ -45,12 +49,12 @@ void Xeno::VertexArray::AddBuffer(const VertexBuffer* vbo, const ElementBuffer* 
                               (void*)element.mOffset);
     }
 
-    mVertexBuffers.emplace_back(*vbo);
+    mVertexBuffers.emplace_back(vbo);
 
     vbo->Unbind();
 }
 
-const std::vector<Xeno::VertexBuffer>& Xeno::VertexArray::GetVertexBuffers() const
+const std::vector<std::shared_ptr<Xeno::VertexBuffer>>& Xeno::VertexArray::GetVertexBuffers() const
 {
     return mVertexBuffers;
 }

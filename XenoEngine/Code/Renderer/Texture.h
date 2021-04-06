@@ -11,14 +11,6 @@ namespace Xeno
     class XENO_API Texture
     {
     public:
-        explicit Texture(uint32_t internalFormat = GL_RGB, 
-                         uint32_t imageFormat = GL_RGB,
-                         uint32_t wrapS = GL_REPEAT, 
-                         uint32_t wrapT = GL_REPEAT,
-                         uint32_t filterMin = GL_LINEAR, 
-                         uint32_t filterMax = GL_LINEAR,
-                         bool mipMapping = true,
-                         int32_t mipMapLevel = 0);
         explicit Texture(std::string path,
                          uint32_t internalFormat = GL_RGB, 
                          uint32_t imageFormat = GL_RGB,
@@ -32,17 +24,6 @@ namespace Xeno
         Texture& operator=(const Texture& other) = delete;
 
         void Bind(uint32_t slot = 0) const;
-        void Unbind() const;
-
-        void LoadTextureFromFile(std::string path,
-                                 uint32_t internalFormat = GL_RGB,
-                                 uint32_t imageFormat = GL_RGB,
-                                 uint32_t wrapS = GL_REPEAT,
-                                 uint32_t wrapT = GL_REPEAT,
-                                 uint32_t filterMin = GL_LINEAR,
-                                 uint32_t filterMax = GL_LINEAR,
-                                 bool mipMapping = true,
-                                 int32_t mipMapLevel = 0);
        
         void SetWrapS(uint32_t mode);
         void SetWrapT(uint32_t mode);
