@@ -5,8 +5,10 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-Xeno::CameraComponent::CameraComponent(const glm::vec3& position,
+Xeno::CameraComponent::CameraComponent(Entity* owner,
+                                       const glm::vec3& position,
                                        const ProjectionType type) :
+    Component(owner),
     mProjectionType(type)
 {
     GetTransform().SetPosition(position);
@@ -20,16 +22,6 @@ void Xeno::CameraComponent::SetProjectionType(const ProjectionType type)
 float Xeno::CameraComponent::GetFar() const
 {
     return mFar;
-}
-
-Xeno::TransformComponent& Xeno::CameraComponent::GetTransform()
-{
-    return mTransform;
-}
-
-const Xeno::TransformComponent& Xeno::CameraComponent::GetTransform() const
-{
-    return mTransform;
 }
 
 glm::mat4 Xeno::CameraComponent::GetViewProjection() const

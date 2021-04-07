@@ -12,10 +12,10 @@ Xeno::Window::~Window()
 
 bool Xeno::Window::ConstructWindow()
 {
-    mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),
-                               mWindowProps.mScreenLocationX, mWindowProps.mScreenLocationY,
-                               mWindowProps.mWidth, mWindowProps.mHeight,
-                               mWindowProps.mFlags);
+    mWindow = SDL_CreateWindow(sWindowProps.mTitle.c_str(),
+                               sWindowProps.mScreenLocationX, sWindowProps.mScreenLocationY,
+                               sWindowProps.mWidth, sWindowProps.mHeight,
+                               sWindowProps.mFlags);
 
     if (!mWindow)
     {
@@ -59,30 +59,30 @@ void Xeno::Window::Display() const
 
 uint32_t Xeno::Window::GetWidth()
 {
-    return mWindowProps.mWidth;
+    return sWindowProps.mWidth;
 }
 
 uint32_t Xeno::Window::GetHeight()
 {
-    return mWindowProps.mHeight;
+    return sWindowProps.mHeight;
 }
 
 glm::vec2 Xeno::Window::GetCenter()
 {
-    return glm::vec2(mWindowProps.mWidth / 2, mWindowProps.mHeight / 2);
+    return glm::vec2(sWindowProps.mWidth / 2, sWindowProps.mHeight / 2);
 }
 
 float Xeno::Window::GetAspectRatio()
 {
-    return static_cast<float>(mWindowProps.mWidth) / mWindowProps.mHeight;
+    return static_cast<float>(sWindowProps.mWidth) / sWindowProps.mHeight;
 }
 
 Xeno::Window::Window(const WindowProperties& props)
 {
-    mWindowProps.mTitle = props.mTitle;
-    mWindowProps.mScreenLocationX = props.mScreenLocationX;
-    mWindowProps.mScreenLocationY = props.mScreenLocationY;
-    mWindowProps.mWidth = props.mWidth;
-    mWindowProps.mHeight = props.mHeight;
-    mWindowProps.mFlags = props.mFlags;
+    sWindowProps.mTitle = props.mTitle;
+    sWindowProps.mScreenLocationX = props.mScreenLocationX;
+    sWindowProps.mScreenLocationY = props.mScreenLocationY;
+    sWindowProps.mWidth = props.mWidth;
+    sWindowProps.mHeight = props.mHeight;
+    sWindowProps.mFlags = props.mFlags;
 }

@@ -3,7 +3,8 @@
 
 #include <glm/gtx/matrix_decompose.hpp>
 
-Xeno::TransformComponent::TransformComponent() :
+Xeno::TransformComponent::TransformComponent(Entity* owner) :
+    Component(owner),
 	mPosition(0.0f, 0.0f, 0.0f),
 	mRotation(glm::vec3(0.0f, 0.0f, 0.0f)),
 	mScale(1.0f, 1.0f, 1.0f)

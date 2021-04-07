@@ -2,14 +2,14 @@
 
 #include "Core/Core.h"
 #include "Component/TransformComponent.h"
-#include "Utility/NonCopyable.h"
+#include "Component/Component.h"
 
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 
 namespace Xeno
 {
-    class XENO_API CameraComponent : public NonCopyable
+    class XENO_API CameraComponent final : public Component
     {
     public:
         enum class ProjectionType
@@ -18,7 +18,8 @@ namespace Xeno
             PERSPECTIVE
         };
 
-        explicit CameraComponent(const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
+        explicit CameraComponent(Entity* owner,
+                                 const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
                                  ProjectionType type = ProjectionType::PERSPECTIVE);
 
         void SetProjectionType(ProjectionType type);
@@ -33,14 +34,10 @@ namespace Xeno
         void SetFar(float farPlane);
         [[nodiscard]] float GetFar() const;
 
-        TransformComponent& GetTransform();
-        [[nodiscard]] const TransformComponent& GetTransform() const;
-
     private:
         ProjectionType mProjectionType;
         float mFov = 45.0f;
         float mNear = 0.0f;
         float mFar = 1000.0f;
-        TransformComponent mTransform;
     };
 }

@@ -6,22 +6,22 @@
 
 Xeno::Input::~Input()
 {
-	delete[] mPrevKeyboardState;
+	delete[] sPrevKeyboardState;
 }
 
 bool Xeno::Input::GetKey(const SDL_Scancode code)
 {
-	return mKeyboardState[code];
+	return sKeyboardState[code];
 }
 
 bool Xeno::Input::GetKeyDown(const SDL_Scancode code)
 {
-	return !mPrevKeyboardState[code] && mKeyboardState[code];
+	return !sPrevKeyboardState[code] && sKeyboardState[code];
 }
 
 bool Xeno::Input::GetKeyUp(const SDL_Scancode code)
 {
-	return mPrevKeyboardState[code] && !mKeyboardState[code];
+	return sPrevKeyboardState[code] && !sKeyboardState[code];
 }
 
 glm::vec2 Xeno::Input::GetAxis(const AxisType type)
@@ -29,9 +29,9 @@ glm::vec2 Xeno::Input::GetAxis(const AxisType type)
 	switch (type)
 	{
 	case AxisType::MOUSE:
-		return mMouseAxis;
+		return sMouseAxis;
 	case AxisType::JOYSTICK:
-		return mJoystickAxis;
+		return sJoystickAxis;
 	default:
 		break;
 	}
@@ -41,15 +41,15 @@ glm::vec2 Xeno::Input::GetAxis(const AxisType type)
 
 Xeno::Input::Input()
 {
-	mKeyboardState = SDL_GetKeyboardState(&mNumKeys);
-	mPrevKeyboardState = new uint8_t[mNumKeys];
-	memcpy(mPrevKeyboardState, mKeyboardState, mNumKeys);
+	sKeyboardState = SDL_GetKeyboardState(&sNumKeys);
+	sPrevKeyboardState = new uint8_t[sNumKeys];
+	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
 }
 
 void Xeno::Input::Update()
 {
-	memcpy(mPrevKeyboardState, mKeyboardState, mNumKeys);
-	mMouseAxis = glm::vec2(0.0f, 0.0f);
+	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
+	sMouseAxis = glm::vec2(0.0f, 0.0f);
 }
 
 void Xeno::Input::ProcessEvents(const SDL_Event& event)
@@ -57,12 +57,12 @@ void Xeno::Input::ProcessEvents(const SDL_Event& event)
 	switch (event.type)
 	{
 	case SDL_MOUSEMOTION:
-		mMouseAxis.x = event.motion.xrel * Time::GetDeltaTime();
-		mMouseAxis.y = event.motion.yrel * Time::GetDeltaTime();
+		sMouseAxis.x = event.motion.xrel * Time::GetDeltaTime();
+		sMouseAxis.y = event.motion.yrel * Time::GetDeltaTime();
 		break;
 	case SDL_JOYAXISMOTION:
-		mJoystickAxis.x = event.motion.xrel;
-		mJoystickAxis.y = event.motion.yrel;
+		sJoystickAxis.x = event.motion.xrel;
+		sJoystickAxis.y = event.motion.yrel;
 		break;
 	default:
 		break;

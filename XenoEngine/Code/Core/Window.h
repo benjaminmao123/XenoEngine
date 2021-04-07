@@ -43,7 +43,7 @@ namespace Xeno
     private:
         explicit Window(const WindowProperties& props);
 
-        static inline WindowProperties mWindowProps;
+        static inline WindowProperties sWindowProps;
 
         SDL_Window* mWindow;
         SDL_GLContext mContext;

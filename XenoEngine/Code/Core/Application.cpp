@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core/Application.h"
 #include "Core/Logger.h"
+#include "Scene/Scene.h"
 
 #include <SDL2/SDL.h>
 
@@ -29,20 +30,34 @@ void Xeno::Application::Run()
 {
     if (!mIsRunning)
     {
-        Create();
-        CameraComponent camera;
-        camera.SetProjectionType(CameraComponent::ProjectionType::ORTHOGRAPHIC);
-        TransformComponent transform;
-        transform.SetScale(100, 100, transform.GetScale().z);
+        if (!mWindow.ConstructWindow())
+        {
+            XN_CORE_ERROR("Failed to construct window.");
+
+            return;
+        }
+
+        mRenderer.Init();
+        mTime.Init();
+
+        OnRun();
+
+        if (SceneManager::sScenes.empty())
+            SceneManager::AddScene("New Scene");
+        if (!SceneManager::GetActiveScene())
+            SceneManager::LoadScene(0);
+
+        mIsRunning = true;
 
         while (mIsRunning)
         {
             mWindow.Clear(0, 0, 0, 255);
 
             PollEvents();
+            Awake();
+            Start();
             Update();
-
-            Renderer::DrawQuad(transform, camera, Color::Green().ToFloat());
+            Render();
 
             mWindow.Display();
         }
@@ -66,36 +81,38 @@ void Xeno::Application::PollEvents()
     }
 }
 
-void Xeno::Application::OnExit()
-{
-    mIsRunning = false;
-}
-
-void Xeno::Application::OnCreate()
+void Xeno::Application::OnRun()
 { }
 
 void Xeno::Application::OnUpdate()
 { }
 
-void Xeno::Application::Create()
+void Xeno::Application::Awake()
 {
-    if (!mWindow.ConstructWindow())
-    {
-        XN_CORE_ERROR("Failed to construct window.");
+    mSceneManager.Awake();
+}
 
-        return;
-    }
-
-    mRenderer.Init();
-
-    OnCreate();
-
-    mIsRunning = true;
+void Xeno::Application::Start()
+{
+    mSceneManager.Start();
 }
 
 void Xeno::Application::Update()
 {
     mTime.Update();
+    mSceneManager.Update();
     mInput.Update();
+    mSceneManager.ProcessRemovals();
     OnUpdate();
+}
+
+void Xeno::Application::Render() const
+{
+    mSceneManager.Render();
+}
+
+void Xeno::Application::OnExit()
+{
+    mSceneManager.OnExit();
+    mIsRunning = false;
 }

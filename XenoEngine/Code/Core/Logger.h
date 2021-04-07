@@ -12,14 +12,14 @@ namespace Xeno
     class XENO_API Logger : public NonCopyable
     {
 	public:
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return mCoreLogger; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return mCoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return sCoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return sCoreLogger; }
 
 	private:
 		Logger();
 
-		static std::shared_ptr<spdlog::logger> mCoreLogger;
-		static std::shared_ptr<spdlog::logger> mClientLogger;
+		static std::shared_ptr<spdlog::logger> sCoreLogger;
+		static std::shared_ptr<spdlog::logger> sClientLogger;
 
 		friend class Application;
     };

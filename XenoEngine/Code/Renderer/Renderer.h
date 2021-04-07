@@ -7,7 +7,7 @@
 #include "Renderer/Color.h"
 
 #include <vector>
-#include <glm/glm.hpp>
+#include <deque>
 
 namespace Xeno
 {
@@ -20,6 +20,13 @@ namespace Xeno
     class XENO_API Renderer : public NonCopyable
     {
     public:
+        struct RenderCommand
+        {
+            
+        };
+
+        static void Submit(const std::shared_ptr<RenderCommand>& command);
+
         static void DrawQuad(const TransformComponent& transform, 
                              const CameraComponent& camera, 
                              const Color& color = Color::White());
@@ -32,11 +39,13 @@ namespace Xeno
             std::shared_ptr<ElementBuffer> mEBO;
             std::vector<float> mQuad;
             std::vector<uint32_t> mIndices;
-        } static mData;
+        } static inline sData;
 
         Renderer() = default;
 
-        void Init();
+        void Init() const;
+
+        static inline std::deque<std::shared_ptr<RenderCommand>> sCommandBuffer;
 
         friend class Application;
     };

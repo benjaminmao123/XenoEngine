@@ -6,6 +6,7 @@
 #include <vector>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
 
 namespace Xeno
 {
@@ -25,6 +26,7 @@ namespace Xeno
     private:
         Topology mTopology;
         std::vector<glm::vec3> mPositions;
+        std::vector<glm::vec4> mColors;
         std::vector<glm::vec2> mUVs;
     };
 }

@@ -10,16 +10,19 @@
 
 #include <memory>
 
-Xeno::Renderer::RendererData Xeno::Renderer::mData;
+void Xeno::Renderer::Submit(const std::shared_ptr<RenderCommand>& command)
+{
+    sCommandBuffer.emplace_back(command);
+}
 
 void Xeno::Renderer::DrawQuad(const TransformComponent& transform, 
                               const CameraComponent& camera, 
                               const Color& color)
 {
-    mData.mVAO->Bind();
+    sData.mVAO->Bind();
 
     const glm::mat4 mvp = camera.GetViewProjection() * transform.GetModelMatrix();
-    const auto shader = ResourceManager::GetShader("sprite");
+    auto* const shader = ResourceManager::GetShader("sprite");
 
     if (shader)
     {
@@ -28,12 +31,12 @@ void Xeno::Renderer::DrawQuad(const TransformComponent& transform,
         shader->SetFloat4("uColor", color.ToVec4());
     }
 
-    glDrawElements(GL_TRIANGLES, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, sData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Xeno::Renderer::Init()
+void Xeno::Renderer::Init() const
 {
-    mData.mQuad =
+    sData.mQuad =
     {
          // positions       // uvs
          1.0f,  1.0f, 0.0f, 1.0f, 1.0f,   // top right
@@ -42,7 +45,7 @@ void Xeno::Renderer::Init()
         -1.0f,  1.0f, 0.0f, 0.0f, 1.0f    // top left 
     };
 
-    mData.mIndices =
+    sData.mIndices =
     {
         0, 1, 3,
         1, 2, 3
@@ -56,15 +59,15 @@ void Xeno::Renderer::Init()
     const auto texture = std::make_shared<Texture>("Assets/Textures/container.jpg");
     ResourceManager::AddTexture(texture);
 
-    mData.mVAO = std::make_shared<VertexArray>();
-    mData.mVBO = std::make_shared<VertexBuffer>();
-    mData.mEBO = std::make_shared<ElementBuffer>();
+    sData.mVAO = std::make_shared<VertexArray>();
+    sData.mVBO = std::make_shared<VertexBuffer>();
+    sData.mEBO = std::make_shared<ElementBuffer>();
 
-    mData.mVBO->SetDataNew(&mData.mQuad[0], mData.mQuad.size() * sizeof(float), GL_STATIC_DRAW);
-    mData.mVBO->PushElement({ "aPosition", 3, GL_FLOAT, sizeof(float) });
-    mData.mVBO->PushElement({ "aTexCoords", 2, GL_FLOAT, sizeof(float) });
+    sData.mVBO->SetDataNew(&sData.mQuad[0], sData.mQuad.size() * sizeof(float), GL_STATIC_DRAW);
+    sData.mVBO->PushElement({ "aPosition", 3, GL_FLOAT, sizeof(float) });
+    sData.mVBO->PushElement({ "aTexCoords", 2, GL_FLOAT, sizeof(float) });
 
-    mData.mEBO->SetIndicesNew(&mData.mIndices[0], mData.mIndices.size(), GL_STATIC_DRAW);
+    sData.mEBO->SetIndicesNew(&sData.mIndices[0], sData.mIndices.size(), GL_STATIC_DRAW);
 
-    mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
+    sData.mVAO->AddBuffer(sData.mVBO, sData.mEBO);
 }

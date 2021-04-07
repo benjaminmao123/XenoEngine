@@ -158,12 +158,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\CameraComponent.cpp" />
+    <ClCompile Include="Code\Component\Component.cpp" />
+    <ClCompile Include="Code\Component\RendererComponent.cpp" />
     <ClCompile Include="Code\Component\TransformComponent.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\Input.cpp" />
     <ClCompile Include="Code\Core\Logger.cpp" />
     <ClCompile Include="Code\Core\Time.cpp" />
     <ClCompile Include="Code\Core\Window.cpp" />
+    <ClCompile Include="Code\Entity\Entity.cpp" />
+    <ClCompile Include="Code\Entity\EntityManager.cpp" />
     <ClCompile Include="Code\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -176,6 +180,8 @@
     <ClCompile Include="Code\Renderer\VertexArray.cpp" />
     <ClCompile Include="Code\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="Code\Resource\ResourceManager.cpp" />
+    <ClCompile Include="Code\Scene\Scene.cpp" />
+    <ClCompile Include="Code\Scene\SceneManager.cpp" />
     <ClCompile Include="Code\Vendor\Glad\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -190,12 +196,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Component\CameraComponent.h" />
+    <ClInclude Include="Code\Component\Component.h" />
+    <ClInclude Include="Code\Component\RendererComponent.h" />
     <ClInclude Include="Code\Component\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Assert.h" />
     <ClInclude Include="Code\Core\Core.h" />
     <ClInclude Include="Code\Core\Input.h" />
     <ClInclude Include="Code\Core\Logger.h" />
+    <ClInclude Include="Code\Entity\Entity.h" />
+    <ClInclude Include="Code\Entity\EntityManager.h" />
     <ClInclude Include="Code\Resource\ResourceManager.h" />
     <ClInclude Include="Code\Core\Time.h" />
     <ClInclude Include="Code\Core\Window.h" />
@@ -206,8 +216,10 @@
     <ClInclude Include="Code\Renderer\Texture.h" />
     <ClInclude Include="Code\Renderer\VertexArray.h" />
     <ClInclude Include="Code\Renderer\VertexBuffer.h" />
+    <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Utility\NonCopyable.h" />
+    <ClInclude Include="Code\Utility\Utility.h" />
     <ClInclude Include="Code\Xeno.h" />
     <ClInclude Include="Code\Renderer\ElementBuffer.h" />
     <ClInclude Include="Code\Renderer\Shader.h" />

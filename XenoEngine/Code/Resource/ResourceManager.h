@@ -16,15 +16,15 @@ namespace Xeno
     {
     public:
         static void AddTexture(const std::shared_ptr<Texture>& texture);
-        static std::shared_ptr<Texture> GetTexture(const std::string& path);
+        static Texture* GetTexture(const std::string& path);
         static void AddShader(const std::shared_ptr<Shader>& shader);
-        static std::shared_ptr<Shader> GetShader(const std::string& name);
+        static Shader* GetShader(const std::string& name);
 
     private:
         ResourceManager() = default;
 
-        static std::unordered_map<std::string, std::shared_ptr<Texture>>& GetTextureCache();
-        static std::unordered_map<std::string, std::shared_ptr<Shader>>& GetShaderCache();
+        static inline std::unordered_map<std::string, std::shared_ptr<Texture>> sTextureCache;
+        static inline std::unordered_map<std::string, std::shared_ptr<Shader>> sShaderCache;
 
         friend class Application;
     };

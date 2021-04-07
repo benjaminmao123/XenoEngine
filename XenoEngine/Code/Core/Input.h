@@ -45,19 +45,19 @@ namespace Xeno
 		void ProcessEvents(const SDL_Event& event);
 
 		// @brief Stores the current keyboard state.
-		static inline const uint8_t* mKeyboardState;
+		static inline const uint8_t* sKeyboardState;
 		// @brief Stores the last keyboard state.
-		static inline uint8_t* mPrevKeyboardState;
+		static inline uint8_t* sPrevKeyboardState;
 		// @brief Number of valid keys.
-		static inline int mNumKeys;
+		static inline int sNumKeys;
 		// @brief Current mouse state.
-		static inline uint32_t mMouseState;
+		static inline uint32_t sMouseState;
 		// @brief Previous mouse state.
-		static inline uint32_t mPrevMouseState;
+		static inline uint32_t sPrevMouseState;
 		// @brief Stores the value of the mouse axis.
-		static inline glm::vec2 mMouseAxis;
+		static inline glm::vec2 sMouseAxis;
 		// @brief Stores the value of the joystick axis.
-		static inline glm::vec2 mJoystickAxis;
+		static inline glm::vec2 sJoystickAxis;
 
 		friend class Application;
 	};

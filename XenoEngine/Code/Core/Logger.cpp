@@ -4,8 +4,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
-std::shared_ptr<spdlog::logger> Xeno::Logger::mCoreLogger;
-std::shared_ptr<spdlog::logger> Xeno::Logger::mClientLogger;
+std::shared_ptr<spdlog::logger> Xeno::Logger::sCoreLogger;
+std::shared_ptr<spdlog::logger> Xeno::Logger::sClientLogger;
 
 Xeno::Logger::Logger()
 {
@@ -16,13 +16,13 @@ Xeno::Logger::Logger()
 	logSinks[0]->set_pattern("%^[%T] %n: %v%$");
 	logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-	mCoreLogger = std::make_shared<spdlog::logger>("XENO", begin(logSinks), end(logSinks));
-	spdlog::register_logger(mCoreLogger);
-	mCoreLogger->set_level(spdlog::level::trace);
-	mCoreLogger->flush_on(spdlog::level::trace);
+	sCoreLogger = std::make_shared<spdlog::logger>("XENO", begin(logSinks), end(logSinks));
+	spdlog::register_logger(sCoreLogger);
+	sCoreLogger->set_level(spdlog::level::trace);
+	sCoreLogger->flush_on(spdlog::level::trace);
 
-	mClientLogger = std::make_shared<spdlog::logger>("APP", begin(logSinks), end(logSinks));
-	spdlog::register_logger(mClientLogger);
-	mClientLogger->set_level(spdlog::level::trace);
-	mClientLogger->flush_on(spdlog::level::trace);
+	sClientLogger = std::make_shared<spdlog::logger>("APP", begin(logSinks), end(logSinks));
+	spdlog::register_logger(sClientLogger);
+	sClientLogger->set_level(spdlog::level::trace);
+	sClientLogger->flush_on(spdlog::level::trace);
 }
