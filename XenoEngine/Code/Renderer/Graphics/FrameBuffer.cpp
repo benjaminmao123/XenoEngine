@@ -45,8 +45,6 @@ void Xeno::FrameBuffer::Invalidate()
         for (const auto& i : mColorAttachments)
             delete i;
 
-        delete mRenderBuffer;
-
         mColorAttachments.clear();
     }
 
