@@ -32,6 +32,22 @@ void Xeno::Renderer::DrawQuad(const TransformComponent& transform,
     glDrawElements(GL_TRIANGLES, sData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
+void Xeno::Renderer::Clear(const unsigned char r, 
+                           const unsigned char g, 
+                           const unsigned char b, 
+                           const unsigned char a, 
+                           const GLenum flags)
+{
+    glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+    glClear(flags);
+}
+
+void Xeno::Renderer::Clear(const Color& color, const GLenum flags)
+{
+    glClearColor(color.ToFloat().r, color.ToFloat().g, color.ToFloat().b, color.ToFloat().a);
+    glClear(flags);
+}
+
 void Xeno::Renderer::Init() const
 {
     auto containerTexture = std::make_shared<Texture>("Assets/Textures/container.jpg");

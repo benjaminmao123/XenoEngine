@@ -6,7 +6,6 @@
 #include "Core/Logger.h"
 
 #include <glad/glad.h>
-
 #include <utility>
 
 Xeno::FrameBuffer::FrameBuffer(FrameBufferProperties props) :

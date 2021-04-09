@@ -36,22 +36,6 @@ bool Xeno::Window::ConstructWindow()
     return true;
 }
 
-void Xeno::Window::Clear(const unsigned char r, 
-                         const unsigned char g, 
-                         const unsigned char b, 
-                         const unsigned char a,
-                         const GLenum flags) const
-{
-    glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-    glClear(flags);
-}
-
-void Xeno::Window::Clear(const Color& color, const GLenum flags) const
-{
-    glClearColor(color.ToFloat().r, color.ToFloat().g, color.ToFloat().b, color.ToFloat().a);
-    glClear(flags);
-}
-
 void Xeno::Window::Display() const
 {
     SDL_GL_SwapWindow(mWindow);

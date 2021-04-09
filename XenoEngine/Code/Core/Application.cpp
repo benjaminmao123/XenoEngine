@@ -2,6 +2,7 @@
 #include "Core/Application.h"
 #include "Core/Logger.h"
 #include "Scene/Scene.h"
+#include "Renderer/Graphics/Color.h"
 
 #include <SDL2/SDL.h>
 
@@ -51,7 +52,8 @@ void Xeno::Application::Run()
 
         while (mIsRunning)
         {
-            mWindow.Clear(0, 0, 0, 255);
+            Renderer::Clear(Color::Black(),
+                            GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             PollEvents();
             Awake();

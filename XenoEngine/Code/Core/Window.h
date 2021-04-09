@@ -30,12 +30,6 @@ namespace Xeno
 
         bool ConstructWindow();
 
-        void Clear(unsigned char r, 
-                   unsigned char g, 
-                   unsigned char b, 
-                   unsigned char a,
-                   GLenum flags) const;
-        void Clear(const Color& color, GLenum flags) const;
         void Display() const;
 
         static uint32_t GetWidth();

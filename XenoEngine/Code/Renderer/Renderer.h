@@ -34,6 +34,13 @@ namespace Xeno
                              const CameraComponent& camera, 
                              const Color& color = Color::White());
 
+        static void Clear(unsigned char r,
+                          unsigned char g,
+                          unsigned char b,
+                          unsigned char a,
+                          GLenum flags);
+        static void Clear(const Color& color, GLenum flags);
+
     private:
         struct RendererData
         {
