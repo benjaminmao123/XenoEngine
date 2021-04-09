@@ -32,7 +32,7 @@ void Xeno::RenderBuffer::Unbind() const
 
 void Xeno::RenderBuffer::SetStorage(const uint32_t width, const uint32_t height, 
                                     const FrameBuffer::DepthStencilFormat format,
-                                    const int32_t numSamples)
+                                    const int32_t numSamples) const
 {
     Bind();
 

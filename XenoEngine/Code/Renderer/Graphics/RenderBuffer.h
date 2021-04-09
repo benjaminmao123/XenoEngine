@@ -18,7 +18,7 @@ namespace Xeno
 
         void SetStorage(uint32_t width, uint32_t height,
                         FrameBuffer::DepthStencilFormat format,
-                        int32_t numSamples = 1);
+                        int32_t numSamples = 1) const;
 
         [[nodiscard]] uint32_t GetObjectID() const;
 
