@@ -2,13 +2,11 @@
 #include "Renderer/Renderer.h"
 #include "Core/Window.h"
 #include "Resource/ResourceManager.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/VertexBuffer.h"
-#include "Renderer/Texture.h"
-#include "Renderer/Shader.h"
-#include "Renderer/ElementBuffer.h"
-
-#include <memory>
+#include "Renderer/Graphics/VertexArray.h"
+#include "Renderer/Graphics/VertexBuffer.h"
+#include "Renderer/Graphics/Texture.h"
+#include "Renderer/Graphics/Shader.h"
+#include "Renderer/Graphics/ElementBuffer.h"
 
 void Xeno::Renderer::Submit(const std::shared_ptr<RenderCommand>& command)
 {
@@ -28,7 +26,7 @@ void Xeno::Renderer::DrawQuad(const TransformComponent& transform,
     {
         shader->Bind();
         shader->SetMat4("uMVP", mvp);
-        shader->SetFloat4("uColor", color.ToVec4());
+        shader->SetFloat4("vColor", color.ToVec4());
     }
 
     glDrawElements(GL_TRIANGLES, sData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
@@ -36,38 +34,35 @@ void Xeno::Renderer::DrawQuad(const TransformComponent& transform,
 
 void Xeno::Renderer::Init() const
 {
-    sData.mQuad =
-    {
-         // positions       // uvs
-         1.0f,  1.0f, 0.0f, 1.0f, 1.0f,   // top right
-         1.0f, -1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,   // bottom left
-        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f    // top left 
-    };
+    auto containerTexture = std::make_shared<Texture>("Assets/Textures/container.jpg");
+    ResourceManager::AddTexture(containerTexture);
 
-    sData.mIndices =
-    {
-        0, 1, 3,
-        1, 2, 3
-    };
+    auto whiteTexture = std::make_shared<Texture>(1, 1);
+    uint32_t whiteTextureData = 0xffffffff;
+    whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+    ResourceManager::AddTexture(whiteTexture);
 
-    const auto shader = std::make_shared<Shader>("sprite");
+    auto shader = std::make_shared<Shader>("sprite");
     shader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
     shader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
     ResourceManager::AddShader(shader);
+    shader->Bind();
 
-    const auto texture = std::make_shared<Texture>("Assets/Textures/container.jpg");
-    ResourceManager::AddTexture(texture);
+    int32_t samplers[sData.sMaxTextureUnits];
+
+    for (uint32_t i = 0; i < 32; ++i)
+        samplers[i] = i;
+
+    shader->SetIntArr("uTextures", samplers, sData.sMaxTextureUnits);
+    sData.mTextureUnits[0] = whiteTexture;
 
     sData.mVAO = std::make_shared<VertexArray>();
-    sData.mVBO = std::make_shared<VertexBuffer>();
+    sData.mVBO = std::make_shared<VertexBuffer>(sData.sMaxVertices * sizeof(Quad::Vertex), GL_DYNAMIC_DRAW);
     sData.mEBO = std::make_shared<ElementBuffer>();
-
-    sData.mVBO->SetDataNew(&sData.mQuad[0], sData.mQuad.size() * sizeof(float), GL_STATIC_DRAW);
     sData.mVBO->PushElement({ "aPosition", 3, GL_FLOAT, sizeof(float) });
     sData.mVBO->PushElement({ "aTexCoords", 2, GL_FLOAT, sizeof(float) });
 
-    sData.mEBO->SetIndicesNew(&sData.mIndices[0], sData.mIndices.size(), GL_STATIC_DRAW);
+    //sData.mEBO->SetIndicesNew(&sData.mIndices[0], sData.mIndices.size(), GL_STATIC_DRAW);
 
     sData.mVAO->AddBuffer(sData.mVBO, sData.mEBO);
 }

@@ -2,7 +2,6 @@
 #include "Core/Window.h"
 #include "Core/Logger.h"
 
-#include <glad/glad.h>
 #include <SDL2/SDL.h>
 
 Xeno::Window::~Window()
@@ -40,16 +39,17 @@ bool Xeno::Window::ConstructWindow()
 void Xeno::Window::Clear(const unsigned char r, 
                          const unsigned char g, 
                          const unsigned char b, 
-                         const unsigned char a) const
+                         const unsigned char a,
+                         const GLenum flags) const
 {
     glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(flags);
 }
 
-void Xeno::Window::Clear(const SDL_Color& color) const
+void Xeno::Window::Clear(const Color& color, const GLenum flags) const
 {
-    glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(color.ToFloat().r, color.ToFloat().g, color.ToFloat().b, color.ToFloat().a);
+    glClear(flags);
 }
 
 void Xeno::Window::Display() const

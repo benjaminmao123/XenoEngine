@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 
-#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_scancode.h>
 #include <cstdint>

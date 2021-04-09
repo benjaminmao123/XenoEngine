@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "VertexArray.h"
+#include "Renderer/Graphics/VertexArray.h"
+
+#include <glad/glad.h>
 
 Xeno::VertexArray::VertexArray()
 {

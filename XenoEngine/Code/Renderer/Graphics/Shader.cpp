@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Shader.h"
+#include "Renderer/Graphics/Shader.h"
 #include "Core/Logger.h"
 
 #include <fstream>
@@ -118,6 +118,20 @@ void Xeno::Shader::SetMat4(const std::string& name, const glm::mat4& value) cons
     }
 
     glUniformMatrix4fv(location, 1, false, value_ptr(value));
+}
+
+void Xeno::Shader::SetIntArr(const std::string& name, int32_t* value, uint32_t count) const
+{
+    const int32_t location = glGetUniformLocation(mObjectID, name.c_str());
+
+    if (location == -1)
+    {
+        XN_CORE_WARN("Uniform: {0} does not exist in the current shader.", name);
+
+        return;
+    }
+
+    glUniform1iv(location, count, value);
 }
 
 const std::string& Xeno::Shader::GetName() const

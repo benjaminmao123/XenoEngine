@@ -39,7 +39,7 @@ glm::mat4 Xeno::CameraComponent::GetProjection() const
     					  mNear,
     					  mFar);
 
-    return glm::perspective(glm::radians(mFov),
+    return glm::perspective(glm::radians(mFOV),
     						Window::GetAspectRatio(),
     						mNear, mFar);
 }
@@ -51,14 +51,14 @@ glm::mat4 Xeno::CameraComponent::GetView() const
                   GetTransform().GetUp());
 }
 
-void Xeno::CameraComponent::SetFov(const float fov)
+void Xeno::CameraComponent::SetFOV(const float fov)
 {
-    mFov = fov;
+    mFOV = fov;
 }
 
-float Xeno::CameraComponent::GetFov() const
+float Xeno::CameraComponent::GetFOV() const
 {
-    return mFov;
+    return mFOV;
 }
 
 void Xeno::CameraComponent::SetNear(const float nearPlane)

@@ -8,7 +8,7 @@ namespace Xeno
     class XENO_API RendererComponent : public Component
     {
 	public:
-	    explicit RendererComponent(Entity* owner);
+	    explicit RendererComponent(Entity* owner = nullptr);
 		virtual ~RendererComponent() = 0;
 
 	private:

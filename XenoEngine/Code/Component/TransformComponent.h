@@ -18,7 +18,7 @@ namespace Xeno
 			SELF
 		};
 
-	    explicit TransformComponent(Entity* owner);
+	    explicit TransformComponent(Entity* owner = nullptr);
 
 		void Translate(const glm::vec3& translation);
 		void Translate(float x, float y, float z);

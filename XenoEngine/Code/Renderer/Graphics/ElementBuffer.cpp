@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ElementBuffer.h"
+#include "Renderer/Graphics/ElementBuffer.h"
 
 #include <glad/glad.h>
 

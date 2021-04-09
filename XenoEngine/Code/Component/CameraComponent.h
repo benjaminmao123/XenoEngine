@@ -18,7 +18,7 @@ namespace Xeno
             PERSPECTIVE
         };
 
-        explicit CameraComponent(Entity* owner,
+        explicit CameraComponent(Entity* owner = nullptr,
                                  const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
                                  ProjectionType type = ProjectionType::PERSPECTIVE);
 
@@ -27,8 +27,8 @@ namespace Xeno
         [[nodiscard]] glm::mat4 GetProjection() const;
         [[nodiscard]] glm::mat4 GetView() const;
 
-        void SetFov(float fov);
-        [[nodiscard]] float GetFov() const;
+        void SetFOV(float fov);
+        [[nodiscard]] float GetFOV() const;
         void SetNear(float nearPlane);
         [[nodiscard]] float GetNear() const;
         void SetFar(float farPlane);
@@ -36,7 +36,7 @@ namespace Xeno
 
     private:
         ProjectionType mProjectionType;
-        float mFov = 45.0f;
+        float mFOV = 45.0f;
         float mNear = 0.0f;
         float mFar = 1000.0f;
     };

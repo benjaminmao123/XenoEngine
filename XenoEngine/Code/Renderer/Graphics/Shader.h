@@ -5,10 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include <glad/glad.h>
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
-#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 
@@ -45,8 +42,9 @@ namespace Xeno
         void SetFloat3(const std::string& name, const glm::vec3& value) const;
         void SetFloat4(const std::string& name, const glm::vec4& value) const;
         void SetMat4(const std::string& name, const glm::mat4& value) const;
+        void SetIntArr(const std::string& name, int32_t* value, uint32_t count) const;
 
-        const std::string& GetName() const;
+        [[nodiscard]] const std::string& GetName() const;
 
     private:
         void ProcessShader(const ShaderSource& source) const;

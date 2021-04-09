@@ -2,12 +2,14 @@
 
 #include "Core/Core.h"
 #include "Utility/NonCopyable.h"
+#include "Renderer/Graphics/Color.h"
 
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_pixels.h>
 #include <string>
-#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <cstdint>
+#include <glad/glad.h>
 
 namespace Xeno
 {
@@ -31,8 +33,9 @@ namespace Xeno
         void Clear(unsigned char r, 
                    unsigned char g, 
                    unsigned char b, 
-                   unsigned char a) const;
-        void Clear(const SDL_Color& color) const;
+                   unsigned char a,
+                   GLenum flags) const;
+        void Clear(const Color& color, GLenum flags) const;
         void Display() const;
 
         static uint32_t GetWidth();

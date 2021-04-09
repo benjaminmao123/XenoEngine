@@ -12,7 +12,7 @@ namespace Xeno
 	class XENO_API Component : public NonCopyable
 	{
 	public:
-		explicit Component(Entity* owner);
+		explicit Component(Entity* owner = nullptr);
 		virtual ~Component() = 0;
 
 		void SetEnabled(bool state);
