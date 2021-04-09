@@ -4,6 +4,7 @@
 #include "Core/Window.h"
 #include "Renderer/Graphics/RenderBuffer.h"
 #include "Core/Logger.h"
+#include "Core/Assert.h"
 
 #include <glad/glad.h>
 #include <utility>
@@ -95,7 +96,7 @@ void Xeno::FrameBuffer::Invalidate()
 
 void Xeno::FrameBuffer::Resize(const uint32_t width, const uint32_t height)
 {
-    if (width == 0 || height == 0 || width > sMaxFrameBufferSize || height > sMaxFrameBufferSize)
+    if (!width || !height || width > sMaxFrameBufferSize || height > sMaxFrameBufferSize)
     {
         XN_CORE_WARN("Attempted to rezize framebuffer to {0}, {1}", width, height);
 
@@ -106,4 +107,11 @@ void Xeno::FrameBuffer::Resize(const uint32_t width, const uint32_t height)
     mProps.mHeight = height;
 
     Invalidate();
+}
+
+uint32_t Xeno::FrameBuffer::GetColorAttachmentObjectID(const uint32_t index) const
+{
+    XN_CORE_ASSERT(index < mColorAttachments.size());
+
+    return mColorAttachments[index]->GetObjectID();
 }

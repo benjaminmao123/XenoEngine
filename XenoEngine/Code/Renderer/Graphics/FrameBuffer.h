@@ -45,6 +45,8 @@ namespace Xeno
         void Invalidate();
         void Resize(uint32_t width, uint32_t height);
 
+        [[nodiscard]] uint32_t GetColorAttachmentObjectID(uint32_t index) const;
+
     private:
         uint32_t mObjectID;
         FrameBufferProperties mProps;
