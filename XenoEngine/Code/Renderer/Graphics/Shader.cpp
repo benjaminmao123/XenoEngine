@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Renderer/Graphics/Shader.h"
 #include "Core/Logger.h"
+#include "Core/Assert.h"
 
 #include <fstream>
 
@@ -31,9 +32,9 @@ void Xeno::Shader::Unbind() const
     glUseProgram(0);
 }
 
-void Xeno::Shader::AddShader(const ShaderSource& source) const
+void Xeno::Shader::AddShader(const ShaderSource& source)
 {
-    ProcessShader(source);
+    mInitSuccess = ProcessShader(source);
 }
 
 void Xeno::Shader::SetInt(const std::string& name, const int32_t value) const
@@ -139,7 +140,12 @@ const std::string& Xeno::Shader::GetName() const
     return mName;
 }
 
-void Xeno::Shader::ProcessShader(const ShaderSource& source) const
+bool Xeno::Shader::InitSuccess() const
+{
+    return mInitSuccess;
+}
+
+bool Xeno::Shader::ProcessShader(const ShaderSource& source) const
 {
     XN_CORE_INFO("Processing shader: {0}", source.mPath);
 
@@ -149,10 +155,12 @@ void Xeno::Shader::ProcessShader(const ShaderSource& source) const
     {
         XN_CORE_ERROR("Shader failed to compile.");
 
-        return;
+        return false;
     }
 
     XN_CORE_INFO("Successfully parsed shader.");
+
+    bool result = true;
 
     switch (source.mType)
     {
@@ -160,15 +168,25 @@ void Xeno::Shader::ProcessShader(const ShaderSource& source) const
         case ShaderType::FRAGMENT:
         {
             const uint32_t shader = CompileShader(sourceCode, source.mType);
+
             if (shader != -1)
-                if (LinkShader(shader))
+            {
+                result = LinkShader(shader);
+
+                if (result)
                     XN_CORE_INFO("Successfully processed shader.\n");
+            }
+            else
+                result = false;
+
             break;
         }
         default:
-            XN_CORE_WARN("Shader type is not supported!");
+            XN_CORE_ASSERT("Shader type is not supported!");
             break;
     }
+
+    return result;
 }
 
 std::string Xeno::Shader::ParseFile(const std::string& path) const

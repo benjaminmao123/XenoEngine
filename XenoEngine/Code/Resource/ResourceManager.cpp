@@ -1,14 +1,19 @@
 #include "pch.h"
 #include "Resource/ResourceManager.h"
-#include "Renderer/Texture.h"
-#include "Renderer/Shader.h"
+#include "Renderer/Graphics/Texture.h"
+#include "Renderer/Graphics/Shader.h"
 
-void Xeno::ResourceManager::AddTexture(const std::shared_ptr<Texture>& texture)
+bool Xeno::ResourceManager::AddTexture(const std::shared_ptr<Texture>& texture)
 {
+    if (!texture->InitSuccess())
+        return false;
+
     const auto& res = GetTexture(texture->GetPath());
 
     if (!res)
         sTextureCache[texture->GetPath()] = texture;
+
+    return true;
 }
 
 Xeno::Texture* Xeno::ResourceManager::GetTexture(const std::string& path)
@@ -18,12 +23,17 @@ Xeno::Texture* Xeno::ResourceManager::GetTexture(const std::string& path)
     return res.get();
 }
 
-void Xeno::ResourceManager::AddShader(const std::shared_ptr<Shader>& shader)
+bool Xeno::ResourceManager::AddShader(const std::shared_ptr<Shader>& shader)
 {
+    if (!shader->InitSuccess())
+        return false;
+
     const auto& res = GetShader(shader->GetName());
 
     if (!res)
         sShaderCache[shader->GetName()] = shader;
+
+    return true;
 }
 
 Xeno::Shader* Xeno::ResourceManager::GetShader(const std::string& name)

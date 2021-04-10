@@ -19,15 +19,17 @@ Xeno::Texture::Texture(std::string path,
     stbi_set_flip_vertically_on_load(1);
 
     glGenTextures(1, &mObjectID);
-    GenerateTextureFromFile();
+    mInitSuccess = GenerateTextureFromFile();
 }
 
-Xeno::Texture::Texture(const uint32_t width, const uint32_t height,
+Xeno::Texture::Texture(std::string name,
+                       const uint32_t width, const uint32_t height,
                        const uint32_t internalFormat, const uint32_t imageFormat,
                        const uint32_t wrapS, const uint32_t wrapT,
                        const uint32_t filterMin, const uint32_t filterMax,
                        const bool mipMapping, const int32_t mipMapLevel,
                        const int32_t numSamples) :
+    mPath(std::move(name)),
     mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mImageFormat(imageFormat),
     mWrapS(wrapS), mWrapT(wrapT),
@@ -59,7 +61,7 @@ void Xeno::Texture::Bind(uint32_t slot) const
     glBindTextureUnit(slot, mObjectID);
 }
 
-void Xeno::Texture::SetData(void* data, const uint32_t size) const
+void Xeno::Texture::SetData(void* data) const
 {
     glTextureSubImage2D(mObjectID, 0, 0, 0, mWidth, mHeight, mImageFormat, GL_UNSIGNED_BYTE, data);
 }
@@ -112,7 +114,12 @@ const std::string& Xeno::Texture::GetPath() const
     return mPath;
 }
 
-void Xeno::Texture::GenerateTextureFromFile()
+bool Xeno::Texture::InitSuccess() const
+{
+    return mInitSuccess;
+}
+
+bool Xeno::Texture::GenerateTextureFromFile()
 {
     XN_CORE_INFO("Generating texture: {0}", mPath);
 
@@ -124,7 +131,7 @@ void Xeno::Texture::GenerateTextureFromFile()
     {
         XN_CORE_ERROR("Failed to generate texture: {0}", mPath);
 
-        return;
+        return false;
     }
 
     Bind();
@@ -168,4 +175,6 @@ void Xeno::Texture::GenerateTextureFromFile()
     stbi_image_free(data);
 
     XN_CORE_INFO("Successfully generated texture.\n");
+
+    return true;
 }

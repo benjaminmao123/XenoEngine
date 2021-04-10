@@ -20,7 +20,8 @@ namespace Xeno
                          uint32_t filterMax = GL_LINEAR,
                          bool mipMapping = true,
                          int32_t mipMapLevel = 0);
-        explicit Texture(uint32_t width, uint32_t height,
+        explicit Texture(std::string name,
+                         uint32_t width, uint32_t height,
                          uint32_t internalFormat = GL_RGB,
                          uint32_t imageFormat = GL_RGB,
                          uint32_t wrapS = GL_REPEAT,
@@ -35,7 +36,7 @@ namespace Xeno
 
         void Bind(uint32_t slot = 0) const;
 
-        void SetData(void* data, uint32_t size) const;
+        void SetData(void* data) const;
         void SetWrapS(uint32_t mode);
         void SetWrapT(uint32_t mode);
         void SetFilterMin(uint32_t mode);
@@ -46,8 +47,10 @@ namespace Xeno
         [[nodiscard]] uint32_t GetObjectID() const;
         [[nodiscard]] const std::string& GetPath() const;
 
+        [[nodiscard]] bool InitSuccess() const;
+
     private:
-        void GenerateTextureFromFile();
+        bool GenerateTextureFromFile();
 
         std::string mPath;
         uint32_t mObjectID;
@@ -61,5 +64,6 @@ namespace Xeno
         uint32_t mFilterMax;
         bool mMipMapping;
         int32_t mMipMapLevel;
+        bool mInitSuccess = true;
     };
 }

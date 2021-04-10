@@ -31,7 +31,7 @@ namespace Xeno
         void Awake();
         void Start();
         void Update();
-        void Render() const;
+        void Render();
         void OnExit();
 
         Logger mLogger;

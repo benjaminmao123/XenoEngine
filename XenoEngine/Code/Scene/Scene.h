@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Entity/EntityManager.h"
+#include "Component/CameraComponent.h"
 
 #include <string>
 
@@ -21,6 +22,9 @@ namespace Xeno
         Entity* GetEntity(const std::string& name);
         [[nodiscard]] const Entity* GetEntity(const std::string& name) const;
 
+        void SetMainCamera(CameraComponent* camera);
+        const CameraComponent* GetMainCamera() const;
+
     private:
         explicit Scene(std::string name);
 
@@ -36,6 +40,7 @@ namespace Xeno
 
         std::string mName;
         EntityManager mEntityManager;
+        CameraComponent* mMainCamera = nullptr;
 
         friend class SceneManager;
         friend class Application;

@@ -159,7 +159,10 @@
   <ItemGroup>
     <ClCompile Include="Code\Component\CameraComponent.cpp" />
     <ClCompile Include="Code\Component\Component.cpp" />
+    <ClCompile Include="Code\Component\MeshFilterComponent.cpp" />
     <ClCompile Include="Code\Component\RendererComponent.cpp" />
+    <ClCompile Include="Code\Component\SpriteComponent.cpp" />
+    <ClCompile Include="Code\Component\SpriteRendererComponent.cpp" />
     <ClCompile Include="Code\Component\TransformComponent.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\Input.cpp" />
@@ -200,7 +203,10 @@
   <ItemGroup>
     <ClInclude Include="Code\Component\CameraComponent.h" />
     <ClInclude Include="Code\Component\Component.h" />
+    <ClInclude Include="Code\Component\MeshFilterComponent.h" />
     <ClInclude Include="Code\Component\RendererComponent.h" />
+    <ClInclude Include="Code\Component\SpriteComponent.h" />
+    <ClInclude Include="Code\Component\SpriteRendererComponent.h" />
     <ClInclude Include="Code\Component\TransformComponent.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Assert.h" />

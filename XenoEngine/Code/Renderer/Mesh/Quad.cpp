@@ -4,7 +4,7 @@
 Xeno::Quad::Quad(const Topology topology) :
     Mesh(topology)
 {
-    Vertex vertex[sNumVertices];
+    Vertex vertex[4];
 
     vertex[0].mPosition = { -1.0f, 1.0f, 0.0f };
     vertex[1].mPosition = { 1.0f, 1.0f, 0.0f };
@@ -14,10 +14,10 @@ Xeno::Quad::Quad(const Topology topology) :
     for (auto& i : vertex)
         i.mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-    vertex[0].mUVs = { 0.0f, 1.0f };
-    vertex[1].mUVs = { 1.0f, 1.0f };
-    vertex[2].mUVs = { 0.0f, 0.0f };
-    vertex[3].mUVs = { 1.0f, 0.0f };
+    vertex[0].mUV = { 0.0f, 1.0f };
+    vertex[1].mUV = { 1.0f, 1.0f };
+    vertex[2].mUV = { 0.0f, 0.0f };
+    vertex[3].mUV = { 1.0f, 0.0f };
 
     for (const auto& i : vertex)
         mVertices.emplace_back(i);

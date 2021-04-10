@@ -12,7 +12,7 @@ namespace Xeno
 		virtual ~RendererComponent() = 0;
 
 	private:
-		virtual void Render() const;
+		virtual void OnRender() const;
 
 		friend class Entity;
     };

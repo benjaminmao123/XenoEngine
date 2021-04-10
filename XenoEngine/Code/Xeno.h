@@ -2,7 +2,10 @@
 
 #include "Component/CameraComponent.h"
 #include "Component/Component.h"
+#include "Component/MeshFilterComponent.h"
 #include "Component/RendererComponent.h"
+#include "Component/SpriteComponent.h"
+#include "Component/SpriteRendererComponent.h"
 #include "Component/TransformComponent.h"
 
 #include "Core/Application.h"

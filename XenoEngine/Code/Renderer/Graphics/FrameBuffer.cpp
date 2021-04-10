@@ -56,7 +56,8 @@ void Xeno::FrameBuffer::Invalidate()
 
     for (std::size_t i = 0; i < mProps.mColorFormats.size(); ++i)
     {
-        mColorAttachments[i] = new Texture(mProps.mWidth,
+        mColorAttachments[i] = new Texture("color_attachment",
+                                           mProps.mWidth,
                                            mProps.mHeight,
                                            (GLenum)mProps.mColorFormats[i],
                                            (GLenum)mProps.mColorFormats[i],

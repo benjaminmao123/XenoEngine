@@ -2,7 +2,7 @@
 #include "Core/Window.h"
 #include "Core/Logger.h"
 
-#include <SDL2/SDL.h>
+#include <glad/glad.h>
 
 Xeno::Window::~Window()
 {
@@ -41,6 +41,20 @@ void Xeno::Window::Display() const
     SDL_GL_SwapWindow(mWindow);
 }
 
+void Xeno::Window::ProcessEvents(const SDL_Event& event)
+{
+    switch (event.window.event)
+    {
+    case SDL_WINDOWEVENT_SIZE_CHANGED:
+        sWindowProps.mWidth = event.window.data1;
+        sWindowProps.mHeight = event.window.data2;
+        glViewport(0, 0, sWindowProps.mWidth, sWindowProps.mHeight);
+        break;
+    default:
+        break;
+    }
+}
+
 uint32_t Xeno::Window::GetWidth()
 {
     return sWindowProps.mWidth;
@@ -58,7 +72,7 @@ glm::vec2 Xeno::Window::GetCenter()
 
 float Xeno::Window::GetAspectRatio()
 {
-    return static_cast<float>(sWindowProps.mWidth) / sWindowProps.mHeight;
+    return (float)sWindowProps.mWidth / sWindowProps.mHeight;
 }
 
 Xeno::Window::Window(const WindowProperties& props)

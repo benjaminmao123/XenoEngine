@@ -25,14 +25,14 @@ namespace Xeno
     public:
         struct RenderCommand
         {
-            const TransformComponent& mTransform;
+            const TransformComponent* mTransform = nullptr;
+            const Color& mColor = Color::White();
+            const Texture* mTexture = nullptr;
+            const Mesh* mMesh = nullptr;
+            const Shader* mShader = nullptr;
         };
 
-        static void Submit(const std::shared_ptr<RenderCommand>& command);
-
-        static void DrawQuad(const TransformComponent& transform, 
-                             const CameraComponent& camera, 
-                             const Color& color = Color::White());
+        static void Submit(const RenderCommand& command);
 
         static void Clear(unsigned char r,
                           unsigned char g,
@@ -44,24 +44,18 @@ namespace Xeno
     private:
         struct RendererData
         {
-            static inline const uint32_t sMaxQuads = 5000;
-            static inline const uint32_t sMaxVertices = sMaxQuads * Quad::sNumVertices;
-            static inline const uint32_t sMaxIndices = sMaxQuads * Quad::sNumIndices;
-            static inline const uint32_t sMaxTextureUnits = 32;
-
             std::shared_ptr<VertexArray> mVAO;
             std::shared_ptr<VertexBuffer> mVBO;
             std::shared_ptr<ElementBuffer> mEBO;
-
-            std::array<std::shared_ptr<Texture>, sMaxTextureUnits> mTextureUnits;
-        } static inline sData;
+        } mData;
 
         Renderer() = default;
 
-        void Init() const;
+        void Init();
+        void Render();
 
-        static inline std::deque<std::shared_ptr<RenderCommand>> sCommandBuffer;
-        static inline BatchManager sBatchManager;
+        static inline std::deque<RenderCommand> sCommandBuffer;
+        BatchManager mBatchManager;
 
         friend class Application;
     };

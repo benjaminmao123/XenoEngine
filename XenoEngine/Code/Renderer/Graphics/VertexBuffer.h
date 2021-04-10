@@ -95,8 +95,8 @@ namespace Xeno
 			int32_t mStride = 0;
 		};
 
-		VertexBuffer(uint32_t drawType = GL_STATIC_DRAW);
-		explicit VertexBuffer(uint32_t size, uint32_t drawType = GL_DYNAMIC_DRAW);
+		explicit VertexBuffer(uint32_t drawType);
+		explicit VertexBuffer(uint32_t size, uint32_t drawType);
 		explicit VertexBuffer(void* data, uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
 		~VertexBuffer();
 		VertexBuffer& operator=(const VertexBuffer& other) = delete;

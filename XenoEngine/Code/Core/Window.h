@@ -2,14 +2,11 @@
 
 #include "Core/Core.h"
 #include "Utility/NonCopyable.h"
-#include "Renderer/Graphics/Color.h"
 
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_pixels.h>
 #include <string>
 #include <glm/glm.hpp>
 #include <cstdint>
-#include <glad/glad.h>
+#include <SDL2/SDL.h>
 
 namespace Xeno
 {
@@ -21,7 +18,7 @@ namespace Xeno
             std::string mTitle = "My App";
             int32_t mScreenLocationX = SDL_WINDOWPOS_CENTERED;
             int32_t mScreenLocationY = SDL_WINDOWPOS_CENTERED;
-            uint32_t mFlags = SDL_WINDOW_OPENGL;
+            uint32_t mFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
             uint32_t mWidth = 800;
             uint32_t mHeight = 600;
         };
@@ -31,6 +28,7 @@ namespace Xeno
         bool ConstructWindow();
 
         void Display() const;
+        void ProcessEvents(const SDL_Event& event);
 
         static uint32_t GetWidth();
         static uint32_t GetHeight();

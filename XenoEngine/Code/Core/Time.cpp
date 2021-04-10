@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Time.h"
 
-#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL.h>
 
 void Xeno::Time::Init()
 {

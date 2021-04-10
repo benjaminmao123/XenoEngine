@@ -7,5 +7,5 @@ Xeno::RendererComponent::RendererComponent(Entity* owner) :
 
 Xeno::RendererComponent::~RendererComponent() = default;
 
-void Xeno::RendererComponent::Render() const
+void Xeno::RendererComponent::OnRender() const
 { }

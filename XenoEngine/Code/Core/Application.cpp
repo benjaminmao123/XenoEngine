@@ -74,6 +74,9 @@ void Xeno::Application::PollEvents()
 
         switch (mEvent.type)
         {
+        case SDL_WINDOWEVENT:
+            mWindow.ProcessEvents(mEvent);
+            break;
         case SDL_QUIT:
             OnExit();
             break;
@@ -108,9 +111,10 @@ void Xeno::Application::Update()
     OnUpdate();
 }
 
-void Xeno::Application::Render() const
+void Xeno::Application::Render()
 {
     mSceneManager.Render();
+    mRenderer.Render();
 }
 
 void Xeno::Application::OnExit()

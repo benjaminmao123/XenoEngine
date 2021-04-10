@@ -34,7 +34,7 @@ namespace Xeno
         void Bind() const;
         void Unbind() const;
 
-        void AddShader(const ShaderSource& source) const;
+        void AddShader(const ShaderSource& source);
 
         void SetInt(const std::string& name, int32_t value) const;
         void SetFloat(const std::string& name, float value) const;
@@ -45,15 +45,17 @@ namespace Xeno
         void SetIntArr(const std::string& name, int32_t* value, uint32_t count) const;
 
         [[nodiscard]] const std::string& GetName() const;
+        [[nodiscard]] bool InitSuccess() const;
 
     private:
-        void ProcessShader(const ShaderSource& source) const;
+        [[nodiscard]] bool ProcessShader(const ShaderSource& source) const;
         [[nodiscard]] std::string ParseFile(const std::string& path) const;
         [[nodiscard ]] uint32_t CompileShader(const std::string& sourceCode, ShaderType type) const;
         [[nodiscard]] bool LinkShader(uint32_t shader) const;
 
         uint32_t mObjectID;
         std::string mName;
+        bool mInitSuccess = true;
     };
 }
 

@@ -2,26 +2,24 @@
 #include "Core/Input.h"
 #include "Core/Time.h"
 
-#include <SDL2/SDL_keyboard.h>
-
 Xeno::Input::~Input()
 {
 	delete[] sPrevKeyboardState;
 }
 
-bool Xeno::Input::GetKey(const SDL_Scancode code)
+bool Xeno::Input::GetKey(const KeyCode code)
 {
-	return sKeyboardState[code];
+	return sKeyboardState[(uint8_t)code];
 }
 
-bool Xeno::Input::GetKeyDown(const SDL_Scancode code)
+bool Xeno::Input::GetKeyDown(const KeyCode code)
 {
-	return !sPrevKeyboardState[code] && sKeyboardState[code];
+	return !sPrevKeyboardState[(uint8_t)code] && sKeyboardState[(uint8_t)code];
 }
 
-bool Xeno::Input::GetKeyUp(const SDL_Scancode code)
+bool Xeno::Input::GetKeyUp(const KeyCode code)
 {
-	return sPrevKeyboardState[code] && !sKeyboardState[code];
+	return sPrevKeyboardState[(uint8_t)code] && !sKeyboardState[(uint8_t)code];
 }
 
 glm::vec2 Xeno::Input::GetAxis(const AxisType type)

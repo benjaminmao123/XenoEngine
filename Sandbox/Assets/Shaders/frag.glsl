@@ -3,12 +3,12 @@
 out vec4 oFragColor;
 
 in vec4 vColor;
-in vec2 vTexCoords;
+in vec2 vUV;
 
-uniform sampler2D uTexture[32];
-uniform int uTexIndex;
+uniform sampler2D uTexture;
+uniform vec4 uColor;
 
 void main()
 {
-	oFragColor = vColor * texture(uTexture[uTexIndex], vTexCoords);
+	oFragColor = uColor * vColor * texture(uTexture, vUV);
 }

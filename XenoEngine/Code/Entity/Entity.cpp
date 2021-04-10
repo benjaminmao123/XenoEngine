@@ -56,7 +56,7 @@ void Xeno::Entity::Render() const
 		const auto renderComponent = std::dynamic_pointer_cast<RendererComponent>(component);
 
 		if (std::dynamic_pointer_cast<RendererComponent>(component))
-			renderComponent->Render();
+			renderComponent->OnRender();
 	}
 
 	for (const auto& entity : mChildren)

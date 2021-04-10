@@ -15,9 +15,9 @@ namespace Xeno
     class XENO_API ResourceManager : public NonCopyable
     {
     public:
-        static void AddTexture(const std::shared_ptr<Texture>& texture);
+        static bool AddTexture(const std::shared_ptr<Texture>& texture);
         static Texture* GetTexture(const std::string& path);
-        static void AddShader(const std::shared_ptr<Shader>& shader);
+        static bool AddShader(const std::shared_ptr<Shader>& shader);
         static Shader* GetShader(const std::string& name);
 
     private:
