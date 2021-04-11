@@ -117,7 +117,7 @@
     <ClCompile Include="Code\Component\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\Material\Material.cpp">
+    <ClCompile Include="Code\Renderer\Material\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,7 +236,7 @@
     <ClInclude Include="Code\Component\MeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\Material\Material.h">
+    <ClInclude Include="Code\Renderer\Material\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
