@@ -1,3 +1,3 @@
 # XenoEngine
  
-An OpenGL game engine.
+A game engine being developed in C++ using SDL2 and OpenGL.
