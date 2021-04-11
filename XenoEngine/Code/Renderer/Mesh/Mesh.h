@@ -27,7 +27,7 @@ namespace Xeno
         };
 
         explicit Mesh(Topology topology);
-        virtual ~Mesh() = 0;
+        virtual ~Mesh() = default;
 
         Topology mTopology;
         std::vector<Vertex> mVertices;
