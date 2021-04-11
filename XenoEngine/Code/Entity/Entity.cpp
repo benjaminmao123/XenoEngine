@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Entity/Entity.h"
-#include "Component/TransformComponent.h"
-#include "Component/RendererComponent.h"
+#include "Component/Transform.h"
+#include "Component/Renderer.h"
 
 Xeno::Entity::Entity(std::string name) :
 	mName(std::move(name))
 {
 	mInstanceID = sInstanceID++;
-	mTransform = AddComponent<TransformComponent>();
+	mTransform = AddComponent<Transform>();
 }
 
 void Xeno::Entity::Awake()
@@ -29,7 +29,7 @@ void Xeno::Entity::Start()
 {
 	for (const auto& component : mComponents)
 	{
-		if (!component->mIsStartCalled)
+		if (!component->mIsStartCalled && component->IsEnabled())
 		{
 			component->OnStart();
 			component->mIsStartCalled = true;
@@ -43,7 +43,10 @@ void Xeno::Entity::Start()
 void Xeno::Entity::Update()
 {
 	for (const auto& component : mComponents)
-		component->OnUpdate();
+	{
+		if (component->IsEnabled())
+			component->OnUpdate();
+	}
 
 	for (const auto& entity : mChildren)
 		entity->Update();
@@ -53,10 +56,13 @@ void Xeno::Entity::Render() const
 {
 	for (const auto& component : mComponents)
 	{
-		const auto renderComponent = std::dynamic_pointer_cast<RendererComponent>(component);
+		if (component->IsEnabled())
+		{
+			const auto renderComponent = std::dynamic_pointer_cast<Renderer>(component);
 
-		if (std::dynamic_pointer_cast<RendererComponent>(component))
-			renderComponent->OnRender();
+			if (std::dynamic_pointer_cast<Renderer>(component))
+				renderComponent->OnRender();
+		}
 	}
 
 	for (const auto& entity : mChildren)
@@ -79,6 +85,7 @@ const std::string& Xeno::Entity::GetName() const
 void Xeno::Entity::SetActive(const bool state)
 {
 	mIsActive = state;
+	Start();
 }
 
 bool Xeno::Entity::IsActiveSelf() const
@@ -88,7 +95,10 @@ bool Xeno::Entity::IsActiveSelf() const
 
 bool Xeno::Entity::IsActiveInHierarchy() const
 {
-	return mIsActive;
+	if (!mParent)
+		return mIsActive;
+
+	return mParent->IsActiveInHierarchy() && mIsActive;
 }
 
 void Xeno::Entity::SetParent(Entity* entity)
@@ -111,12 +121,12 @@ uint32_t Xeno::Entity::GetInstanceID() const
 	return mInstanceID;
 }
 
-Xeno::TransformComponent& Xeno::Entity::GetTransform()
+Xeno::Transform& Xeno::Entity::GetTransform()
 {
 	return *mTransform;
 }
 
-const Xeno::TransformComponent& Xeno::Entity::GetTransform() const
+const Xeno::Transform& Xeno::Entity::GetTransform() const
 {
 	return *mTransform;
 }

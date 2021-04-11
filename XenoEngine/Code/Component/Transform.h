@@ -9,7 +9,7 @@
 
 namespace Xeno
 {
-	class XENO_API TransformComponent final : public Component
+	class XENO_API Transform final : public Component
 	{
 	public:
 		enum class Space
@@ -18,7 +18,7 @@ namespace Xeno
 			SELF
 		};
 
-	    explicit TransformComponent(Entity* owner = nullptr);
+	    explicit Transform(Entity* owner = nullptr);
 
 		void Translate(const glm::vec3& translation);
 		void Translate(float x, float y, float z);
@@ -48,7 +48,7 @@ namespace Xeno
 
 		[[nodiscard]] glm::mat4 GetModelMatrix() const;
 
-		TransformComponent& operator*=(const TransformComponent& rhs);
+		Transform& operator*=(const Transform& rhs);
 
 	private:
 		glm::vec3 mPosition;

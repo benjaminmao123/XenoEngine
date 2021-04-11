@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Component/TransformComponent.h"
+#include "Component/Transform.h"
 #include "Component/Component.h"
 
 #include <glm/vec3.hpp>
@@ -9,7 +9,7 @@
 
 namespace Xeno
 {
-    class XENO_API CameraComponent final : public Component
+    class XENO_API Camera final : public Component
     {
     public:
         enum class ProjectionType
@@ -18,11 +18,12 @@ namespace Xeno
             PERSPECTIVE
         };
 
-        explicit CameraComponent(Entity* owner = nullptr,
+        explicit Camera(Entity* owner = nullptr,
                                  const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
                                  ProjectionType type = ProjectionType::PERSPECTIVE);
 
         void SetProjectionType(ProjectionType type);
+        [[nodiscard]] ProjectionType GetProjectionType() const;
         [[nodiscard]] glm::mat4 GetViewProjection() const;
         [[nodiscard]] glm::mat4 GetProjection() const;
         [[nodiscard]] glm::mat4 GetView() const;
@@ -37,7 +38,7 @@ namespace Xeno
     private:
         ProjectionType mProjectionType;
         float mFOV = 45.0f;
-        float mNear = 0.0f;
+        float mNear = 0.01f;
         float mFar = 1000.0f;
     };
 }

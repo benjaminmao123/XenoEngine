@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Component/SpriteComponent.h"
+#include "Component/Sprite.h"
 #include "Resource/ResourceManager.h"
 #include "Core/Assert.h"
 
-Xeno::SpriteComponent::SpriteComponent(Entity* owner) :
+Xeno::Sprite::Sprite(Entity* owner) :
     Component(owner)
 { }
 
-void Xeno::SpriteComponent::LoadTexture(std::string path)
+void Xeno::Sprite::LoadTexture(std::string path)
 {
     if (mPath == path && !mPath.empty())
         return;
@@ -23,17 +23,22 @@ void Xeno::SpriteComponent::LoadTexture(std::string path)
     mTexture = ResourceManager::GetTexture(mPath);
 }
 
-void Xeno::SpriteComponent::SetColor(const Color& color)
+void Xeno::Sprite::SetColor(const Color& color)
 {
     mColor = color;
 }
 
-const Xeno::Color& Xeno::SpriteComponent::GetColor() const
+const Xeno::Color& Xeno::Sprite::GetColor() const
 {
     return mColor;
 }
 
-const Xeno::Texture* Xeno::SpriteComponent::GetTexture() const
+const Xeno::Texture* Xeno::Sprite::GetTexture() const
 {
     return mTexture;
+}
+
+const Xeno::Quad& Xeno::Sprite::GetQuad() const
+{
+    return mQuad;
 }

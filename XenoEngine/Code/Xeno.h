@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Component/CameraComponent.h"
+#include "Component/Camera.h"
 #include "Component/Component.h"
-#include "Component/MeshFilterComponent.h"
-#include "Component/RendererComponent.h"
-#include "Component/SpriteComponent.h"
-#include "Component/SpriteRendererComponent.h"
-#include "Component/TransformComponent.h"
+#include "Component/MeshFilter.h"
+#include "Component/Renderer.h"
+#include "Component/Sprite.h"
+#include "Component/SpriteRenderer.h"
+#include "Component/Transform.h"
+#include "Component/SceneCameraController.h"
+#include "Component/MeshRenderer.h"
 
 #include "Core/Application.h"
 #include "Core/Input.h"
@@ -24,7 +26,8 @@
 #include "Renderer/Graphics/VertexBuffer.h"
 #include "Renderer/Mesh/Mesh.h"
 #include "Renderer/Mesh/Quad.h"
-#include "Renderer/Renderer.h"
+#include "Renderer/Mesh/Cube.h"
+#include "Renderer/SceneRenderer.h"
 
 #include "Resource/ResourceManager.h"
 

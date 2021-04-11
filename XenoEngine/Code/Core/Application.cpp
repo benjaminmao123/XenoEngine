@@ -52,9 +52,6 @@ void Xeno::Application::Run()
 
         while (mIsRunning)
         {
-            Renderer::Clear(Color::Black(),
-                            GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             PollEvents();
             Awake();
             Start();
@@ -104,11 +101,12 @@ void Xeno::Application::Start()
 
 void Xeno::Application::Update()
 {
+    OnUpdate();
+
     mTime.Update();
     mSceneManager.Update();
     mInput.Update();
     mSceneManager.ProcessRemovals();
-    OnUpdate();
 }
 
 void Xeno::Application::Render()

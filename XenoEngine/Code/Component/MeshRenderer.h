@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Component/RendererComponent.h"
+#include "Component/Renderer.h"
 #include "Renderer/Graphics/Shader.h"
 
 #include <string>
@@ -9,14 +9,12 @@
 
 namespace Xeno
 {
-    class Texture;
-    class MeshFilterComponent;
-    class SpriteComponent;
+    class MeshFilter;
 
-    class XENO_API SpriteRendererComponent final : public RendererComponent
+    class XENO_API MeshRenderer : public Renderer
     {
     public:
-        explicit SpriteRendererComponent(Entity* owner = nullptr);
+        explicit MeshRenderer(Entity* owner = nullptr);
 
         void LoadShader(const std::string& name, const std::vector<Shader::ShaderSource>& sources);
 
@@ -25,7 +23,6 @@ namespace Xeno
         void OnRender() const override;
 
         Shader* mShader = nullptr;
-        const SpriteComponent* mSprite = nullptr;
-        const MeshFilterComponent* mMeshFilter = nullptr;
+        const MeshFilter* mMeshFilter = nullptr;
     };
 }

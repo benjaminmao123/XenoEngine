@@ -51,16 +51,16 @@
     <ClCompile Include="Code\Renderer\Graphics\ElementBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Renderer.cpp">
+    <ClCompile Include="Code\Renderer\SceneRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Renderer\Graphics\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\TransformComponent.cpp">
+    <ClCompile Include="Code\Component\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\CameraComponent.cpp">
+    <ClCompile Include="Code\Component\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Renderer\Mesh\Mesh.cpp">
@@ -87,7 +87,7 @@
     <ClCompile Include="Code\Entity\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\RendererComponent.cpp">
+    <ClCompile Include="Code\Component\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Renderer\BatchManager.cpp">
@@ -99,13 +99,22 @@
     <ClCompile Include="Code\Renderer\Graphics\RenderBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\SpriteComponent.cpp">
+    <ClCompile Include="Code\Component\Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\SpriteRendererComponent.cpp">
+    <ClCompile Include="Code\Component\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component\MeshFilterComponent.cpp">
+    <ClCompile Include="Code\Component\MeshFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Component\SceneCameraController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Renderer\Mesh\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Component\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,7 +143,7 @@
     <ClInclude Include="Code\Core\Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Renderer.h">
+    <ClInclude Include="Code\Renderer\SceneRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Renderer\Graphics\Texture.h">
@@ -152,10 +161,10 @@
     <ClInclude Include="Code\Renderer\Graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\TransformComponent.h">
+    <ClInclude Include="Code\Component\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\CameraComponent.h">
+    <ClInclude Include="Code\Component\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Utility\NonCopyable.h">
@@ -194,7 +203,7 @@
     <ClInclude Include="Code\Utility\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\RendererComponent.h">
+    <ClInclude Include="Code\Component\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Renderer\BatchManager.h">
@@ -206,13 +215,22 @@
     <ClInclude Include="Code\Renderer\Graphics\RenderBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\SpriteComponent.h">
+    <ClInclude Include="Code\Component\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\SpriteRendererComponent.h">
+    <ClInclude Include="Code\Component\SpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component\MeshFilterComponent.h">
+    <ClInclude Include="Code\Component\MeshFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Component\SceneCameraController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Renderer\Mesh\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Component\MeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

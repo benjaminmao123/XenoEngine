@@ -157,13 +157,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Component\CameraComponent.cpp" />
+    <ClCompile Include="Code\Component\Camera.cpp" />
     <ClCompile Include="Code\Component\Component.cpp" />
-    <ClCompile Include="Code\Component\MeshFilterComponent.cpp" />
-    <ClCompile Include="Code\Component\RendererComponent.cpp" />
-    <ClCompile Include="Code\Component\SpriteComponent.cpp" />
-    <ClCompile Include="Code\Component\SpriteRendererComponent.cpp" />
-    <ClCompile Include="Code\Component\TransformComponent.cpp" />
+    <ClCompile Include="Code\Component\MeshFilter.cpp" />
+    <ClCompile Include="Code\Component\MeshRenderer.cpp" />
+    <ClCompile Include="Code\Component\SceneCameraController.cpp" />
+    <ClCompile Include="Code\Component\Renderer.cpp" />
+    <ClCompile Include="Code\Component\Sprite.cpp" />
+    <ClCompile Include="Code\Component\SpriteRenderer.cpp" />
+    <ClCompile Include="Code\Component\Transform.cpp" />
     <ClCompile Include="Code\Core\Application.cpp" />
     <ClCompile Include="Code\Core\Input.cpp" />
     <ClCompile Include="Code\Core\Logger.cpp" />
@@ -180,8 +182,9 @@
     <ClCompile Include="Code\Renderer\BatchManager.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\FrameBuffer.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\RenderBuffer.cpp" />
+    <ClCompile Include="Code\Renderer\Mesh\Cube.cpp" />
     <ClCompile Include="Code\Renderer\Mesh\Mesh.cpp" />
-    <ClCompile Include="Code\Renderer\Renderer.cpp" />
+    <ClCompile Include="Code\Renderer\SceneRenderer.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\Texture.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\VertexArray.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\VertexBuffer.cpp" />
@@ -201,13 +204,15 @@
     <ClCompile Include="Code\Renderer\Mesh\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Component\CameraComponent.h" />
+    <ClInclude Include="Code\Component\Camera.h" />
     <ClInclude Include="Code\Component\Component.h" />
-    <ClInclude Include="Code\Component\MeshFilterComponent.h" />
-    <ClInclude Include="Code\Component\RendererComponent.h" />
-    <ClInclude Include="Code\Component\SpriteComponent.h" />
-    <ClInclude Include="Code\Component\SpriteRendererComponent.h" />
-    <ClInclude Include="Code\Component\TransformComponent.h" />
+    <ClInclude Include="Code\Component\MeshFilter.h" />
+    <ClInclude Include="Code\Component\MeshRenderer.h" />
+    <ClInclude Include="Code\Component\SceneCameraController.h" />
+    <ClInclude Include="Code\Component\Renderer.h" />
+    <ClInclude Include="Code\Component\Sprite.h" />
+    <ClInclude Include="Code\Component\SpriteRenderer.h" />
+    <ClInclude Include="Code\Component\Transform.h" />
     <ClInclude Include="Code\Core\Application.h" />
     <ClInclude Include="Code\Core\Assert.h" />
     <ClInclude Include="Code\Core\Core.h" />
@@ -218,13 +223,14 @@
     <ClInclude Include="Code\Renderer\BatchManager.h" />
     <ClInclude Include="Code\Renderer\Graphics\FrameBuffer.h" />
     <ClInclude Include="Code\Renderer\Graphics\RenderBuffer.h" />
+    <ClInclude Include="Code\Renderer\Mesh\Cube.h" />
     <ClInclude Include="Code\Resource\ResourceManager.h" />
     <ClInclude Include="Code\Core\Time.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\pch.h" />
     <ClInclude Include="Code\Renderer\Graphics\Color.h" />
     <ClInclude Include="Code\Renderer\Mesh\Mesh.h" />
-    <ClInclude Include="Code\Renderer\Renderer.h" />
+    <ClInclude Include="Code\Renderer\SceneRenderer.h" />
     <ClInclude Include="Code\Renderer\Graphics\Texture.h" />
     <ClInclude Include="Code\Renderer\Graphics\VertexArray.h" />
     <ClInclude Include="Code\Renderer\Graphics\VertexBuffer.h" />

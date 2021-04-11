@@ -5,11 +5,11 @@
 
 namespace Xeno
 {
-    class XENO_API RendererComponent : public Component
+    class XENO_API Renderer : public Component
     {
 	public:
-	    explicit RendererComponent(Entity* owner = nullptr);
-		virtual ~RendererComponent() = 0;
+	    explicit Renderer(Entity* owner = nullptr);
+		virtual ~Renderer() = 0;
 
 	private:
 		virtual void OnRender() const;

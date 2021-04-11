@@ -14,7 +14,7 @@ namespace Xeno
     class XENO_API Input : public NonCopyable
     {
     public:
-        enum class KeyCode : uint8_t
+        enum class KeyCode
         {
             A = 4,
             B = 5,
@@ -94,7 +94,7 @@ namespace Xeno
             INSERT = 73,
             HOME = 74,
             PAGEUP = 75,
-            DELETE = 76,
+            DEL = 76,
             END = 77,
             PAGEDOWN = 78,
             RIGHT = 79,
@@ -180,7 +180,7 @@ namespace Xeno
             PRIOR = 157,
             RETURN2 = 158,
             SEPARATOR = 159,
-            OUT = 160,
+            OUT_ = 160,
             OPER = 161,
             CLEARAGAIN = 162,
             CRSEL = 163,
@@ -300,7 +300,6 @@ namespace Xeno
         // @brief Gets the current mouse mPosition on the screen.
         // @return glm::vec2: The mouse x and y mPosition.
         static glm::vec2 GetAxis(AxisType type);
-        static void ABCD(KeyCode code);
 
     private:
         // @brief Default constructor.

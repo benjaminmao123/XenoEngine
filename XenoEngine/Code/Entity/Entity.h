@@ -11,7 +11,7 @@
 namespace Xeno
 {
     class Component;
-    class TransformComponent;
+    class Transform;
 
     class XENO_API Entity : public NonCopyable, std::enable_shared_from_this<Entity>
     {
@@ -35,8 +35,8 @@ namespace Xeno
         [[nodiscard]] const Entity* GetParent() const;
         uint32_t GetInstanceID() const;
 
-        TransformComponent& GetTransform();
-        const TransformComponent& GetTransform() const;
+        Transform& GetTransform();
+        const Transform& GetTransform() const;
 
     private:
         void Awake();
@@ -53,7 +53,7 @@ namespace Xeno
         std::vector<std::shared_ptr<Component>> mComponents;
         std::vector<std::shared_ptr<Entity>> mChildren;
         Entity* mParent = nullptr;
-        TransformComponent* mTransform;
+        Transform* mTransform;
 
         friend class EntityManager;
     };

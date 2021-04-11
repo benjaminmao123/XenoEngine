@@ -10,4 +10,3 @@ namespace Xeno
         explicit Quad(Topology topology = Topology::TRIANGLES);
     };
 }
-

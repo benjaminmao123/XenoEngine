@@ -48,12 +48,12 @@ const Xeno::Entity* Xeno::Scene::GetEntity(const std::string& name) const
 	return mEntityManager.GetEntity(name);
 }
 
-void Xeno::Scene::SetMainCamera(CameraComponent* camera)
+void Xeno::Scene::SetMainCamera(Camera* camera)
 {
 	mMainCamera = camera;
 }
 
-const Xeno::CameraComponent* Xeno::Scene::GetMainCamera() const
+const Xeno::Camera* Xeno::Scene::GetMainCamera() const
 {
 	return mMainCamera;
 }

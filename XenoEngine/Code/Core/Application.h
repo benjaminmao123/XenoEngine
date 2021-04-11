@@ -5,7 +5,7 @@
 #include "Core/Input.h"
 #include "Core/Time.h"
 #include "Core/Logger.h"
-#include "Renderer/Renderer.h"
+#include "Renderer/SceneRenderer.h"
 #include "Utility/NonCopyable.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
@@ -38,7 +38,7 @@ namespace Xeno
         Window mWindow;
         Input mInput;
         Time mTime;
-        Renderer mRenderer;
+        SceneRenderer mRenderer;
         ResourceManager mResourceManager;
         SceneManager mSceneManager;
         SDL_Event mEvent;

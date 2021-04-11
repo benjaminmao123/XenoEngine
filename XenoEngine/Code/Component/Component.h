@@ -6,7 +6,7 @@
 namespace Xeno
 {
 	class Entity;
-	class TransformComponent;
+	class Transform;
 
 	// @brief Base class for all components.
 	class XENO_API Component : public NonCopyable
@@ -18,8 +18,8 @@ namespace Xeno
 		void SetEnabled(bool state);
 		[[nodiscard]] bool IsEnabled() const;
 
-		TransformComponent& GetTransform();
-		[[nodiscard]] const TransformComponent& GetTransform() const;
+		Transform& GetTransform();
+		[[nodiscard]] const Transform& GetTransform() const;
 
 	protected:
 		Entity* GetEntity();

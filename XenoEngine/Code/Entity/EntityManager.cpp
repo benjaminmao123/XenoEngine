@@ -15,7 +15,7 @@ void Xeno::EntityManager::Start()
 {
 	for (const auto& entity : mEntities)
 	{
-		if (!entity->mIsDestroyed)
+		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy())
 			entity->Start();
 	}
 }

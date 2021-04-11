@@ -1,6 +1,5 @@
 #include "pch.h"
-#include "Renderer/Renderer.h"
-
+#include "Renderer/SceneRenderer.h"
 #include "Core/Assert.h"
 #include "Core/Window.h"
 #include "Resource/ResourceManager.h"
@@ -12,32 +11,34 @@
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 
-void Xeno::Renderer::Submit(const RenderCommand& command)
+#include <iostream>
+
+void Xeno::SceneRenderer::Submit(const RenderCommand& command)
 {
     sCommandBuffer.emplace_back(command);
 }
 
-void Xeno::Renderer::Clear(const unsigned char r, 
+void Xeno::SceneRenderer::Clear(const unsigned char r, 
                            const unsigned char g, 
                            const unsigned char b, 
                            const unsigned char a, 
-                           const GLenum flags)
+                           const GLenum flags) const
 {
     glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
     glClear(flags);
 }
 
-void Xeno::Renderer::Clear(const Color& color, const GLenum flags)
+void Xeno::SceneRenderer::Clear(const Color& color, const GLenum flags) const
 {
     glClearColor(color.ToFloat().r, color.ToFloat().g, color.ToFloat().b, color.ToFloat().a);
     glClear(flags);
 }
 
-void Xeno::Renderer::Init()
+void Xeno::SceneRenderer::Init()
 {
     if (mData.mVAO || mData.mVBO || mData.mEBO)
     {
-        XN_CORE_WARN("Renderer is already initialized.");
+        XN_CORE_WARN("SceneRenderer is already initialized.");
 
         return;
     }
@@ -71,9 +72,16 @@ void Xeno::Renderer::Init()
     mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
 }
 
-void Xeno::Renderer::Render()
+void Xeno::SceneRenderer::Render()
 {
+    Clear(Color::Black(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     mData.mVAO->Bind();
+
+    if (SceneManager::GetActiveScene()->GetMainCamera()->GetProjectionType() == Camera::ProjectionType::PERSPECTIVE)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
 
     for (const auto& command : sCommandBuffer)
     {
@@ -100,12 +108,18 @@ void Xeno::Renderer::Render()
         mData.mVBO->SetDataNew(&command.mMesh->mVertices[0], 
                                command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
                                GL_DYNAMIC_DRAW);
-        mData.mEBO->SetIndicesNew(&command.mMesh->mIndices[0], 
-                                  command.mMesh->mIndices.size(), 
-                                  GL_DYNAMIC_DRAW);
-        mData.mEBO->Bind();
 
-        glDrawElements((GLenum)command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+        if (!command.mMesh->mIndices.empty())
+        {
+            mData.mEBO->SetIndicesNew(&command.mMesh->mIndices[0],
+                                      command.mMesh->mIndices.size(),
+                                      GL_DYNAMIC_DRAW);
+            mData.mEBO->Bind();
+
+            glDrawElements((GLenum)command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+        }
+        else
+            glDrawArrays((GLenum)command.mMesh->mTopology, 0, command.mMesh->mVertices.size());
     }
 
     sCommandBuffer.clear();

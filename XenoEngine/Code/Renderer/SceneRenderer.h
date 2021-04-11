@@ -2,15 +2,13 @@
 
 #include "Core/Core.h"
 #include "Utility/NonCopyable.h"
-#include "Component/CameraComponent.h"
+#include "Component/Camera.h"
 #include "Renderer/Graphics/Color.h"
 #include "Renderer/BatchManager.h"
 #include "Renderer/Mesh/Quad.h"
 
-#include <vector>
 #include <deque>
 #include <memory>
-#include <array>
 
 namespace Xeno
 {
@@ -20,13 +18,13 @@ namespace Xeno
     class Shader;
     class ElementBuffer;
 
-    class XENO_API Renderer : public NonCopyable
+    class XENO_API SceneRenderer : public NonCopyable
     {
     public:
         struct RenderCommand
         {
-            const TransformComponent* mTransform = nullptr;
-            const Color& mColor = Color::White();
+            const Transform* mTransform = nullptr;
+            Color mColor = Color::White();
             const Texture* mTexture = nullptr;
             const Mesh* mMesh = nullptr;
             const Shader* mShader = nullptr;
@@ -34,12 +32,12 @@ namespace Xeno
 
         static void Submit(const RenderCommand& command);
 
-        static void Clear(unsigned char r,
-                          unsigned char g,
-                          unsigned char b,
-                          unsigned char a,
-                          GLenum flags);
-        static void Clear(const Color& color, GLenum flags);
+        void Clear(unsigned char r,
+                   unsigned char g,
+                   unsigned char b,
+                   unsigned char a,
+                   GLenum flags) const;
+        void Clear(const Color& color, GLenum flags) const;
 
     private:
         struct RendererData
@@ -49,7 +47,7 @@ namespace Xeno
             std::shared_ptr<ElementBuffer> mEBO;
         } mData;
 
-        Renderer() = default;
+        SceneRenderer() = default;
 
         void Init();
         void Render();
