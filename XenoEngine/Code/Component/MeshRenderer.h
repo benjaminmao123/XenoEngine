@@ -11,7 +11,7 @@ namespace Xeno
 {
     class MeshFilter;
 
-    class XENO_API MeshRenderer : public Renderer
+    class XENO_API MeshRenderer final : public Renderer
     {
     public:
         explicit MeshRenderer(Entity* owner = nullptr);
