@@ -28,7 +28,7 @@ protected:
         Entity* boxEntity = scene->CreateEntity("box");
         boxEntity->AddComponent<MeshRenderer>();
         const auto cubeMesh = std::make_shared<Cube>();
-        MeshFilter* meshFilter = boxEntity->GetComponent<MeshFilter>();
+        auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
         meshFilter->SetMesh(cubeMesh);
         ResourceManager::AddTexture(std::make_shared<Texture>("Assets/Textures/container.jpg"));
         meshFilter->SetTexture(ResourceManager::GetTexture("Assets/Textures/container.jpg"));
