@@ -16,10 +16,13 @@ namespace Xeno
 		class VertexBufferLayout
 		{
 		public:
+
 			struct VertexBufferElement
 			{
+				std::string mName;
 				int32_t mSize = 0;
 				uint32_t mType = GL_FLOAT;
+				uint32_t mTypeSizeInBytes = 0;
 				bool mNormalized = false;
 				size_t mOffset = 0;
 			};
@@ -28,23 +31,14 @@ namespace Xeno
 			VertexBufferLayout(const std::initializer_list<VertexBufferElement>& elements) :
 				mElements(elements)
 			{
-				mStride = 0;
-				size_t offset = 0;
-
-				for (auto& element : mElements)
-				{
-					element.mOffset = offset;
-					offset += element.mSize;
-					mStride += element.mSize;
-				}
+				CalculateOffsetsAndStride();
 			}
 
-			void PushElement(VertexBufferElement element)
+			void PushElement(const VertexBufferElement& element)
 			{
-				element.mOffset = element.mSize + mElements.back().mOffset;
-				mStride += element.mSize;
-
 				mElements.emplace_back(element);
+
+				CalculateOffsetsAndStride();
 			}
 
 			[[nodiscard]] uint32_t GetStride() const 
@@ -55,6 +49,12 @@ namespace Xeno
 			[[nodiscard]] const std::vector<VertexBufferElement>& GetElements() const 
 			{ 
 				return mElements; 
+			}
+
+			void Clear()
+			{
+				mElements.clear();
+				mStride = 0;
 			}
 
 			std::vector<VertexBufferElement>::iterator begin() 
@@ -78,14 +78,28 @@ namespace Xeno
 			}
 
 		private:
+			void CalculateOffsetsAndStride()
+			{
+				mStride = 0;
+				size_t offset = 0;
+
+				for (auto& element : mElements)
+				{
+					element.mOffset = offset;
+					offset += element.mSize * element.mTypeSizeInBytes;
+					mStride += element.mSize * element.mTypeSizeInBytes;
+				}
+			}
+
 			std::vector<VertexBufferElement> mElements;
 			int32_t mStride = 0;
 		};
 
-		VertexBuffer(uint32_t drawType = GL_STATIC_DRAW);
-		explicit VertexBuffer(uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
+		explicit VertexBuffer(uint32_t drawType);
+		explicit VertexBuffer(uint32_t size, uint32_t drawType);
 		explicit VertexBuffer(void* data, uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
 		~VertexBuffer();
+		VertexBuffer& operator=(const VertexBuffer& other) = delete;
 
         void Bind() const;
         void Unbind() const;
@@ -97,6 +111,7 @@ namespace Xeno
 
 		void SetLayout(const VertexBufferLayout& layout);
 		[[nodiscard]] const VertexBufferLayout& GetLayout() const;
+		void ClearLayout();
 
     private:
         uint32_t mObjectID;

@@ -5,14 +5,16 @@
 #include "Core/Input.h"
 #include "Core/Time.h"
 #include "Core/Logger.h"
+#include "Renderer/SceneRenderer.h"
+#include "Utility/NonCopyable.h"
+#include "Resource/ResourceManager.h"
+#include "Scene/SceneManager.h"
 
-#include <string>
 #include <SDL2/SDL_events.h>
-#include <vector>
 
 namespace Xeno
 {
-    class XENO_API Application
+    class XENO_API Application : public NonCopyable
     {
     public:
         Application(const Window::WindowProperties& props);
@@ -20,20 +22,25 @@ namespace Xeno
         
         void Run();
         void PollEvents();
-        void OnExit();
 
     protected:
-        virtual void OnCreate();
+        virtual void OnRun();
         virtual void OnUpdate();
 
     private:
-        void Create();
+        void Awake();
+        void Start();
         void Update();
+        void Render();
+        void OnExit();
 
         Logger mLogger;
         Window mWindow;
         Input mInput;
         Time mTime;
+        SceneRenderer mRenderer;
+        ResourceManager mResourceManager;
+        SceneManager mSceneManager;
         SDL_Event mEvent;
         bool mIsRunning = false;
     };

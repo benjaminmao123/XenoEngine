@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Utility/NonCopyable.h"
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
@@ -8,17 +9,17 @@
 
 namespace Xeno
 {
-    class XENO_API Logger
+    class XENO_API Logger : public NonCopyable
     {
 	public:
-		[[nodiscard]] static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return mCoreLogger; }
-		[[nodiscard]] static std::shared_ptr<spdlog::logger>& GetClientLogger() { return mCoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return sCoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return sCoreLogger; }
 
 	private:
 		Logger();
 
-		static std::shared_ptr<spdlog::logger> mCoreLogger;
-		static std::shared_ptr<spdlog::logger> mClientLogger;
+		static std::shared_ptr<spdlog::logger> sCoreLogger;
+		static std::shared_ptr<spdlog::logger> sClientLogger;
 
 		friend class Application;
     };

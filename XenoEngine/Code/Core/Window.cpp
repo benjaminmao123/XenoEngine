@@ -3,24 +3,18 @@
 #include "Core/Logger.h"
 
 #include <glad/glad.h>
-#include <SDL2/SDL.h>
 
 Xeno::Window::~Window()
 {
     SDL_DestroyWindow(mWindow);
 }
 
-void Xeno::Window::Update()
-{
-    SDL_GL_SwapWindow(mWindow);
-}
-
 bool Xeno::Window::ConstructWindow()
 {
-    mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),
-                               mWindowProps.mScreenLocationX, mWindowProps.mScreenLocationY,
-                               mWindowProps.mWidth, mWindowProps.mHeight,
-                               mWindowProps.mFlags);
+    mWindow = SDL_CreateWindow(sWindowProps.mTitle.c_str(),
+                               sWindowProps.mScreenLocationX, sWindowProps.mScreenLocationY,
+                               sWindowProps.mWidth, sWindowProps.mHeight,
+                               sWindowProps.mFlags);
 
     if (!mWindow)
     {
@@ -42,47 +36,51 @@ bool Xeno::Window::ConstructWindow()
     return true;
 }
 
-void Xeno::Window::Clear(const unsigned char r, 
-                         const unsigned char g, 
-                         const unsigned char b, 
-                         const unsigned char a) const
+void Xeno::Window::Display() const
 {
-    glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(mWindow);
 }
 
-void Xeno::Window::Clear(const SDL_Color& color) const
+void Xeno::Window::ProcessEvents(const SDL_Event& event)
 {
-    glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    switch (event.window.event)
+    {
+    case SDL_WINDOWEVENT_SIZE_CHANGED:
+        sWindowProps.mWidth = event.window.data1;
+        sWindowProps.mHeight = event.window.data2;
+        glViewport(0, 0, sWindowProps.mWidth, sWindowProps.mHeight);
+        break;
+    default:
+        break;
+    }
 }
 
 uint32_t Xeno::Window::GetWidth()
 {
-    return mWindowProps.mWidth;
+    return sWindowProps.mWidth;
 }
 
 uint32_t Xeno::Window::GetHeight()
 {
-    return mWindowProps.mHeight;
+    return sWindowProps.mHeight;
 }
 
 glm::vec2 Xeno::Window::GetCenter()
 {
-    return glm::vec2(mWindowProps.mWidth / 2, mWindowProps.mHeight / 2);
+    return glm::vec2(sWindowProps.mWidth / 2, sWindowProps.mHeight / 2);
 }
 
 float Xeno::Window::GetAspectRatio()
 {
-    return static_cast<float>(mWindowProps.mWidth) / mWindowProps.mHeight;
+    return (float)sWindowProps.mWidth / sWindowProps.mHeight;
 }
 
 Xeno::Window::Window(const WindowProperties& props)
 {
-    mWindowProps.mTitle = props.mTitle;
-    mWindowProps.mScreenLocationX = props.mScreenLocationX;
-    mWindowProps.mScreenLocationY = props.mScreenLocationY;
-    mWindowProps.mWidth = props.mWidth;
-    mWindowProps.mHeight = props.mHeight;
-    mWindowProps.mFlags = props.mFlags;
+    sWindowProps.mTitle = props.mTitle;
+    sWindowProps.mScreenLocationX = props.mScreenLocationX;
+    sWindowProps.mScreenLocationY = props.mScreenLocationY;
+    sWindowProps.mWidth = props.mWidth;
+    sWindowProps.mHeight = props.mHeight;
+    sWindowProps.mFlags = props.mFlags;
 }

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XenoEngine", "XenoEngine\XenoEngine.vcxproj", "{873A9A5F-9460-475E-988B-24426881D12B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{5F3E95C5-2DDB-4D4D-A71C-C8A949F92349}"
+	ProjectSection(ProjectDependencies) = postProject
+		{873A9A5F-9460-475E-988B-24426881D12B} = {873A9A5F-9460-475E-988B-24426881D12B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XenoEngineTest", "XenoEngineTest\XenoEngineTest.vcxproj", "{E4DFE761-D36F-4031-8BB5-902B2D6F6CFA}"
 EndProject

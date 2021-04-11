@@ -1,17 +1,22 @@
 #include "pch.h"
 #include "Core/Time.h"
 
-#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL.h>
+
+void Xeno::Time::Init()
+{
+	mElapsedTime = SDL_GetPerformanceCounter();
+}
 
 void Xeno::Time::Update()
 {
-	mElapsedTime = SDL_GetPerformanceCounter();
-	mDeltaTime = static_cast<float>((mElapsedTime - mLastFrameTime) * 1000 /
-									static_cast<float>(SDL_GetPerformanceFrequency()));
 	mLastFrameTime = mElapsedTime;
+	mElapsedTime = SDL_GetPerformanceCounter();
+	sDeltaTime = static_cast<float>((mElapsedTime - mLastFrameTime) * 1000.0f /
+        static_cast<float>(SDL_GetPerformanceFrequency())) * 0.001f;
 }
 
 float Xeno::Time::GetDeltaTime()
 {
-	return mDeltaTime;
+	return sDeltaTime;
 }

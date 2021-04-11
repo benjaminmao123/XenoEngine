@@ -1,37 +1,54 @@
 #include "pch.h"
-#include "Texture.h"
+#include "Renderer/Graphics/Texture.h"
 #include "Core/Logger.h"
+#include "Core/Assert.h"
 
 #include <stb/stb_image.h>
 
-Xeno::Texture::Texture(uint32_t internalFormat, uint32_t imageFormat,
-                       uint32_t wrapS, uint32_t wrapT,
-                       uint32_t filterMin, uint32_t filterMax,
-                       bool mipMapping, int32_t mipMapLevel) :
+Xeno::Texture::Texture(std::string path,
+                       const uint32_t internalFormat, const uint32_t imageFormat,
+                       const uint32_t wrapS, const uint32_t wrapT,
+                       const uint32_t filterMin, const uint32_t filterMax,
+                       bool mipMapping, const int32_t mipMapLevel) :
+    mPath(std::move(path)),
     mInternalFormat(internalFormat), mImageFormat(imageFormat),
     mWrapS(wrapS), mWrapT(wrapT),
     mFilterMin(filterMin), mFilterMax(filterMax),
-    mMipMapping(mipMapping)
+    mMipMapping(mipMapping), mMipMapLevel(mipMapLevel)
 {
     stbi_set_flip_vertically_on_load(1);
 
     glGenTextures(1, &mObjectID);
+    mInitSuccess = GenerateTextureFromFile();
 }
 
-Xeno::Texture::Texture(std::string path,
-                       uint32_t internalFormat, uint32_t imageFormat, 
-                       uint32_t wrapS, uint32_t wrapT, 
-                       uint32_t filterMin, uint32_t filterMax, 
-                       bool mipMapping, int32_t mipMapLevel) :
-    Texture(internalFormat, imageFormat,
-            wrapS, wrapT,
-            filterMin, filterMax,
-            mipMapping, mipMapLevel)
+Xeno::Texture::Texture(std::string name,
+                       const uint32_t width, const uint32_t height,
+                       const uint32_t internalFormat, const uint32_t imageFormat,
+                       const uint32_t wrapS, const uint32_t wrapT,
+                       const uint32_t filterMin, const uint32_t filterMax,
+                       const bool mipMapping, const int32_t mipMapLevel,
+                       const int32_t numSamples) :
+    mPath(std::move(name)),
+    mWidth(width), mHeight(height),
+    mInternalFormat(internalFormat), mImageFormat(imageFormat),
+    mWrapS(wrapS), mWrapT(wrapT),
+    mFilterMin(filterMin), mFilterMax(filterMax),
+    mMipMapping(mipMapping), mMipMapLevel(mipMapLevel)
 {
-    mPath = std::move(path);
-
     glGenTextures(1, &mObjectID);
-    GenerateTexture();
+
+    if (numSamples > 1)
+        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, numSamples, imageFormat, width, height, GL_FALSE);
+    else
+    {
+        glTexStorage2D(mObjectID, 1, mInternalFormat, mWidth, mHeight);
+
+        glTextureParameteri(mObjectID, GL_TEXTURE_MIN_FILTER, mFilterMin);
+        glTextureParameteri(mObjectID, GL_TEXTURE_MAG_FILTER, mFilterMax);
+        glTextureParameteri(mObjectID, GL_TEXTURE_WRAP_S, mWrapS);
+        glTextureParameteri(mObjectID, GL_TEXTURE_WRAP_T, mWrapT);
+    }
 }
 
 Xeno::Texture::~Texture()
@@ -44,32 +61,9 @@ void Xeno::Texture::Bind(uint32_t slot) const
     glBindTextureUnit(slot, mObjectID);
 }
 
-void Xeno::Texture::Unbind() const
+void Xeno::Texture::SetData(void* data) const
 {
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void Xeno::Texture::LoadTextureFromFile(std::string path,
-                                        const uint32_t internalFormat,
-                                        const uint32_t imageFormat,
-                                        const uint32_t wrapS,
-                                        const uint32_t wrapT,
-                                        const uint32_t filterMin,
-                                        const uint32_t filterMax,
-                                        bool mipMapping,
-                                        const int32_t mipMapLevel)
-{
-    mPath = std::move(path);
-    mInternalFormat = internalFormat;
-    mImageFormat = imageFormat;
-    mWrapS = wrapS;
-    mWrapT = wrapT;
-    mFilterMin = filterMin;
-    mFilterMax = filterMax;
-    mMipMapping = mipMapping;
-    mMipMapLevel = mipMapLevel;
-
-    GenerateTexture();
+    glTextureSubImage2D(mObjectID, 0, 0, 0, mWidth, mHeight, mImageFormat, GL_UNSIGNED_BYTE, data);
 }
 
 void Xeno::Texture::SetWrapS(const uint32_t mode)
@@ -77,7 +71,6 @@ void Xeno::Texture::SetWrapS(const uint32_t mode)
     mWrapS = mode;
     Bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
-    Unbind();
 }
 
 void Xeno::Texture::SetWrapT(const uint32_t mode)
@@ -85,7 +78,6 @@ void Xeno::Texture::SetWrapT(const uint32_t mode)
     mWrapT = mode;
     Bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mWrapS);
-    Unbind();
 }
 
 void Xeno::Texture::SetFilterMin(const uint32_t mode)
@@ -93,7 +85,6 @@ void Xeno::Texture::SetFilterMin(const uint32_t mode)
     mFilterMin = mode;
     Bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
-    Unbind();
 }
 
 void Xeno::Texture::SetFilterMax(const uint32_t mode)
@@ -101,7 +92,6 @@ void Xeno::Texture::SetFilterMax(const uint32_t mode)
     mFilterMax = mode;
     Bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mFilterMax);
-    Unbind();
 }
 
 uint32_t Xeno::Texture::GetWidth() const
@@ -124,7 +114,12 @@ const std::string& Xeno::Texture::GetPath() const
     return mPath;
 }
 
-void Xeno::Texture::GenerateTexture()
+bool Xeno::Texture::InitSuccess() const
+{
+    return mInitSuccess;
+}
+
+bool Xeno::Texture::GenerateTextureFromFile()
 {
     XN_CORE_INFO("Generating texture: {0}", mPath);
 
@@ -136,10 +131,13 @@ void Xeno::Texture::GenerateTexture()
     {
         XN_CORE_ERROR("Failed to generate texture: {0}", mPath);
 
-        return;
+        return false;
     }
 
     Bind();
+
+    if (channels == 3)
+        mImageFormat = GL_RGB;
 
     if (mWidth == width && mHeight == height)
     {
@@ -174,7 +172,9 @@ void Xeno::Texture::GenerateTexture()
     if (mMipMapping)
         glGenerateMipmap(GL_TEXTURE_2D);
 
-    Unbind();
-
     stbi_image_free(data);
+
+    XN_CORE_INFO("Successfully generated texture.\n");
+
+    return true;
 }
