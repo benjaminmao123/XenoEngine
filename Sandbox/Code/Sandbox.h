@@ -16,6 +16,8 @@ public:
 protected:
     void OnRun() override
     {
+        ResourceManager::AddTexture(std::make_shared<Texture>("Assets/Textures/container.jpg"));
+
         SceneManager::AddScene("sandbox");
         Scene* scene = SceneManager::GetScene("sandbox");
 
@@ -26,12 +28,12 @@ protected:
         scene->SetMainCamera(mCameraComponent);
 
         Entity* boxEntity = scene->CreateEntity("box");
-        boxEntity->AddComponent<MeshRenderer>();
+        Renderer* boxRenderer = boxEntity->AddComponent<MeshRenderer>();
+        boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+
         const auto cubeMesh = std::make_shared<Cube>();
         auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
         meshFilter->SetMesh(cubeMesh);
-        ResourceManager::AddTexture(std::make_shared<Texture>("Assets/Textures/container.jpg"));
-        meshFilter->SetTexture(ResourceManager::GetTexture("Assets/Textures/container.jpg"));
 
         //Entity* boxEntity2 = scene->CreateEntity("box2");
         //boxEntity2->AddComponent<SpriteRenderer>();

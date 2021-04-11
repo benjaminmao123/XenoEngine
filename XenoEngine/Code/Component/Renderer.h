@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Component/Component.h"
+#include "Renderer/Graphics/Material/Material.h"
 
 namespace Xeno
 {
@@ -11,8 +12,14 @@ namespace Xeno
 	    explicit Renderer(Entity* owner = nullptr);
 		virtual ~Renderer() = 0;
 
+		void SetMaterial(const Material& material);
+		[[nodiscard]] const Material& GetMaterial() const;
+		[[nodiscard]] Material& GetMaterial();
+
 	private:
 		virtual void OnRender() const;
+
+		Material mMaterial;
 
 		friend class Entity;
     };

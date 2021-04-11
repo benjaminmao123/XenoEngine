@@ -181,6 +181,7 @@
     </ClCompile>
     <ClCompile Include="Code\Renderer\BatchManager.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\FrameBuffer.cpp" />
+    <ClCompile Include="Code\Renderer\Graphics\Material\Material.cpp" />
     <ClCompile Include="Code\Renderer\Graphics\RenderBuffer.cpp" />
     <ClCompile Include="Code\Renderer\Mesh\Cube.cpp" />
     <ClCompile Include="Code\Renderer\Mesh\Mesh.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Code\Entity\EntityManager.h" />
     <ClInclude Include="Code\Renderer\BatchManager.h" />
     <ClInclude Include="Code\Renderer\Graphics\FrameBuffer.h" />
+    <ClInclude Include="Code\Renderer\Graphics\Material\Material.h" />
     <ClInclude Include="Code\Renderer\Graphics\RenderBuffer.h" />
     <ClInclude Include="Code\Renderer\Mesh\Cube.h" />
     <ClInclude Include="Code\Resource\ResourceManager.h" />

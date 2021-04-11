@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Graphics/VertexArray.h"
+#include "VertexArray.h"
 
 #include <glad/glad.h>
 

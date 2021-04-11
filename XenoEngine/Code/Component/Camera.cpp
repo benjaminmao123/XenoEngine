@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Component/Camera.h"
+#include "Camera.h"
 #include "Core/Window.h"
 
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
 Xeno::Camera::Camera(Entity* owner,
-                                       const glm::vec3& position,
-                                       const ProjectionType type) :
+                     const glm::vec3& position,
+                     const ProjectionType type) :
     Component(owner)
 {
     SetProjectionType(type);
@@ -48,23 +48,23 @@ glm::mat4 Xeno::Camera::GetViewProjection() const
 glm::mat4 Xeno::Camera::GetProjection() const
 {
     if (mProjectionType == ProjectionType::ORTHOGRAPHIC)
-    	return glm::ortho(0.0f,
-    					  (float)Window::GetWidth(),
-    					  (float)Window::GetHeight(),
-    					  0.0f,
-    					  mNear,
-    					  mFar);
+        return glm::ortho(0.0f,
+            (float)Window::GetWidth(),
+            (float)Window::GetHeight(),
+            0.0f,
+            mNear,
+            mFar);
 
     return glm::perspective(glm::radians(mFOV),
-    						Window::GetAspectRatio(),
-    						mNear, mFar);
+        Window::GetAspectRatio(),
+        mNear, mFar);
 }
 
 glm::mat4 Xeno::Camera::GetView() const
 {
     return lookAt(GetTransform().GetPosition(),
-                  GetTransform().GetPosition() + GetTransform().GetForward(),
-                  GetTransform().GetUp());
+          GetTransform().GetPosition() + GetTransform().GetForward(),
+          GetTransform().GetUp());
 }
 
 void Xeno::Camera::SetFOV(const float fov)

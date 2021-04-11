@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/SceneRenderer.h"
+#include "SceneRenderer.h"
 #include "Core/Assert.h"
 #include "Core/Window.h"
 #include "Resource/ResourceManager.h"
@@ -10,8 +10,6 @@
 #include "Renderer/Graphics/ElementBuffer.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
-
-#include <iostream>
 
 void Xeno::SceneRenderer::Submit(const RenderCommand& command)
 {

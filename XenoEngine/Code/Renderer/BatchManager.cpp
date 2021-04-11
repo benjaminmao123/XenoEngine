@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/BatchManager.h"
+#include "BatchManager.h"
 
 void Xeno::BatchManager::StartBatch(const Batch& batch)
 {

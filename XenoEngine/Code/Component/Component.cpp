@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Component/Component.h"
+#include "Component.h"
 #include "Entity/Entity.h"
 #include "Component/Transform.h"
 

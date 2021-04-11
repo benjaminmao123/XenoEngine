@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Component/SceneCameraController.h"
+#include "SceneCameraController.h"
 #include "Component/Camera.h"
 #include "Entity/Entity.h"
 #include "Core/Input.h"

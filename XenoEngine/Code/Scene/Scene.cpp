@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Scene/Scene.h"
+#include "Scene.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
 #include "Utility/Utility.h"

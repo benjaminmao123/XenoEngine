@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Entity/EntityManager.h"
+#include "EntityManager.h"
 #include "Entity/Entity.h"
 
 void Xeno::EntityManager::Awake()

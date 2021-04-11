@@ -28,6 +28,7 @@
 #include "Renderer/Mesh/Quad.h"
 #include "Renderer/Mesh/Cube.h"
 #include "Renderer/SceneRenderer.h"
+#include "Renderer/Graphics/Material/Material.h"
 
 #include "Resource/ResourceManager.h"
 

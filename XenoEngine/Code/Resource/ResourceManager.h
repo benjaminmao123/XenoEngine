@@ -17,8 +17,10 @@ namespace Xeno
     public:
         static bool AddTexture(const std::shared_ptr<Texture>& texture);
         static Texture* GetTexture(const std::string& path);
+        static std::shared_ptr<Texture> GetTextureRef(const std::string& path);
         static bool AddShader(const std::shared_ptr<Shader>& shader);
         static Shader* GetShader(const std::string& name);
+        static std::shared_ptr<Shader> GetShaderRef(const std::string& name);
 
     private:
         ResourceManager() = default;

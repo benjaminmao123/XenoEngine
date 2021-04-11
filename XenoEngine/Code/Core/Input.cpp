@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Core/Input.h"
+#include "Input.h"
 #include "Core/Time.h"
 
 Xeno::Input::~Input()
