@@ -32,12 +32,12 @@ namespace Xeno
 
         static void Submit(const RenderCommand& command);
 
-        void Clear(unsigned char r,
-                   unsigned char g,
-                   unsigned char b,
-                   unsigned char a,
-                   GLenum flags) const;
-        void Clear(const Color& color, GLenum flags) const;
+        void Clear(uint8_t r,
+                   uint8_t g,
+                   uint8_t b,
+                   uint8_t a,
+                   uint32_t flags) const;
+        void Clear(const Color& color, uint32_t flags) const;
 
     private:
         struct RendererData

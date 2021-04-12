@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Core/Time.h"
+#include "Time.h"
 
 #include <SDL2/SDL.h>
 

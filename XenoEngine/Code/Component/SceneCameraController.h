@@ -16,6 +16,8 @@ namespace Xeno
         [[nodiscard]] float GetPanSpeed() const;
         void SetSensitivity(float value);
         [[nodiscard]] float GetSensitivity() const;
+        void SetZoomLevel(float value);
+        [[nodiscard]] float GetZoomLevel() const;
 
     private:
         void OnStart() override;
@@ -24,5 +26,6 @@ namespace Xeno
         Camera* mCamera = nullptr;
         float mCameraPanSpeed = 10.0f;
         float mSensitivity = 10.0f;
+        float mZoomFactor = 1.0f;
     };
 }

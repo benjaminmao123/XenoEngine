@@ -12,7 +12,9 @@
 
 #ifdef XN_DEBUG
 #define XN_DEBUGBREAK() __debugbreak()
+#ifndef XN_ENABLE_ASSERTS
 #define XN_ENABLE_ASSERTS
+#endif
 #else
 #define XN_DEBUGBREAK()
 #endif
