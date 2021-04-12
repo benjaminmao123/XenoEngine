@@ -23,11 +23,11 @@ namespace Xeno
             glm::vec2 mUV { 0.0f, 0.0f };
             glm::vec3 mNormal { 0.0f, 0.0f, 0.0f };
             glm::vec3 mTangent { 0.0f, 0.0f, 0.0f };
-            glm::vec3 mBiTangent { 0.0f, 0.0f, 0.0f };
+            glm::vec3 mBitangent { 0.0f, 0.0f, 0.0f };
         };
 
         explicit Mesh(Topology topology);
-        virtual ~Mesh() = 0;
+        virtual ~Mesh() = default;
 
         Topology mTopology;
         std::vector<Vertex> mVertices;

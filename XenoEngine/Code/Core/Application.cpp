@@ -1,8 +1,7 @@
 #include "pch.h"
-#include "Core/Application.h"
+#include "Application.h"
 #include "Core/Logger.h"
 #include "Scene/Scene.h"
-#include "Renderer/Graphics/Color.h"
 
 #include <SDL2/SDL.h>
 

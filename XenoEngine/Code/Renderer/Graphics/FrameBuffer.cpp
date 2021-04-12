@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Graphics/FrameBuffer.h"
+#include "FrameBuffer.h"
 #include "Renderer/Graphics/Texture.h"
 #include "Core/Window.h"
 #include "Renderer/Graphics/RenderBuffer.h"

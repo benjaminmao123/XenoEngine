@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Graphics/Shader.h"
+#include "Shader.h"
 #include "Core/Logger.h"
 #include "Core/Assert.h"
 
@@ -14,7 +14,12 @@ Xeno::Shader::Shader(const std::string& name, const std::vector<ShaderSource>& s
     Shader(name)
 {
     for (const auto& source : sources)
-        ProcessShader(source);
+    {
+        mInitSuccess = ProcessShader(source);
+
+        if (!mInitSuccess)
+            break;
+    }
 }
 
 Xeno::Shader::~Shader()

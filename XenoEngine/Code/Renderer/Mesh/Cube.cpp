@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Mesh/Cube.h"
+#include "Cube.h"
 
 Xeno::Cube::Cube(const Topology topology) :
     Mesh(topology)

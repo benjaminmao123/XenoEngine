@@ -10,3 +10,8 @@
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+#include <glm/glm.hpp>
+#include <SDL2/SDL.h>
+#include <glad/glad.h>
+#include <stb/stb_image.h>
+#include <spdlog/spdlog.h>

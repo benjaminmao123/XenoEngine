@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Graphics/Texture.h"
+#include "Texture.h"
 #include "Core/Logger.h"
 #include "Core/Assert.h"
 

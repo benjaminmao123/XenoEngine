@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Resource/ResourceManager.h"
+#include "ResourceManager.h"
 #include "Renderer/Graphics/Texture.h"
 #include "Renderer/Graphics/Shader.h"
 
@@ -21,6 +21,20 @@ Xeno::Texture* Xeno::ResourceManager::GetTexture(const std::string& path)
     const auto& res = sTextureCache[path];
 
     return res.get();
+}
+
+std::shared_ptr<Xeno::Texture> Xeno::ResourceManager::GetTextureRef(const std::string& path)
+{
+    const auto& res = sTextureCache[path];
+
+    return res;
+}
+
+std::shared_ptr<Xeno::Shader> Xeno::ResourceManager::GetShaderRef(const std::string& name)
+{
+    const auto& res = sShaderCache[name];
+
+    return res;
 }
 
 bool Xeno::ResourceManager::AddShader(const std::shared_ptr<Shader>& shader)

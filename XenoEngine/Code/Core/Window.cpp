@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Core/Window.h"
+#include "Window.h"
 #include "Core/Logger.h"
 
 #include <glad/glad.h>

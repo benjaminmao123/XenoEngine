@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Mesh/Quad.h"
+#include "Quad.h"
 
 Xeno::Quad::Quad(const Topology topology) :
     Mesh(topology)

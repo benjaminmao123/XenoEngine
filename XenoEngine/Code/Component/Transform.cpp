@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Component/Transform.h"
+#include "Transform.h"
 
 #include <glm/gtx/matrix_decompose.hpp>
 
