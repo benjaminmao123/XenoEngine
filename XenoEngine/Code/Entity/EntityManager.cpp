@@ -62,7 +62,7 @@ void Xeno::EntityManager::DestroyEntity(const std::string& name)
 	const auto entityIt = std::find_if(mEntities.begin(),mEntities.end(),
 [&](const std::shared_ptr<Entity>& entity)
     {
-     return entity->GetName() == name;
+        return entity->GetName() == name;
     });
 
 	if (entityIt == mEntities.end())

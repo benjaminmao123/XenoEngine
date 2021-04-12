@@ -7,32 +7,51 @@
 
 namespace Xeno
 {
-    struct XENO_API Color
+    class XENO_API Color
     {
-        explicit Color(const uint8_t red = 255,
-                       const uint8_t green = 255,
-                       const uint8_t blue = 255,
-                       const uint8_t alpha = 255) :
+    public:
+        explicit Color(const float red = 1.0f,
+                       const float green = 1.0f,
+                       const float blue = 1.0f,
+                       const float alpha = 1.0f) :
             r(red), g(green), b(blue), a(alpha)
         { }
 
-        static Color Black() { return Color(0, 0, 0, 255); }
-        static Color White() { return Color(255, 255, 255, 255); }
-        static Color Red() { return Color(255, 0, 0, 255); }
-        static Color Green() { return Color(0, 255, 0, 255); }
-        static Color Blue() { return Color(0, 0, 255, 255); }
-        static Color Yellow() { return Color(255, 255, 0, 255); }
-        static Color Magenta() { return Color(255, 0, 255, 255); }
-        static Color Cyan() { return Color(0, 255, 255, 255); }
-        static Color Transparent() { return Color(0, 0, 0, 0); }
-        static Color Opaque() { return Color(0, 0, 0, 1); }
+        static Color CreateColorInt(const uint8_t red,
+                                    const uint8_t green,
+                                    const uint8_t blue,
+                                    const uint8_t alpha)
+        {
+            return Color(red / 255.0f, 
+                         green / 255.0f, 
+                         blue / 255.0f, 
+                         alpha / 255.0f);
+        }
 
-        [[nodiscard]] Color ToFloat() const { return Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f); }
+        static Color Black() { return Color(0.0f, 0.0f, 0.0f, 1.0f); }
+        static Color Gray() { return Color(0.5f, 0.5f, 0.5f, 1.0f); }
+        static Color White() { return Color(1.0f, 1.0f, 1.0f, 1.0f); }
+        static Color Red() { return Color(1.0f, 0.0f, 0.0f, 1.0f); }
+        static Color Green() { return Color(0.0f, 1.0f, 0.0f, 1.0f); }
+        static Color Blue() { return Color(0.0f, 0.0f, 1.0f, 1.0f); }
+        static Color Yellow() { return Color(1.0f, 1.0f, 0.0f, 1.0f); }
+        static Color Magenta() { return Color(1.0f, 0.0f, 1.0f, 1.0f); }
+        static Color Cyan() { return Color(0, 1.0f, 1.0f, 1.0f); }
+        static Color Transparent() { return Color(0.0f, 0.0f, 0.0f, 0.0f); }
+        static Color Opaque() { return Color(0.0f, 0.0f, 0.0f, 1.0f / 255.0f); }
+
+        [[nodiscard]] Color ToInt() const
+        {
+            return Color(uint8_t(r * 255), 
+                         uint8_t(g * 255), 
+                         uint8_t(b * 255), 
+                         uint8_t(a * 255));
+        }
         [[nodiscard]] glm::vec4 ToVec4() const { return glm::vec4(r, g, b, a); }
-        
-        uint8_t r;
-        uint8_t g;
-        uint8_t b;
-        uint8_t a;
+
+        float r;
+        float g;
+        float b;
+        float a;
     };
 }

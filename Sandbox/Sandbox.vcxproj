@@ -118,6 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Code/Vendor/Glad;Code/Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,7 +127,8 @@
       <AdditionalDependencies>SDL2/SDL2.lib;SDL2/SDL2main.lib;SDL2/SDL2test.lib;assimp/assimp-vc142-mtd.lib;spdlog/spdlogd.lib;XenoEngine/XenoEngine64-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64-d.lib" "$(ProjectDir)Lib\XenoEngine"</Command>
+      <Command>del "$(ProjectDir)Lib\XenoEngine\*.lib"
+xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64-d.lib" "$(ProjectDir)Lib\XenoEngine"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -143,6 +145,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Code/Vendor/Glad;Code/Vendor;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Code\Vendor;Code</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -4,8 +4,9 @@
 #include "Component/Transform.h"
 #include "Component/Component.h"
 
-#include <glm/vec3.hpp>
-#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
+
+#include "Core/Window.h"
 
 namespace Xeno
 {
@@ -28,17 +29,29 @@ namespace Xeno
         [[nodiscard]] glm::mat4 GetProjection() const;
         [[nodiscard]] glm::mat4 GetView() const;
 
-        void SetFOV(float fov);
+        void SetFOV(float value);
         [[nodiscard]] float GetFOV() const;
-        void SetNear(float nearPlane);
+        void SetNear(float value);
         [[nodiscard]] float GetNear() const;
-        void SetFar(float farPlane);
+        void SetFar(float value);
         [[nodiscard]] float GetFar() const;
+        void SetLeft(float value);
+        [[nodiscard]] float GetLeft() const;
+        void SetRight(float value);
+        [[nodiscard]] float GetRight() const;
+        void SetBottom(float value);
+        [[nodiscard]] float GetBottom() const;
+        void SetTop(float value);
+        [[nodiscard]] float GetTop() const;
 
     private:
         ProjectionType mProjectionType;
         float mFOV = 45.0f;
         float mNear = 0.01f;
         float mFar = 1000.0f;
+        float mLeft;
+        float mRight;
+        float mBottom;
+        float mTop;
     };
 }

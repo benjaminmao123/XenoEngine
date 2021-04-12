@@ -23,7 +23,7 @@ protected:
 
         Entity* cameraEntity = scene->CreateEntity("camera");
         mCameraComponent = cameraEntity->AddComponent<Camera>();
-        cameraEntity->AddComponent<SceneCameraController>();
+        mCameraController = cameraEntity->AddComponent<SceneCameraController>();
         mCameraComponent->SetProjectionType(Camera::ProjectionType::PERSPECTIVE);
         scene->SetMainCamera(mCameraComponent);
 
@@ -36,10 +36,11 @@ protected:
         meshFilter->SetMesh(cubeMesh);
 
         //Entity* boxEntity2 = scene->CreateEntity("box2");
-        //boxEntity2->AddComponent<SpriteRenderer>();
-        //boxEntity2->GetComponent<Sprite>()->LoadTexture("Assets/Textures/container.jpg");
+        //Renderer* boxRenderer2 = boxEntity2->AddComponent<SpriteRenderer>();
+        //boxRenderer2->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
         //boxEntity2->GetTransform().SetScale(100, 100, 1);
         //boxEntity2->GetTransform().SetPosition(Window::GetCenter().x, Window::GetCenter().y, 0);
+        //mCameraController->SetPanSpeed(1000.0f);
     }
 
     void OnUpdate() override
@@ -49,4 +50,5 @@ protected:
 
 private:
     Camera* mCameraComponent = nullptr;
+    SceneCameraController* mCameraController = nullptr;
 };

@@ -16,19 +16,19 @@ void Xeno::SceneRenderer::Submit(const RenderCommand& command)
     sCommandBuffer.emplace_back(command);
 }
 
-void Xeno::SceneRenderer::Clear(const unsigned char r, 
-                           const unsigned char g, 
-                           const unsigned char b, 
-                           const unsigned char a, 
-                           const GLenum flags) const
+void Xeno::SceneRenderer::Clear(const uint8_t r,
+                                const uint8_t g,
+                                const uint8_t b,
+                                const uint8_t a,
+                                const uint32_t flags) const
 {
-    glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+    glClearColor((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f);
     glClear(flags);
 }
 
-void Xeno::SceneRenderer::Clear(const Color& color, const GLenum flags) const
+void Xeno::SceneRenderer::Clear(const Color& color, const uint32_t flags) const
 {
-    glClearColor(color.ToFloat().r, color.ToFloat().g, color.ToFloat().b, color.ToFloat().a);
+    glClearColor(color.r, color.g, color.b, color.a);
     glClear(flags);
 }
 
@@ -41,11 +41,11 @@ void Xeno::SceneRenderer::Init()
         return;
     }
 
-    auto whiteTexture = std::make_shared<Texture>("default_white", 1, 1, 
-                                                  GL_RGB, GL_RGB, 
-                                                  GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 
-                                                  GL_LINEAR, GL_LINEAR, 
-                                                  false);
+    const auto whiteTexture = std::make_shared<Texture>("default_white", 1, 1, 
+                                                        GL_RGB, GL_RGB, 
+                                                        GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 
+                                                        GL_LINEAR, GL_LINEAR, 
+                                                        false);
     uint32_t whiteTextureData = 0xffffffff;
     whiteTexture->SetData(&whiteTextureData);
     ResourceManager::AddTexture(whiteTexture);
@@ -72,7 +72,7 @@ void Xeno::SceneRenderer::Init()
 
 void Xeno::SceneRenderer::Render()
 {
-    Clear(Color::Black(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Clear(Color::Gray(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mData.mVAO->Bind();
 
@@ -85,18 +85,17 @@ void Xeno::SceneRenderer::Render()
     {
         const glm::mat4 mvp = SceneManager::GetActiveScene()->GetMainCamera()->GetViewProjection() *
             command.mTransform->GetModelMatrix();
-        const auto* shader = command.mShader;
 
-        if (!shader)
+        if (!command.mShader)
         {
             XN_CORE_ASSERT(false, "Trying to render without a shader!");
 
             return;
         }
 
-        shader->Bind();
-        shader->SetMat4("uMVP", mvp);
-        shader->SetFloat4("uColor", command.mColor.ToFloat().ToVec4());
+        command.mShader->Bind();
+        command.mShader->SetMat4("uMVP", mvp);
+        command.mShader->SetFloat4("uColor", command.mColor.ToVec4());
 
         if (!command.mTexture)
             ResourceManager::GetTexture("default_white")->Bind();
@@ -104,20 +103,20 @@ void Xeno::SceneRenderer::Render()
             command.mTexture->Bind();
 
         mData.mVBO->SetDataNew(&command.mMesh->mVertices[0], 
-                               command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
+                               (uint32_t)command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
                                GL_DYNAMIC_DRAW);
 
         if (!command.mMesh->mIndices.empty())
         {
             mData.mEBO->SetIndicesNew(&command.mMesh->mIndices[0],
-                                      command.mMesh->mIndices.size(),
+                                      (uint32_t)command.mMesh->mIndices.size(),
                                       GL_DYNAMIC_DRAW);
             mData.mEBO->Bind();
 
             glDrawElements((GLenum)command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
         else
-            glDrawArrays((GLenum)command.mMesh->mTopology, 0, command.mMesh->mVertices.size());
+            glDrawArrays((GLenum)command.mMesh->mTopology, 0, (uint32_t)command.mMesh->mVertices.size());
     }
 
     sCommandBuffer.clear();

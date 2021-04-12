@@ -37,6 +37,11 @@ glm::vec2 Xeno::Input::GetAxis(const AxisType type)
 	return glm::vec2(0.0f, 0.0f);
 }
 
+const glm::vec2& Xeno::Input::GetMouseScrollDelta()
+{
+	return sMouseScrollDelta;
+}
+
 Xeno::Input::Input()
 {
 	sKeyboardState = SDL_GetKeyboardState(&sNumKeys);
@@ -48,6 +53,7 @@ void Xeno::Input::Update()
 {
 	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
 	sMouseAxis = glm::vec2(0.0f, 0.0f);
+	sMouseScrollDelta = glm::vec<2, int32_t>(0, 0);
 }
 
 void Xeno::Input::ProcessEvents(const SDL_Event& event)
@@ -55,12 +61,16 @@ void Xeno::Input::ProcessEvents(const SDL_Event& event)
 	switch (event.type)
 	{
 	case SDL_MOUSEMOTION:
-		sMouseAxis.x = event.motion.xrel * Time::GetDeltaTime();
-		sMouseAxis.y = event.motion.yrel * Time::GetDeltaTime();
+		sMouseAxis.x = event.motion.xrel;
+		sMouseAxis.y = event.motion.yrel;
 		break;
 	case SDL_JOYAXISMOTION:
 		sJoystickAxis.x = event.motion.xrel;
 		sJoystickAxis.y = event.motion.yrel;
+		break;
+	case SDL_MOUSEWHEEL:
+		sMouseScrollDelta.x = event.wheel.x;
+		sMouseScrollDelta.y = event.wheel.y;
 		break;
 	default:
 		break;

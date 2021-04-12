@@ -300,6 +300,7 @@ namespace Xeno
         // @brief Gets the current mouse mPosition on the screen.
         // @return glm::vec2: The mouse x and y mPosition.
         static glm::vec2 GetAxis(AxisType type);
+        static const glm::vec2& GetMouseScrollDelta();
 
     private:
         // @brief Default constructor.
@@ -320,9 +321,10 @@ namespace Xeno
         // @brief Previous mouse state.
         static inline uint32_t sPrevMouseState;
         // @brief Stores the value of the mouse axis.
-        static inline glm::vec2 sMouseAxis;
+        static inline glm::vec<2, int32_t> sMouseAxis;
         // @brief Stores the value of the joystick axis.
-        static inline glm::vec2 sJoystickAxis;
+        static inline glm::vec<2, int32_t> sJoystickAxis;
+        static inline glm::vec<2, int32_t> sMouseScrollDelta;
 
         friend class Application;
     };
