@@ -40,8 +40,6 @@ void Xeno::RenderBuffer::SetStorage(const uint32_t width, const uint32_t height,
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, numSamples, (GLenum)format, width, height);
     else
         glRenderbufferStorage(GL_RENDERBUFFER, (GLenum)format, width, height);
-
-    Unbind();
 }
 
 uint32_t Xeno::RenderBuffer::GetObjectID() const

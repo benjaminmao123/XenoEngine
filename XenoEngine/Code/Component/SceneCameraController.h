@@ -16,8 +16,8 @@ namespace Xeno
         [[nodiscard]] float GetPanSpeed() const;
         void SetSensitivity(float value);
         [[nodiscard]] float GetSensitivity() const;
-        void SetZoomLevel(float value);
-        [[nodiscard]] float GetZoomLevel() const;
+        void SetZoomFactor(float value);
+        [[nodiscard]] float GetZoomFactor() const;
 
     private:
         void OnStart() override;

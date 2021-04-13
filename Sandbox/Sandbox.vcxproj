@@ -170,6 +170,16 @@ xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64-d.lib" "$(ProjectDir)Lib\Xen
   <ItemGroup>
     <ClInclude Include="Code\Sandbox.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\frag1.glsl">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Assets\Shaders\vertex1.glsl">
+      <SubType>
+      </SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

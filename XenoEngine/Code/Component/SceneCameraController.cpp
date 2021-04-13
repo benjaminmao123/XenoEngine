@@ -34,12 +34,12 @@ float Xeno::SceneCameraController::GetSensitivity() const
     return mSensitivity;
 }
 
-void Xeno::SceneCameraController::SetZoomLevel(float value)
+void Xeno::SceneCameraController::SetZoomFactor(const float value)
 {
     mZoomFactor = value;
 }
 
-float Xeno::SceneCameraController::GetZoomLevel() const
+float Xeno::SceneCameraController::GetZoomFactor() const
 {
     return mZoomFactor;
 }
@@ -56,18 +56,23 @@ void Xeno::SceneCameraController::OnUpdate()
         if (mCamera->GetProjectionType() == Camera::ProjectionType::ORTHOGRAPHIC)
         {
             if (Input::GetKey(Input::KeyCode::W))
-                mCamera->GetTransform().Translate(0, -mCameraPanSpeed * Time::GetDeltaTime(), 0);
-            if (Input::GetKey(Input::KeyCode::S))
-                mCamera->GetTransform().Translate(0, mCameraPanSpeed * Time::GetDeltaTime(), 0);
+                mCamera->GetTransform().Translate(0, -mCameraPanSpeed * 
+                                                  Time::GetDeltaTime(), 0);
             if (Input::GetKey(Input::KeyCode::A))
-                mCamera->GetTransform().Translate(-mCameraPanSpeed * Time::GetDeltaTime(), 0, 0);
+                mCamera->GetTransform().Translate(-mCameraPanSpeed * 
+                                                  Time::GetDeltaTime(), 0, 0);
+            if (Input::GetKey(Input::KeyCode::S))
+                mCamera->GetTransform().Translate(0, mCameraPanSpeed * 
+                                                  Time::GetDeltaTime(), 0);
             if (Input::GetKey(Input::KeyCode::D))
-                mCamera->GetTransform().Translate(mCameraPanSpeed * Time::GetDeltaTime(), 0, 0);
+                mCamera->GetTransform().Translate(mCameraPanSpeed * 
+                                                  Time::GetDeltaTime(), 0, 0);
 
             if (Input::GetMouseScrollDelta().y)
             {
-                mZoomFactor = -Input::GetMouseScrollDelta().y * 0.25f;
-                const float deltaHeight = mZoomFactor * (mCamera->GetTop() - mCamera->GetBottom() + (mCamera->GetRight() - mCamera->GetLeft())) / 2;
+                const float zoom = -Input::GetMouseScrollDelta().y * mZoomFactor * 0.25f;
+                const float deltaHeight = zoom * (mCamera->GetTop() - mCamera->GetBottom() +
+                                                  (mCamera->GetRight() - mCamera->GetLeft())) / 2;
                 const float deltaWidth = deltaHeight * Window::GetAspectRatio();
 
                 mCamera->SetLeft(mCamera->GetLeft() - deltaWidth);
@@ -79,23 +84,29 @@ void Xeno::SceneCameraController::OnUpdate()
         else
         {
             if (Input::GetKey(Input::KeyCode::W))
-                mCamera->GetTransform().Translate(mCamera->GetTransform().GetForward() * mCameraPanSpeed * Time::GetDeltaTime());
-            if (Input::GetKey(Input::KeyCode::S))
-                mCamera->GetTransform().Translate(-mCamera->GetTransform().GetForward() * mCameraPanSpeed * Time::GetDeltaTime());
+                mCamera->GetTransform().Translate(mCamera->GetTransform().GetForward() * 
+                                                  mCameraPanSpeed * Time::GetDeltaTime());
             if (Input::GetKey(Input::KeyCode::A))
-                mCamera->GetTransform().Translate(-mCamera->GetTransform().GetRight() * mCameraPanSpeed * Time::GetDeltaTime());
+                mCamera->GetTransform().Translate(-mCamera->GetTransform().GetRight() * 
+                                                  mCameraPanSpeed * Time::GetDeltaTime());
+            if (Input::GetKey(Input::KeyCode::S))
+                mCamera->GetTransform().Translate(-mCamera->GetTransform().GetForward() * 
+                                                  mCameraPanSpeed * Time::GetDeltaTime());
             if (Input::GetKey(Input::KeyCode::D))
-                mCamera->GetTransform().Translate(mCamera->GetTransform().GetRight() * mCameraPanSpeed * Time::GetDeltaTime());
+                mCamera->GetTransform().Translate(mCamera->GetTransform().GetRight() * 
+                                                  mCameraPanSpeed * Time::GetDeltaTime());
 
             const glm::vec2 mouse = Input::GetAxis(Input::AxisType::MOUSE);
 
-            mCamera->GetTransform().Rotate(0.0f, mouse.x * mSensitivity * Time::GetDeltaTime(), 0.0f, Transform::Space::SELF);
-            mCamera->GetTransform().Rotate(mouse.y * mSensitivity * Time::GetDeltaTime(), 0.0f, 0.0f, Transform::Space::WORLD);
+            mCamera->GetTransform().Rotate(0.0f, mouse.x * mSensitivity * 
+                                           Time::GetDeltaTime(), 0.0f, Transform::Space::SELF);
+            mCamera->GetTransform().Rotate(mouse.y * mSensitivity * 
+                                           Time::GetDeltaTime(), 0.0f, 0.0f, Transform::Space::WORLD);
 
             if (Input::GetMouseScrollDelta().y)
             {
-                mZoomFactor = Input::GetMouseScrollDelta().y * 2;
-                mCamera->SetFOV(mCamera->GetFOV() - mZoomFactor);
+                const float zoom = mZoomFactor * Input::GetMouseScrollDelta().y;
+                mCamera->SetFOV(mCamera->GetFOV() - zoom);
 
                 if (mCamera->GetFOV() < 1.0f)
                     mCamera->SetFOV(1.0f);

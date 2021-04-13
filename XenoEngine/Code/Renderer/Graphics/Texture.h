@@ -11,32 +11,37 @@ namespace Xeno
     class XENO_API Texture
     {
     public:
-        explicit Texture(std::string path,
-                         uint32_t internalFormat = GL_RGB, 
-                         uint32_t imageFormat = GL_RGB,
-                         uint32_t wrapS = GL_REPEAT, 
-                         uint32_t wrapT = GL_REPEAT,
-                         uint32_t filterMin = GL_LINEAR, 
-                         uint32_t filterMax = GL_LINEAR,
-                         bool mipMapping = true,
-                         int32_t mipMapLevel = 0);
-        explicit Texture(std::string name,
-                         uint32_t width, uint32_t height,
-                         uint32_t internalFormat = GL_RGB,
-                         uint32_t imageFormat = GL_RGB,
-                         uint32_t wrapS = GL_REPEAT,
-                         uint32_t wrapT = GL_REPEAT,
-                         uint32_t filterMin = GL_LINEAR,
-                         uint32_t filterMax = GL_LINEAR,
-                         bool mipMapping = true,
-                         int32_t mipMapLevel = 0,
-                         int32_t numSamples = 1);
+        enum class TextureFormat
+        {
+            RGB = GL_RGB,
+            RGBA = GL_RGBA
+        };
+
+        struct TextureProperties
+        {
+            std::string mPath;
+            uint32_t mWidth = 1;
+            uint32_t mHeight = 1;
+            TextureFormat mInternalFormat = TextureFormat::RGBA;
+            TextureFormat mImageFormat = TextureFormat::RGBA;
+            uint32_t mDataType = GL_UNSIGNED_BYTE;
+            uint32_t mWrapS = GL_REPEAT;
+            uint32_t mWrapT = GL_REPEAT;
+            uint32_t mFilterMin = GL_LINEAR;
+            uint32_t mFilterMax = GL_LINEAR;
+        };
+
+        explicit Texture(TextureProperties props, int32_t mipMapLevel = 0);
+        explicit Texture(void* data, TextureProperties props, int32_t mipMapLevel = 0);
+        explicit Texture(TextureProperties props, int32_t numSamples, bool fixed);
         ~Texture();
         Texture& operator=(const Texture& other) = delete;
 
         void Bind(uint32_t slot = 0) const;
 
-        void SetData(void* data) const;
+        void SetDataNew(void* data, TextureProperties props, int32_t mipMapLevel = 0);
+        void SetDataExisting(void* data, int32_t mipMapLevel = 0) const;
+
         void SetWrapS(uint32_t mode);
         void SetWrapT(uint32_t mode);
         void SetFilterMin(uint32_t mode);
@@ -50,20 +55,10 @@ namespace Xeno
         [[nodiscard]] bool InitSuccess() const;
 
     private:
-        bool GenerateTextureFromFile();
+        bool GenerateTextureFromFile(int32_t mipMapLevel);
 
-        std::string mPath;
-        uint32_t mObjectID;
-        uint32_t mWidth;
-        uint32_t mHeight;
-        uint32_t mInternalFormat;
-        uint32_t mImageFormat;
-        uint32_t mWrapS;
-        uint32_t mWrapT;
-        uint32_t mFilterMin;
-        uint32_t mFilterMax;
-        bool mMipMapping;
-        int32_t mMipMapLevel;
+        uint32_t mObjectID = 0;
+        TextureProperties mProps;
         bool mInitSuccess = true;
     };
 }

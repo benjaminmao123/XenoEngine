@@ -26,9 +26,9 @@ Xeno::FrameBuffer::~FrameBuffer()
     delete mRenderBuffer;
 }
 
-void Xeno::FrameBuffer::Bind() const
+void Xeno::FrameBuffer::Bind(const uint32_t mode) const
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, mObjectID);
+    glBindFramebuffer(mode, mObjectID);
     glViewport(0, 0, mProps.mWidth, mProps.mHeight);
 }
 
@@ -39,6 +39,8 @@ void Xeno::FrameBuffer::Unbind() const
 
 void Xeno::FrameBuffer::Invalidate()
 {
+    XN_CORE_INFO("Generating Framebuffer...");
+
     if (mObjectID)
     {
         glDeleteFramebuffers(1, &mObjectID);
@@ -47,6 +49,7 @@ void Xeno::FrameBuffer::Invalidate()
             delete i;
 
         mColorAttachments.clear();
+        mColorAttachmentBuffer.clear();
     }
 
     glGenFramebuffers(1, &mObjectID);
@@ -56,20 +59,19 @@ void Xeno::FrameBuffer::Invalidate()
 
     for (std::size_t i = 0; i < mProps.mColorFormats.size(); ++i)
     {
-        mColorAttachments[i] = new Texture("color_attachment",
-                                           mProps.mWidth,
-                                           mProps.mHeight,
-                                           (GLenum)mProps.mColorFormats[i],
-                                           (GLenum)mProps.mColorFormats[i],
-                                           GL_CLAMP_TO_EDGE,
-                                           GL_CLAMP_TO_EDGE,
-                                           GL_LINEAR,
-                                           GL_LINEAR,
-                                           false,
-                                           0,
-                                           mProps.mSamples);
+        const Texture::TextureProperties props =
+        {
+            "",
+            mProps.mWidth, mProps.mHeight,
+            mProps.mColorFormats[i], mProps.mColorFormats[i],
+            GL_UNSIGNED_BYTE,
+            GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,
+            GL_LINEAR, GL_LINEAR
+        };
 
-        if (mProps.mSamples > 1)
+        mColorAttachments[i] = new Texture(props, mProps.mNumSamples, false);
+
+        if (mProps.mNumSamples > 1)
             glFramebufferTexture2D(GL_FRAMEBUFFER,
                                    GL_COLOR_ATTACHMENT0 + i,
                                    GL_TEXTURE_2D_MULTISAMPLE,
@@ -81,16 +83,30 @@ void Xeno::FrameBuffer::Invalidate()
                                    GL_TEXTURE_2D, 
                                    mColorAttachments[i]->GetObjectID(), 
                                    0);
+
+        mColorAttachmentBuffer.emplace_back(GL_COLOR_ATTACHMENT0 + i);
     }
 
     if (mProps.mDepthStencilFormat != DepthStencilFormat::NONE)
     {
-        mRenderBuffer->SetStorage(mProps.mWidth, mProps.mHeight, mProps.mDepthStencilFormat, mProps.mSamples);
+        mRenderBuffer->SetStorage(mProps.mWidth, mProps.mHeight, mProps.mDepthStencilFormat, mProps.mNumSamples);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, mRenderBuffer->GetObjectID());
     }
 
+    if (!mColorAttachmentBuffer.empty())
+        glDrawBuffers(mColorAttachments.size(), &mColorAttachmentBuffer[0]);
+    else
+        glDrawBuffer(GL_NONE);
+
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        XN_CORE_ERROR("Framebuffer is not complete.");
+    {
+        XN_CORE_ERROR("Framebuffer is not complete.\n");
+        Unbind();
+
+        return;
+    }
+
+    XN_CORE_INFO("Successfully generated Framebuffer.\n");
 
     Unbind();
 }
@@ -99,7 +115,7 @@ void Xeno::FrameBuffer::Resize(const uint32_t width, const uint32_t height)
 {
     if (!width || !height || width > sMaxFrameBufferSize || height > sMaxFrameBufferSize)
     {
-        XN_CORE_WARN("Attempted to rezize framebuffer to {0}, {1}", width, height);
+        XN_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
 
         return;
     }
@@ -110,9 +126,19 @@ void Xeno::FrameBuffer::Resize(const uint32_t width, const uint32_t height)
     Invalidate();
 }
 
-uint32_t Xeno::FrameBuffer::GetColorAttachmentObjectID(const uint32_t index) const
+uint32_t Xeno::FrameBuffer::GetWidth() const
+{
+    return mProps.mWidth;
+}
+
+uint32_t Xeno::FrameBuffer::GetHeight() const
+{
+    return mProps.mHeight;
+}
+
+const Xeno::Texture* Xeno::FrameBuffer::GetColorAttachment(const uint32_t index) const
 {
     XN_CORE_ASSERT(index < mColorAttachments.size());
 
-    return mColorAttachments[index]->GetObjectID();
+    return mColorAttachments[index];
 }

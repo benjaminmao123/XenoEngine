@@ -90,16 +90,10 @@ glm::mat4 Xeno::Camera::GetViewProjection() const
 glm::mat4 Xeno::Camera::GetProjection() const
 {
     if (mProjectionType == ProjectionType::ORTHOGRAPHIC)
-        return glm::ortho(mLeft,
-            mRight,
-            mBottom,
-            mTop,
-            mNear,
-            mFar);
+        return glm::ortho(mLeft, mRight, mBottom, mTop, mNear, mFar);
 
     return glm::perspective(glm::radians(mFOV),
-        Window::GetAspectRatio(),
-        mNear, mFar);
+        Window::GetAspectRatio(), mNear, mFar);
 }
 
 glm::mat4 Xeno::Camera::GetView() const

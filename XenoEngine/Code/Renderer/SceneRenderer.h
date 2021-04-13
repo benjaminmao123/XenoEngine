@@ -17,6 +17,7 @@ namespace Xeno
     class Texture;
     class Shader;
     class ElementBuffer;
+    class FrameBuffer;
 
     class XENO_API SceneRenderer : public NonCopyable
     {
@@ -32,11 +33,7 @@ namespace Xeno
 
         static void Submit(const RenderCommand& command);
 
-        void Clear(uint8_t r,
-                   uint8_t g,
-                   uint8_t b,
-                   uint8_t a,
-                   uint32_t flags) const;
+        void Clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a, uint32_t flags) const;
         void Clear(const Color& color, uint32_t flags) const;
 
     private:
@@ -45,12 +42,13 @@ namespace Xeno
             std::shared_ptr<VertexArray> mVAO;
             std::shared_ptr<VertexBuffer> mVBO;
             std::shared_ptr<ElementBuffer> mEBO;
+            std::shared_ptr<FrameBuffer> mFBO;
         } mData;
 
         SceneRenderer() = default;
 
         void Init();
-        void Render();
+        void Render() const;
 
         static inline std::deque<RenderCommand> sCommandBuffer;
         BatchManager mBatchManager;

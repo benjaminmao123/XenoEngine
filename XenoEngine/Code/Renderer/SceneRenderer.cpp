@@ -10,17 +10,15 @@
 #include "Renderer/Graphics/ElementBuffer.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
+#include "Renderer/Graphics/FrameBuffer.h"
 
 void Xeno::SceneRenderer::Submit(const RenderCommand& command)
 {
     sCommandBuffer.emplace_back(command);
 }
 
-void Xeno::SceneRenderer::Clear(const uint8_t r,
-                                const uint8_t g,
-                                const uint8_t b,
-                                const uint8_t a,
-                                const uint32_t flags) const
+void Xeno::SceneRenderer::Clear(const uint8_t r, const uint8_t g, const uint8_t b, 
+                                const uint8_t a, const uint32_t flags) const
 {
     glClearColor((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f);
     glClear(flags);
@@ -41,20 +39,36 @@ void Xeno::SceneRenderer::Init()
         return;
     }
 
-    const auto whiteTexture = std::make_shared<Texture>("default_white", 1, 1, 
-                                                        GL_RGB, GL_RGB, 
-                                                        GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 
-                                                        GL_LINEAR, GL_LINEAR, 
-                                                        false);
-    uint32_t whiteTextureData = 0xffffffff;
-    whiteTexture->SetData(&whiteTextureData);
+    static uint8_t whiteTextureData[] = { 255, 255, 255, 255 };
+    Texture::TextureProperties whiteTextureProps =
+    {
+        "white",
+        1, 1,
+        Texture::TextureFormat::RGBA, Texture::TextureFormat::RGBA,
+        GL_UNSIGNED_BYTE,
+        GL_REPEAT, GL_REPEAT,
+        GL_LINEAR, GL_LINEAR
+    };
+    const auto whiteTexture = std::make_shared<Texture>(whiteTextureData, whiteTextureProps);
     ResourceManager::AddTexture(whiteTexture);
 
     auto shader = std::make_shared<Shader>("default");
     shader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
     shader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
     ResourceManager::AddShader(shader);
-    shader->Bind();
+
+    auto shader1 = std::make_shared<Shader>("default1");
+    shader1->AddShader({ "Assets/Shaders/vertex1.glsl", Shader::ShaderType::VERTEX });
+    shader1->AddShader({ "Assets/Shaders/frag1.glsl", Shader::ShaderType::FRAGMENT });
+    ResourceManager::AddShader(shader1);
+
+    FrameBuffer::FrameBufferProperties props = 
+    {
+        Window::GetWidth(), Window::GetHeight(),
+        { Texture::TextureFormat::RGBA },
+        FrameBuffer::DepthStencilFormat::DEPTH24_STENCIL8
+    };
+    mData.mFBO = std::make_shared<FrameBuffer>(props);
 
     mData.mVAO = std::make_shared<VertexArray>();
     mData.mVBO = std::make_shared<VertexBuffer>(GL_DYNAMIC_DRAW);
@@ -65,21 +79,24 @@ void Xeno::SceneRenderer::Init()
     mData.mVBO->PushElement({ "UV", 2, GL_FLOAT, sizeof(float) });
     mData.mVBO->PushElement({ "Normal", 3, GL_FLOAT, sizeof(float) });
     mData.mVBO->PushElement({ "Tangent", 3, GL_FLOAT, sizeof(float) });
-    mData.mVBO->PushElement({ "BiTangent", 3, GL_FLOAT, sizeof(float) });
+    mData.mVBO->PushElement({ "Bitangent", 3, GL_FLOAT, sizeof(float) });
 
     mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
 }
 
-void Xeno::SceneRenderer::Render()
+void Xeno::SceneRenderer::Render() const
 {
+    mData.mFBO->Bind();
+
     Clear(Color::Gray(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mData.mVAO->Bind();
-
-    if (SceneManager::GetActiveScene()->GetMainCamera()->GetProjectionType() == Camera::ProjectionType::PERSPECTIVE)
+    if (SceneManager::GetActiveScene()->GetMainCamera()->GetProjectionType() == 
+        Camera::ProjectionType::PERSPECTIVE)
         glEnable(GL_DEPTH_TEST);
     else
         glDisable(GL_DEPTH_TEST);
+
+    mData.mVAO->Bind();
 
     for (const auto& command : sCommandBuffer)
     {
@@ -98,7 +115,7 @@ void Xeno::SceneRenderer::Render()
         command.mShader->SetFloat4("uColor", command.mColor.ToVec4());
 
         if (!command.mTexture)
-            ResourceManager::GetTexture("default_white")->Bind();
+            ResourceManager::GetTexture("white")->Bind();
         else
             command.mTexture->Bind();
 
@@ -118,6 +135,10 @@ void Xeno::SceneRenderer::Render()
         else
             glDrawArrays((GLenum)command.mMesh->mTopology, 0, (uint32_t)command.mMesh->mVertices.size());
     }
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBlitFramebuffer(0, 0, mData.mFBO->GetWidth(), mData.mFBO->GetHeight(), 0, 0, Window::GetWidth(), Window::GetHeight(),
+                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
     sCommandBuffer.clear();
 }

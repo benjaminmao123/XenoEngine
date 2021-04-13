@@ -27,7 +27,7 @@ namespace Xeno
         void Unbind() const;
 
         void AddBuffer(const std::shared_ptr<VertexBuffer>& vbo, 
-                       const std::shared_ptr<ElementBuffer>& ebo);
+                       const std::shared_ptr<ElementBuffer>& ebo = nullptr);
 
         [[nodiscard]] const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const;
 

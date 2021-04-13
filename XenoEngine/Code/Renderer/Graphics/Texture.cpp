@@ -4,50 +4,56 @@
 #include "Core/Assert.h"
 
 #include <stb/stb_image.h>
+#include <utility>
 
-Xeno::Texture::Texture(std::string path,
-                       const uint32_t internalFormat, const uint32_t imageFormat,
-                       const uint32_t wrapS, const uint32_t wrapT,
-                       const uint32_t filterMin, const uint32_t filterMax,
-                       bool mipMapping, const int32_t mipMapLevel) :
-    mPath(std::move(path)),
-    mInternalFormat(internalFormat), mImageFormat(imageFormat),
-    mWrapS(wrapS), mWrapT(wrapT),
-    mFilterMin(filterMin), mFilterMax(filterMax),
-    mMipMapping(mipMapping), mMipMapLevel(mipMapLevel)
+Xeno::Texture::Texture(TextureProperties props, const int32_t mipMapLevel) :
+    mProps(std::move(props))
 {
     stbi_set_flip_vertically_on_load(1);
 
     glGenTextures(1, &mObjectID);
-    mInitSuccess = GenerateTextureFromFile();
+
+    mInitSuccess = GenerateTextureFromFile(mipMapLevel);
 }
 
-Xeno::Texture::Texture(std::string name,
-                       const uint32_t width, const uint32_t height,
-                       const uint32_t internalFormat, const uint32_t imageFormat,
-                       const uint32_t wrapS, const uint32_t wrapT,
-                       const uint32_t filterMin, const uint32_t filterMax,
-                       const bool mipMapping, const int32_t mipMapLevel,
-                       const int32_t numSamples) :
-    mPath(std::move(name)),
-    mWidth(width), mHeight(height),
-    mInternalFormat(internalFormat), mImageFormat(imageFormat),
-    mWrapS(wrapS), mWrapT(wrapT),
-    mFilterMin(filterMin), mFilterMax(filterMax),
-    mMipMapping(mipMapping), mMipMapLevel(mipMapLevel)
+Xeno::Texture::Texture(void* data, TextureProperties props, const int32_t mipMapLevel) :
+    mProps(std::move(props))
 {
+    stbi_set_flip_vertically_on_load(1);
+
     glGenTextures(1, &mObjectID);
 
+    SetDataNew(data, mProps, mipMapLevel);
+}
+
+Xeno::Texture::Texture(TextureProperties props, const int32_t numSamples, const bool fixed) :
+    mProps(std::move(props))
+{
+    glGenTextures(1, &mObjectID);
+    Bind();
+
     if (numSamples > 1)
-        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, numSamples, imageFormat, width, height, GL_FALSE);
+        glTexImage2DMultisample(GL_TEXTURE_2D, 
+                                numSamples, 
+                                (uint32_t)mProps.mInternalFormat, 
+                                mProps.mWidth, mProps.mHeight, 
+                                fixed);
     else
     {
-        glTexStorage2D(mObjectID, 1, mInternalFormat, mWidth, mHeight);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     (uint32_t)mProps.mInternalFormat,
+                     mProps.mWidth,
+                     mProps.mHeight,
+                     0,
+                     (uint32_t)mProps.mImageFormat,
+                     mProps.mDataType,
+                     nullptr);
 
-        glTextureParameteri(mObjectID, GL_TEXTURE_MIN_FILTER, mFilterMin);
-        glTextureParameteri(mObjectID, GL_TEXTURE_MAG_FILTER, mFilterMax);
-        glTextureParameteri(mObjectID, GL_TEXTURE_WRAP_S, mWrapS);
-        glTextureParameteri(mObjectID, GL_TEXTURE_WRAP_T, mWrapT);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mProps.mFilterMin);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mProps.mFilterMax);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mProps.mWrapS);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mProps.mWrapT);
     }
 }
 
@@ -56,52 +62,87 @@ Xeno::Texture::~Texture()
     glDeleteTextures(1, &mObjectID);
 }
 
-void Xeno::Texture::Bind(uint32_t slot) const
+void Xeno::Texture::Bind(const uint32_t slot) const
 {
     glBindTextureUnit(slot, mObjectID);
 }
 
-void Xeno::Texture::SetData(void* data) const
+void Xeno::Texture::SetDataNew(void* data, TextureProperties props, const int32_t mipMapLevel)
 {
-    glTextureSubImage2D(mObjectID, 0, 0, 0, mWidth, mHeight, mImageFormat, GL_UNSIGNED_BYTE, data);
+    mProps = std::move(props);
+
+    Bind();
+
+    glTexImage2D(GL_TEXTURE_2D,
+                 mipMapLevel,
+                 (uint32_t)mProps.mInternalFormat,
+                 mProps.mWidth,
+                 mProps.mHeight,
+                 0,
+                 (uint32_t)mProps.mImageFormat,
+                 mProps.mDataType,
+                 data);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mProps.mWrapS);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mProps.mWrapT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mProps.mFilterMin);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mProps.mFilterMax);
+
+    if (mipMapLevel)
+        glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void Xeno::Texture::SetDataExisting(void* data, const int32_t mipMapLevel) const
+{
+    Bind();
+
+    glTexSubImage2D(GL_TEXTURE_2D,
+                    mipMapLevel,
+                    0,
+                    0,
+                    mProps.mWidth,
+                    mProps.mHeight,
+                    (uint32_t)mProps.mImageFormat,
+                    mProps.mDataType,
+                    data);
 }
 
 void Xeno::Texture::SetWrapS(const uint32_t mode)
 {
-    mWrapS = mode;
+    mProps.mWrapS = mode;
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mProps.mWrapS);
 }
 
 void Xeno::Texture::SetWrapT(const uint32_t mode)
 {
-    mWrapT = mode;
+    mProps.mWrapT = mode;
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mWrapS);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mProps.mWrapS);
 }
 
 void Xeno::Texture::SetFilterMin(const uint32_t mode)
 {
-    mFilterMin = mode;
+    mProps.mFilterMin = mode;
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mProps.mFilterMin);
 }
 
 void Xeno::Texture::SetFilterMax(const uint32_t mode)
 {
-    mFilterMax = mode;
+    mProps.mFilterMax = mode;
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mFilterMax);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mProps.mFilterMax);
 }
 
 uint32_t Xeno::Texture::GetWidth() const
 {
-    return mWidth;
+    return mProps.mWidth;
 }
 
 uint32_t Xeno::Texture::GetHeight() const
 {
-    return mHeight;
+    return mProps.mHeight;
 }
 
 uint32_t Xeno::Texture::GetObjectID() const
@@ -111,7 +152,7 @@ uint32_t Xeno::Texture::GetObjectID() const
 
 const std::string& Xeno::Texture::GetPath() const
 {
-    return mPath;
+    return mProps.mPath;
 }
 
 bool Xeno::Texture::InitSuccess() const
@@ -119,58 +160,25 @@ bool Xeno::Texture::InitSuccess() const
     return mInitSuccess;
 }
 
-bool Xeno::Texture::GenerateTextureFromFile()
+bool Xeno::Texture::GenerateTextureFromFile(const int32_t mipMapLevel)
 {
-    XN_CORE_INFO("Generating texture: {0}", mPath);
+    XN_CORE_INFO("Generating texture: {0}", mProps.mPath);
 
     int32_t width, height, channels;
 
-    unsigned char* data = stbi_load(mPath.c_str(), &width, &height, &channels, 0);
+    uint8_t* data = stbi_load(mProps.mPath.c_str(), &width, &height, &channels, 0);
 
     if (!data)
     {
-        XN_CORE_ERROR("Failed to generate texture: {0}", mPath);
+        XN_CORE_ERROR("Failed to generate texture: {0}", mProps.mPath);
 
         return false;
     }
 
-    Bind();
+    mProps.mWidth = width;
+    mProps.mHeight = height;
 
-    if (channels == 3)
-        mImageFormat = GL_RGB;
-
-    if (mWidth == width && mHeight == height)
-    {
-        glTexSubImage2D(GL_TEXTURE_2D,
-                        mMipMapLevel,
-                        0,
-                        0,
-                        mWidth,
-                        mHeight,
-                        mImageFormat,
-                        GL_UNSIGNED_BYTE,
-                        data);
-    }
-
-    mWidth = width;
-    mHeight = height;
-
-    glTexImage2D(GL_TEXTURE_2D, 
-                 mMipMapLevel, 
-                 mInternalFormat,
-                 mWidth, 
-                 mHeight, 
-                 0, 
-                 mImageFormat,
-                 GL_UNSIGNED_BYTE, 
-                 data);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mWrapS);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mWrapT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mFilterMin);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mFilterMax);
-
-    if (mMipMapping)
-        glGenerateMipmap(GL_TEXTURE_2D);
+    SetDataNew(data, mProps, mipMapLevel);
 
     stbi_image_free(data);
 

@@ -108,7 +108,7 @@ void Xeno::Application::Update()
     mSceneManager.ProcessRemovals();
 }
 
-void Xeno::Application::Render()
+void Xeno::Application::Render() const
 {
     mSceneManager.Render();
     mRenderer.Render();
