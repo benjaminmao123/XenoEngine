@@ -88,13 +88,8 @@ void Xeno::SceneRenderer::Render() const
 {
     mData.mFBO->Bind();
 
+    glEnable(GL_DEPTH_TEST);
     Clear(Color::Gray(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    if (SceneManager::GetActiveScene()->GetMainCamera()->GetProjectionType() == 
-        Camera::ProjectionType::PERSPECTIVE)
-        glEnable(GL_DEPTH_TEST);
-    else
-        glDisable(GL_DEPTH_TEST);
 
     mData.mVAO->Bind();
 
@@ -137,7 +132,9 @@ void Xeno::SceneRenderer::Render() const
     }
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    glBlitFramebuffer(0, 0, mData.mFBO->GetWidth(), mData.mFBO->GetHeight(), 0, 0, Window::GetWidth(), Window::GetHeight(),
+    glDisable(GL_DEPTH_TEST);
+    glBlitFramebuffer(0, 0, mData.mFBO->GetWidth(), mData.mFBO->GetHeight(), 0, 0, 
+                      Window::GetWidth(), Window::GetHeight(),
                       GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
     sCommandBuffer.clear();
