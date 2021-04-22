@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SceneRenderer.h"
 #include "Core/Assert.h"
-#include "Core/Window.h"
+#include "Core/Application.h"
 #include "Resource/ResourceManager.h"
 #include "Renderer/Graphics/VertexArray.h"
 #include "Renderer/Graphics/VertexBuffer.h"
@@ -44,7 +44,7 @@ void Xeno::SceneRenderer::Init()
     {
         "white",
         1, 1,
-        Texture::TextureFormat::RGBA, Texture::TextureFormat::RGBA,
+        GL_RGBA, GL_RGBA,
         GL_UNSIGNED_BYTE,
         GL_REPEAT, GL_REPEAT,
         GL_LINEAR, GL_LINEAR
@@ -52,21 +52,21 @@ void Xeno::SceneRenderer::Init()
     const auto whiteTexture = std::make_shared<Texture>(whiteTextureData, whiteTextureProps);
     ResourceManager::AddTexture(whiteTexture);
 
-    auto shader = std::make_shared<Shader>("default");
-    shader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
-    shader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
-    ResourceManager::AddShader(shader);
+    auto meshShader = std::make_shared<Shader>("default");
+    meshShader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
+    meshShader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
+    ResourceManager::AddShader(meshShader);
 
-    auto shader1 = std::make_shared<Shader>("default1");
-    shader1->AddShader({ "Assets/Shaders/vertex1.glsl", Shader::ShaderType::VERTEX });
-    shader1->AddShader({ "Assets/Shaders/frag1.glsl", Shader::ShaderType::FRAGMENT });
-    ResourceManager::AddShader(shader1);
+    auto screenShader = std::make_shared<Shader>("screenShader");
+    screenShader->AddShader({ "Assets/Shaders/vertex1.glsl", Shader::ShaderType::VERTEX });
+    screenShader->AddShader({ "Assets/Shaders/frag1.glsl", Shader::ShaderType::FRAGMENT });
+    ResourceManager::AddShader(screenShader);
 
     FrameBuffer::FrameBufferProperties props = 
     {
-        Window::GetWidth(), Window::GetHeight(),
-        { Texture::TextureFormat::RGBA },
-        FrameBuffer::DepthStencilFormat::DEPTH24_STENCIL8
+        Application::GetGameWindow().GetWidth(), Application::GetGameWindow().GetHeight(),
+        { GL_RGB },
+        GL_DEPTH24_STENCIL8
     };
     mData.mFBO = std::make_shared<FrameBuffer>(props);
 
@@ -82,6 +82,25 @@ void Xeno::SceneRenderer::Init()
     mData.mVBO->PushElement({ "Bitangent", 3, GL_FLOAT, sizeof(float) });
 
     mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
+}
+
+void Xeno::SceneRenderer::ProcessEvents(const SDL_Event& event)
+{
+    switch (event.type)
+    {
+    case SDL_WINDOWEVENT:
+        switch (event.window.event)
+        {
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+            mData.mFBO->Resize(event.window.data1, event.window.data2);
+            break;
+        default:
+            break;
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void Xeno::SceneRenderer::Render() const
@@ -125,17 +144,28 @@ void Xeno::SceneRenderer::Render() const
                                       GL_DYNAMIC_DRAW);
             mData.mEBO->Bind();
 
-            glDrawElements((GLenum)command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
         else
-            glDrawArrays((GLenum)command.mMesh->mTopology, 0, (uint32_t)command.mMesh->mVertices.size());
+            glDrawArrays(command.mMesh->mTopology, 0, (uint32_t)command.mMesh->mVertices.size());
     }
 
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    mData.mFBO->Unbind();
     glDisable(GL_DEPTH_TEST);
-    glBlitFramebuffer(0, 0, mData.mFBO->GetWidth(), mData.mFBO->GetHeight(), 0, 0, 
-                      Window::GetWidth(), Window::GetHeight(),
-                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    Clear(Color::White(), GL_COLOR_BUFFER_BIT);
+
+    mData.mVBO->SetDataNew(&mData.mScreenQuad.mVertices[0], 
+                           (uint32_t)mData.mScreenQuad.mVertices.size() * sizeof(Mesh::Vertex),
+                           GL_DYNAMIC_DRAW);
+    mData.mEBO->SetIndicesNew(&mData.mScreenQuad.mIndices[0],
+                              (uint32_t)mData.mScreenQuad.mIndices.size(),
+                              GL_DYNAMIC_DRAW);
+
+    ResourceManager::GetShader("screenShader")->Bind();
+    
+    glBindTexture(GL_TEXTURE_2D, mData.mFBO->GetColorAttachment(0));
+    mData.mEBO->Bind();
+    glDrawElements(mData.mScreenQuad.mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 
     sCommandBuffer.clear();
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Graphics/Texture.h"
 
 #include <cstdint>
 #include <glad/glad.h>
@@ -9,25 +8,18 @@
 
 namespace Xeno
 {
-    class Texture;
     class RenderBuffer;
 
     class XENO_API FrameBuffer
     {
     public:
-        enum class DepthStencilFormat
-        {
-            NONE = GL_NONE,
-            DEPTH24_STENCIL8 = GL_DEPTH24_STENCIL8
-        };
-
         struct FrameBufferProperties
         {
             uint32_t mWidth;
             uint32_t mHeight;
 
-            std::vector<Texture::TextureFormat> mColorFormats;
-            DepthStencilFormat mDepthStencilFormat;
+            std::vector<uint32_t> mColorFormats;
+            uint32_t mDepthStencilFormat;
 
             uint32_t mNumSamples = 1;
         };
@@ -35,7 +27,7 @@ namespace Xeno
         explicit FrameBuffer(FrameBufferProperties props);
         ~FrameBuffer();
 
-        void Bind(uint32_t mode = GL_READ_FRAMEBUFFER) const;
+        void Bind(uint32_t mode = GL_FRAMEBUFFER) const;
         void Unbind() const;
 
         void Invalidate();
@@ -44,13 +36,13 @@ namespace Xeno
         [[nodiscard]] uint32_t GetWidth() const;
         [[nodiscard]] uint32_t GetHeight() const;
 
-        [[nodiscard]] const Texture* GetColorAttachment(uint32_t index) const;
+        [[nodiscard]] uint32_t GetColorAttachment(uint32_t index) const;
 
     private:
         uint32_t mObjectID = 0;
+
         FrameBufferProperties mProps;
-        std::vector<Texture*> mColorAttachments;
-        std::vector<uint32_t> mColorAttachmentBuffer;
+        std::vector<uint32_t> mColorAttachments;
         RenderBuffer* mRenderBuffer;
 
         static inline const uint32_t sMaxFrameBufferSize = 8192;

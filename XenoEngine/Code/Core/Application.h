@@ -17,17 +17,19 @@ namespace Xeno
     class XENO_API Application : public NonCopyable
     {
     public:
-        Application(const Window::WindowProperties& props);
+        Application(Window::WindowProperties props);
         virtual ~Application();
         
         void Run();
-        void PollEvents();
+ 
+        static Window& GetGameWindow();
 
     protected:
         virtual void OnRun();
         virtual void OnUpdate();
 
     private:
+        void PollEvents();
         void Awake();
         void Start();
         void Update();
@@ -35,7 +37,7 @@ namespace Xeno
         void OnExit();
 
         Logger mLogger;
-        Window mWindow;
+        static inline Window sWindow;
         Input mInput;
         Time mTime;
         SceneRenderer mRenderer;

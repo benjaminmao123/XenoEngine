@@ -7,6 +7,6 @@ namespace Xeno
 {
     struct XENO_API Quad final : Mesh
     {
-        explicit Quad(Topology topology = Topology::TRIANGLES);
+        explicit Quad(uint32_t topology = GL_TRIANGLES);
     };
 }

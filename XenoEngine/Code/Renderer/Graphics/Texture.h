@@ -11,19 +11,13 @@ namespace Xeno
     class XENO_API Texture
     {
     public:
-        enum class TextureFormat
-        {
-            RGB = GL_RGB,
-            RGBA = GL_RGBA
-        };
-
         struct TextureProperties
         {
             std::string mPath;
             uint32_t mWidth = 1;
             uint32_t mHeight = 1;
-            TextureFormat mInternalFormat = TextureFormat::RGBA;
-            TextureFormat mImageFormat = TextureFormat::RGBA;
+            uint32_t mInternalFormat = GL_RGBA;
+            uint32_t mImageFormat = GL_RGBA;
             uint32_t mDataType = GL_UNSIGNED_BYTE;
             uint32_t mWrapS = GL_REPEAT;
             uint32_t mWrapT = GL_REPEAT;

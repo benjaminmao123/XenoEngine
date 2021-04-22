@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Quad.h"
 
-Xeno::Quad::Quad(const Topology topology) :
+Xeno::Quad::Quad(const uint32_t topology) :
     Mesh(topology)
 {
     Vertex vertex[4];

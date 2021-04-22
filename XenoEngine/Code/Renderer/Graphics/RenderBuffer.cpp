@@ -8,8 +8,9 @@ Xeno::RenderBuffer::RenderBuffer()
     glGenRenderbuffers(1, &mObjectID);
 }
 
-Xeno::RenderBuffer::RenderBuffer(const uint32_t width, const uint32_t height,
-                                 const FrameBuffer::DepthStencilFormat format)
+Xeno::RenderBuffer::RenderBuffer(const uint32_t width, 
+                                 const uint32_t height,
+                                 const uint32_t format)
 {
     glGenRenderbuffers(1, &mObjectID);
     SetStorage(width, height, format);
@@ -31,15 +32,15 @@ void Xeno::RenderBuffer::Unbind() const
 }
 
 void Xeno::RenderBuffer::SetStorage(const uint32_t width, const uint32_t height, 
-                                    const FrameBuffer::DepthStencilFormat format,
+                                    const uint32_t format,
                                     const int32_t numSamples) const
 {
     Bind();
 
     if (numSamples > 1)
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, numSamples, (GLenum)format, width, height);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, numSamples, format, width, height);
     else
-        glRenderbufferStorage(GL_RENDERBUFFER, (GLenum)format, width, height);
+        glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
 }
 
 uint32_t Xeno::RenderBuffer::GetObjectID() const

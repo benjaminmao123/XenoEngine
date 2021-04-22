@@ -5,10 +5,11 @@
 
 #include <SDL2/SDL.h>
 
-Xeno::Application::Application(const Window::WindowProperties& props) :
-    mWindow(props)
+Xeno::Application::Application(Window::WindowProperties props)
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    sWindow.SetWindowProps(props);
+
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         XN_CORE_ERROR(SDL_GetError());
 
@@ -30,7 +31,7 @@ void Xeno::Application::Run()
 {
     if (!mIsRunning)
     {
-        if (!mWindow.ConstructWindow())
+        if (!sWindow.ConstructWindow())
         {
             XN_CORE_ERROR("Failed to construct window.");
 
@@ -52,27 +53,41 @@ void Xeno::Application::Run()
         while (mIsRunning)
         {
             PollEvents();
-            Awake();
-            Start();
-            Update();
-            Render();
 
-            mWindow.Display();
+            if (!sWindow.IsMinimized())
+            {
+                Awake();
+                Start();
+                Update();
+                Render();
+
+                sWindow.Display();
+            }
         }
     }
 }
+
+Xeno::Window& Xeno::Application::GetGameWindow()
+{
+    return sWindow;
+}
+
+void Xeno::Application::OnRun()
+{ }
+
+void Xeno::Application::OnUpdate()
+{ }
 
 void Xeno::Application::PollEvents()
 {
     while (SDL_PollEvent(&mEvent))
     {
         mInput.ProcessEvents(mEvent);
+        sWindow.ProcessEvents(mEvent);
+        mRenderer.ProcessEvents(mEvent);
 
         switch (mEvent.type)
         {
-        case SDL_WINDOWEVENT:
-            mWindow.ProcessEvents(mEvent);
-            break;
         case SDL_QUIT:
             OnExit();
             break;
@@ -81,12 +96,6 @@ void Xeno::Application::PollEvents()
         }
     }
 }
-
-void Xeno::Application::OnRun()
-{ }
-
-void Xeno::Application::OnUpdate()
-{ }
 
 void Xeno::Application::Awake()
 {

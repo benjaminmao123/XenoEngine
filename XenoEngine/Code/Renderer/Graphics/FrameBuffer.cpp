@@ -20,9 +20,6 @@ Xeno::FrameBuffer::~FrameBuffer()
 {
     glDeleteFramebuffers(1, &mObjectID);
 
-    for (const auto& i : mColorAttachments)
-        delete i;
-
     delete mRenderBuffer;
 }
 
@@ -46,10 +43,9 @@ void Xeno::FrameBuffer::Invalidate()
         glDeleteFramebuffers(1, &mObjectID);
 
         for (const auto& i : mColorAttachments)
-            delete i;
+            glDeleteTextures(1, &i);
 
         mColorAttachments.clear();
-        mColorAttachmentBuffer.clear();
     }
 
     glGenFramebuffers(1, &mObjectID);
@@ -59,44 +55,40 @@ void Xeno::FrameBuffer::Invalidate()
 
     for (std::size_t i = 0; i < mProps.mColorFormats.size(); ++i)
     {
-        const Texture::TextureProperties props =
-        {
-            "",
-            mProps.mWidth, mProps.mHeight,
-            mProps.mColorFormats[i], mProps.mColorFormats[i],
-            GL_UNSIGNED_BYTE,
-            GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,
-            GL_LINEAR, GL_LINEAR
-        };
-
-        mColorAttachments[i] = new Texture(props, mProps.mNumSamples, false);
+        glGenTextures(1, &mColorAttachments[i]);
+        glBindTexture(GL_TEXTURE_2D, mColorAttachments[i]);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     mProps.mColorFormats[i],
+                     mProps.mWidth,
+                     mProps.mHeight,
+                     0,
+                     mProps.mColorFormats[i],
+                     GL_UNSIGNED_BYTE,
+                     nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mColorAttachments[i], 0);
 
         if (mProps.mNumSamples > 1)
             glFramebufferTexture2D(GL_FRAMEBUFFER,
                                    GL_COLOR_ATTACHMENT0 + i,
                                    GL_TEXTURE_2D_MULTISAMPLE,
-                                   mColorAttachments[i]->GetObjectID(),
+                                   mColorAttachments[i],
                                    0);
         else
             glFramebufferTexture2D(GL_FRAMEBUFFER, 
                                    GL_COLOR_ATTACHMENT0 + i, 
                                    GL_TEXTURE_2D, 
-                                   mColorAttachments[i]->GetObjectID(), 
+                                   mColorAttachments[i], 
                                    0);
-
-        mColorAttachmentBuffer.emplace_back(GL_COLOR_ATTACHMENT0 + i);
     }
 
-    if (mProps.mDepthStencilFormat != DepthStencilFormat::NONE)
+    if (mProps.mDepthStencilFormat != GL_NONE)
     {
         mRenderBuffer->SetStorage(mProps.mWidth, mProps.mHeight, mProps.mDepthStencilFormat, mProps.mNumSamples);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, mRenderBuffer->GetObjectID());
     }
-
-    if (!mColorAttachmentBuffer.empty())
-        glDrawBuffers(mColorAttachments.size(), &mColorAttachmentBuffer[0]);
-    else
-        glDrawBuffer(GL_NONE);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -136,7 +128,7 @@ uint32_t Xeno::FrameBuffer::GetHeight() const
     return mProps.mHeight;
 }
 
-const Xeno::Texture* Xeno::FrameBuffer::GetColorAttachment(const uint32_t index) const
+uint32_t Xeno::FrameBuffer::GetColorAttachment(const uint32_t index) const
 {
     XN_CORE_ASSERT(index < mColorAttachments.size());
 

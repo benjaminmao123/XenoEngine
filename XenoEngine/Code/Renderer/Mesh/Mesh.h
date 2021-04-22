@@ -11,11 +11,6 @@ namespace Xeno
 {
     struct XENO_API Mesh
     {
-        enum class Topology
-        {
-            TRIANGLES = GL_TRIANGLES
-        };
-
         struct Vertex
         {
             glm::vec3 mPosition { 0.0f, 0.0f, 0.0f };
@@ -26,10 +21,10 @@ namespace Xeno
             glm::vec3 mBitangent { 0.0f, 0.0f, 0.0f };
         };
 
-        explicit Mesh(Topology topology);
+        explicit Mesh(uint32_t topology);
         virtual ~Mesh() = default;
 
-        Topology mTopology;
+        uint32_t mTopology;
         std::vector<Vertex> mVertices;
         std::vector<uint32_t> mIndices;
     };

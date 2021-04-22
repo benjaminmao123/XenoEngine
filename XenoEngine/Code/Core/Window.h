@@ -29,19 +29,28 @@ namespace Xeno
 
         void Display() const;
         void ProcessEvents(const SDL_Event& event);
+        void SetWindowProps(WindowProperties props);
+        void Resize(uint32_t width, uint32_t height);
 
-        static uint32_t GetWidth();
-        static uint32_t GetHeight();
-        static glm::vec2 GetCenter();
-        static float GetAspectRatio();
+        void SetWidth(uint32_t value);
+        uint32_t GetWidth();
+        void SetHeight(uint32_t value);
+        uint32_t GetHeight();
+        glm::vec2 GetCenter();
+        float GetAspectRatio();
+
+        bool IsMinimized() const;
 
     private:
-        explicit Window(const WindowProperties& props);
+        Window() = default;
+        explicit Window(WindowProperties props);
 
-        static inline WindowProperties sWindowProps;
+        WindowProperties mWindowProps;
 
-        SDL_Window* mWindow;
+        SDL_Window* mWindow = nullptr;
         SDL_GLContext mContext;
+
+        bool mIsInitialized = false;
 
         friend class Application;
     };

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Cube.h"
 
-Xeno::Cube::Cube(const Topology topology) :
+Xeno::Cube::Cube(const uint32_t topology) :
     Mesh(topology)
 {
     Vertex vertex[24];

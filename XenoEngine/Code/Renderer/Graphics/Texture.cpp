@@ -64,7 +64,8 @@ Xeno::Texture::~Texture()
 
 void Xeno::Texture::Bind(const uint32_t slot) const
 {
-    glBindTextureUnit(slot, mObjectID);
+    glActiveTexture(GL_TEXTURE0 + slot);
+    glBindTexture(GL_TEXTURE_2D, mObjectID);
 }
 
 void Xeno::Texture::SetDataNew(void* data, TextureProperties props, const int32_t mipMapLevel)
@@ -173,6 +174,24 @@ bool Xeno::Texture::GenerateTextureFromFile(const int32_t mipMapLevel)
         XN_CORE_ERROR("Failed to generate texture: {0}", mProps.mPath);
 
         return false;
+    }
+
+    switch (channels)
+    {
+    case 1:
+        mProps.mInternalFormat = GL_RED;
+        mProps.mImageFormat = GL_RED;
+        break;
+    case 3:
+        mProps.mInternalFormat = GL_RGB;
+        mProps.mImageFormat = GL_RGB;
+        break;
+    case 4:
+        mProps.mInternalFormat = GL_RGBA;
+        mProps.mImageFormat = GL_RGBA;
+        break;
+    default:
+        break;
     }
 
     mProps.mWidth = width;

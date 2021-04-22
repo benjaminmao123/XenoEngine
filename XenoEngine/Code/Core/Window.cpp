@@ -4,6 +4,10 @@
 
 #include <glad/glad.h>
 
+Xeno::Window::Window(WindowProperties props) :
+    mWindowProps(std::move(props))
+{ }
+
 Xeno::Window::~Window()
 {
     SDL_DestroyWindow(mWindow);
@@ -11,10 +15,13 @@ Xeno::Window::~Window()
 
 bool Xeno::Window::ConstructWindow()
 {
-    mWindow = SDL_CreateWindow(sWindowProps.mTitle.c_str(),
-                               sWindowProps.mScreenLocationX, sWindowProps.mScreenLocationY,
-                               sWindowProps.mWidth, sWindowProps.mHeight,
-                               sWindowProps.mFlags);
+    if (mIsInitialized)
+        return false;
+
+    mWindow = SDL_CreateWindow(mWindowProps.mTitle.c_str(),
+                               mWindowProps.mScreenLocationX, mWindowProps.mScreenLocationY,
+                               mWindowProps.mWidth, mWindowProps.mHeight,
+                               mWindowProps.mFlags);
 
     if (!mWindow)
     {
@@ -33,6 +40,8 @@ bool Xeno::Window::ConstructWindow()
         return false;
     }
 
+    mIsInitialized = true;
+
     return true;
 }
 
@@ -43,44 +52,66 @@ void Xeno::Window::Display() const
 
 void Xeno::Window::ProcessEvents(const SDL_Event& event)
 {
-    switch (event.window.event)
+    switch (event.type)
     {
-    case SDL_WINDOWEVENT_SIZE_CHANGED:
-        sWindowProps.mWidth = event.window.data1;
-        sWindowProps.mHeight = event.window.data2;
-        glViewport(0, 0, sWindowProps.mWidth, sWindowProps.mHeight);
+    case SDL_WINDOWEVENT:
+        switch (event.window.event)
+        {
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+            mWindowProps.mWidth = event.window.data1;
+            mWindowProps.mHeight = event.window.data2;
+            glViewport(0, 0, mWindowProps.mWidth, mWindowProps.mHeight);
+            break;
+        default:
+            break;
+        }
         break;
     default:
         break;
     }
 }
 
+void Xeno::Window::SetWindowProps(WindowProperties props)
+{
+    mWindowProps = std::move(props);
+}
+
+void Xeno::Window::Resize(const uint32_t width, const uint32_t height)
+{
+    SDL_SetWindowSize(mWindow, width, height);
+}
+
+void Xeno::Window::SetWidth(const uint32_t value)
+{
+    SDL_SetWindowSize(mWindow, value, mWindowProps.mHeight);
+}
+
 uint32_t Xeno::Window::GetWidth()
 {
-    return sWindowProps.mWidth;
+    return mWindowProps.mWidth;
+}
+
+void Xeno::Window::SetHeight(const uint32_t value)
+{
+    SDL_SetWindowSize(mWindow, mWindowProps.mWidth, value);
 }
 
 uint32_t Xeno::Window::GetHeight()
 {
-    return sWindowProps.mHeight;
+    return mWindowProps.mHeight;
 }
 
 glm::vec2 Xeno::Window::GetCenter()
 {
-    return glm::vec2(sWindowProps.mWidth / 2, sWindowProps.mHeight / 2);
+    return glm::vec2(mWindowProps.mWidth / 2, mWindowProps.mHeight / 2);
 }
 
 float Xeno::Window::GetAspectRatio()
 {
-    return (float)sWindowProps.mWidth / sWindowProps.mHeight;
+    return (float)mWindowProps.mWidth / mWindowProps.mHeight;
 }
 
-Xeno::Window::Window(const WindowProperties& props)
+bool Xeno::Window::IsMinimized() const
 {
-    sWindowProps.mTitle = props.mTitle;
-    sWindowProps.mScreenLocationX = props.mScreenLocationX;
-    sWindowProps.mScreenLocationY = props.mScreenLocationY;
-    sWindowProps.mWidth = props.mWidth;
-    sWindowProps.mHeight = props.mHeight;
-    sWindowProps.mFlags = props.mFlags;
+    return SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED;
 }

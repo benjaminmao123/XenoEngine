@@ -2,6 +2,13 @@
 #include "Input.h"
 #include "Core/Time.h"
 
+Xeno::Input::Input()
+{
+	sKeyboardState = SDL_GetKeyboardState(&sNumKeys);
+	sPrevKeyboardState = new uint8_t[sNumKeys];
+	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
+}
+
 Xeno::Input::~Input()
 {
 	delete[] sPrevKeyboardState;
@@ -42,20 +49,6 @@ const glm::vec2& Xeno::Input::GetMouseScrollDelta()
 	return sMouseScrollDelta;
 }
 
-Xeno::Input::Input()
-{
-	sKeyboardState = SDL_GetKeyboardState(&sNumKeys);
-	sPrevKeyboardState = new uint8_t[sNumKeys];
-	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
-}
-
-void Xeno::Input::Update()
-{
-	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
-	sMouseAxis = glm::vec2(0.0f, 0.0f);
-	sMouseScrollDelta = glm::vec<2, int32_t>(0, 0);
-}
-
 void Xeno::Input::ProcessEvents(const SDL_Event& event)
 {
 	switch (event.type)
@@ -75,4 +68,11 @@ void Xeno::Input::ProcessEvents(const SDL_Event& event)
 	default:
 		break;
 	}
+}
+
+void Xeno::Input::Update()
+{
+	memcpy(sPrevKeyboardState, sKeyboardState, sNumKeys);
+	sMouseAxis = glm::vec2(0.0f, 0.0f);
+	sMouseScrollDelta = glm::vec<2, int32_t>(0, 0);
 }

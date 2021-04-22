@@ -9,8 +9,8 @@ using namespace std;
 class Sandbox : public Application
 {
 public:
-    explicit Sandbox(const Window::WindowProperties& props) :
-        Application(props)
+    explicit Sandbox(Window::WindowProperties props) :
+        Application(std::move(props))
     { }
 
 protected:
@@ -20,20 +20,23 @@ protected:
         {
             "Assets/Textures/container.jpg",
             0, 0,
-            Texture::TextureFormat::RGB, Texture::TextureFormat::RGB
+            GL_RGB, GL_RGB
         };
         ResourceManager::AddTexture(std::make_shared<Texture>(containerTextureProps));
 
         SceneManager::AddScene("sandbox");
         mScene = SceneManager::GetScene("sandbox");
 
-        //TestOrthographic();
-        TestPerspective();
+        TestOrthographic();
+        //TestPerspective();
     }
 
     void OnUpdate() override
     {
-
+        if (Input::GetKeyDown(Input::KeyCode::X))
+        {
+            Application::GetGameWindow().ConstructWindow();
+        }
     }
 
 private:
@@ -51,7 +54,7 @@ private:
         boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
 
         boxEntity->GetTransform().SetScale(100, 100, 1);
-        boxEntity->GetTransform().SetPosition(Window::GetCenter().x, Window::GetCenter().y, 0);
+        boxEntity->GetTransform().SetPosition(GetGameWindow().GetCenter().x, GetGameWindow().GetCenter().y, 0);
     }
 
     void TestPerspective()

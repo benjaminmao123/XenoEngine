@@ -20,8 +20,8 @@ namespace Xeno
         };
 
         explicit Camera(Entity* owner = nullptr,
-                                 const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
-                                 ProjectionType type = ProjectionType::PERSPECTIVE);
+                        const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
+                        ProjectionType type = ProjectionType::PERSPECTIVE);
 
         void SetProjectionType(ProjectionType type);
         [[nodiscard]] ProjectionType GetProjectionType() const;

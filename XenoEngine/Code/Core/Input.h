@@ -306,9 +306,9 @@ namespace Xeno
         // @brief Default constructor.
         Input();
 
+        void ProcessEvents(const SDL_Event& event);
         // @brief Updates keyboard status.
         void Update();
-        void ProcessEvents(const SDL_Event& event);
 
         // @brief Stores the current keyboard state.
         static inline const uint8_t* sKeyboardState;

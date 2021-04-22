@@ -23,6 +23,10 @@ namespace Xeno
         void OnStart() override;
         void OnUpdate() override;
 
+        void UpdateMovement();
+        void UpdateRotation();
+        void UpdateZoom();
+
         Camera* mCamera = nullptr;
         float mCameraPanSpeed = 10.0f;
         float mSensitivity = 10.0f;

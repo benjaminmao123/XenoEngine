@@ -124,7 +124,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Lib/Vendor;Lib;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Lib\Vendor;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2/SDL2.lib;SDL2/SDL2main.lib;SDL2/SDL2test.lib;assimp/assimp-vc142-mtd.lib;spdlog/spdlogd.lib;XenoEngine/XenoEngine64-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>XenoEngine/XenoEngine64-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>del "$(ProjectDir)Lib\XenoEngine\*.lib"
@@ -153,7 +153,7 @@ xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64-d.lib" "$(ProjectDir)Lib\Xen
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Lib/Vendor;Lib;D:\Documents\Programming\Github Projects\XenoEngine\XenoEngine\Lib\Vendor;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2/SDL2.lib;SDL2/SDL2main.lib;SDL2/SDL2test.lib;assimp/assimp-vc142-mt.lib;spdlog/spdlog.lib;XenoEngine/XenoEngine64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>XenoEngine/XenoEngine64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>del "$(ProjectDir)Lib\XenoEngine\*.lib"

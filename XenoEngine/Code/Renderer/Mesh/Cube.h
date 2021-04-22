@@ -7,6 +7,6 @@ namespace Xeno
 {
     struct XENO_API Cube final : Mesh
     {
-        explicit Cube(Topology topology = Topology::TRIANGLES);
+        explicit Cube(uint32_t topology = GL_TRIANGLES);
     };
 }
