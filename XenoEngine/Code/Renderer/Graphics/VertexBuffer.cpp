@@ -9,20 +9,16 @@ Xeno::VertexBuffer::VertexBuffer(const uint32_t drawType) :
     glGenBuffers(1, &mObjectID);
 }
 
-Xeno::VertexBuffer::VertexBuffer(const uint32_t size, const uint32_t drawType) :
-    mDrawType(drawType)
+Xeno::VertexBuffer::VertexBuffer(const uint32_t size, const uint32_t drawType)
 {
     glGenBuffers(1, &mObjectID);
-    glBindBuffer(GL_ARRAY_BUFFER, mObjectID);
-    glBufferData(GL_ARRAY_BUFFER, size, nullptr, mDrawType);
+    SetDataNew(nullptr, size, drawType);
 }
 
-Xeno::VertexBuffer::VertexBuffer(void* data, const uint32_t size, const uint32_t drawType) :
-    mDrawType(drawType)
+Xeno::VertexBuffer::VertexBuffer(void* data, const uint32_t size, const uint32_t drawType)
 {
     glGenBuffers(1, &mObjectID);
-    glBindBuffer(GL_ARRAY_BUFFER, mObjectID);
-    glBufferData(GL_ARRAY_BUFFER, size, data, mDrawType);
+    SetDataNew(data, size, drawType);
 }
 
 Xeno::VertexBuffer::~VertexBuffer()

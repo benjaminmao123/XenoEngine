@@ -3,7 +3,7 @@
 #include "Resource/ResourceManager.h"
 
 Xeno::Material::Material() :
-    mShader(ResourceManager::GetShaderRef("default"))
+    mShader(ResourceManager::GetShaderRef("Default Shader"))
 { }
 
 void Xeno::Material::SetTexture(const std::shared_ptr<Texture>& texture)
@@ -31,7 +31,7 @@ void Xeno::Material::SetShader(const std::shared_ptr<Shader>& shader)
     mShader = shader;
 }
 
-const Xeno::Shader* Xeno::Material::GetShader() const
+Xeno::Shader* Xeno::Material::GetShader() const
 {
     return mShader.get();
 }

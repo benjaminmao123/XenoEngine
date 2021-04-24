@@ -29,7 +29,7 @@ namespace Xeno
             Color mColor = Color::White();
             const Texture* mTexture = nullptr;
             const Mesh* mMesh = nullptr;
-            const Shader* mShader = nullptr;
+            Shader* mShader = nullptr;
         };
 
         static void Submit(const RenderCommand& command);

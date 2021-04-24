@@ -43,6 +43,7 @@ namespace Xeno
 
         FrameBufferProperties mProps;
         std::vector<uint32_t> mColorAttachments;
+        std::vector<uint32_t> mColorAttachmentBuffer;
         RenderBuffer* mRenderBuffer;
 
         static inline const uint32_t sMaxFrameBufferSize = 8192;

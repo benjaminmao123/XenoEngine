@@ -27,16 +27,13 @@ protected:
         SceneManager::AddScene("sandbox");
         mScene = SceneManager::GetScene("sandbox");
 
-        TestOrthographic();
-        //TestPerspective();
+        //TestOrthographic();
+        TestPerspective();
     }
 
     void OnUpdate() override
     {
-        if (Input::GetKeyDown(Input::KeyCode::X))
-        {
-            Application::GetGameWindow().ConstructWindow();
-        }
+
     }
 
 private:

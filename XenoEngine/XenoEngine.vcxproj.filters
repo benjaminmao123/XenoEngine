@@ -239,5 +239,11 @@
     <ClInclude Include="Code\Renderer\Material\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Core\KeyCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Renderer\Graphics\RenderPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

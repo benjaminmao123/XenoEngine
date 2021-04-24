@@ -47,6 +47,7 @@ namespace Xeno
                          uint8_t(b * 255), 
                          uint8_t(a * 255));
         }
+
         [[nodiscard]] glm::vec4 ToVec4() const { return glm::vec4(r, g, b, a); }
 
         float r;

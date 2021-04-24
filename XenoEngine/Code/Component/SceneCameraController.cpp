@@ -64,31 +64,31 @@ void Xeno::SceneCameraController::UpdateMovement()
 {
     if (mCamera->GetProjectionType() == Camera::ProjectionType::ORTHOGRAPHIC)
     {
-        if (Input::GetKey(Input::KeyCode::W))
+        if (Input::GetKey(KeyCode::W))
             mCamera->GetTransform().Translate(0, -mCameraPanSpeed *
                                               Time::GetDeltaTime(), 0);
-        if (Input::GetKey(Input::KeyCode::A))
+        if (Input::GetKey(KeyCode::A))
             mCamera->GetTransform().Translate(-mCameraPanSpeed *
                                               Time::GetDeltaTime(), 0, 0);
-        if (Input::GetKey(Input::KeyCode::S))
+        if (Input::GetKey(KeyCode::S))
             mCamera->GetTransform().Translate(0, mCameraPanSpeed *
                                               Time::GetDeltaTime(), 0);
-        if (Input::GetKey(Input::KeyCode::D))
+        if (Input::GetKey(KeyCode::D))
             mCamera->GetTransform().Translate(mCameraPanSpeed *
                                               Time::GetDeltaTime(), 0, 0);
     }
     else
     {
-        if (Input::GetKey(Input::KeyCode::W))
+        if (Input::GetKey(KeyCode::W))
             mCamera->GetTransform().Translate(mCamera->GetTransform().GetForward() *
                                               mCameraPanSpeed * Time::GetDeltaTime());
-        if (Input::GetKey(Input::KeyCode::A))
+        if (Input::GetKey(KeyCode::A))
             mCamera->GetTransform().Translate(-mCamera->GetTransform().GetRight() *
                                               mCameraPanSpeed * Time::GetDeltaTime());
-        if (Input::GetKey(Input::KeyCode::S))
+        if (Input::GetKey(KeyCode::S))
             mCamera->GetTransform().Translate(-mCamera->GetTransform().GetForward() *
                                               mCameraPanSpeed * Time::GetDeltaTime());
-        if (Input::GetKey(Input::KeyCode::D))
+        if (Input::GetKey(KeyCode::D))
             mCamera->GetTransform().Translate(mCamera->GetTransform().GetRight() *
                                               mCameraPanSpeed * Time::GetDeltaTime());
     }

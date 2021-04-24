@@ -40,6 +40,7 @@ void Xeno::SceneRenderer::Init()
     }
 
     static uint8_t whiteTextureData[] = { 255, 255, 255, 255 };
+
     Texture::TextureProperties whiteTextureProps =
     {
         "white",
@@ -49,17 +50,18 @@ void Xeno::SceneRenderer::Init()
         GL_REPEAT, GL_REPEAT,
         GL_LINEAR, GL_LINEAR
     };
+    
     const auto whiteTexture = std::make_shared<Texture>(whiteTextureData, whiteTextureProps);
     ResourceManager::AddTexture(whiteTexture);
 
-    auto meshShader = std::make_shared<Shader>("default");
-    meshShader->AddShader({ "Assets/Shaders/vertex.glsl", Shader::ShaderType::VERTEX });
-    meshShader->AddShader({ "Assets/Shaders/frag.glsl", Shader::ShaderType::FRAGMENT });
+    auto meshShader = std::make_shared<Shader>("Default Shader");
+    meshShader->AddShader({ "Assets/Shaders/DefaultVertex.glsl", GL_VERTEX_SHADER });
+    meshShader->AddShader({ "Assets/Shaders/DefaultFragment.glsl", GL_FRAGMENT_SHADER });
     ResourceManager::AddShader(meshShader);
 
-    auto screenShader = std::make_shared<Shader>("screenShader");
-    screenShader->AddShader({ "Assets/Shaders/vertex1.glsl", Shader::ShaderType::VERTEX });
-    screenShader->AddShader({ "Assets/Shaders/frag1.glsl", Shader::ShaderType::FRAGMENT });
+    auto screenShader = std::make_shared<Shader>("Screen Shader");
+    screenShader->AddShader({ "Assets/Shaders/ScreenVertex.glsl", GL_VERTEX_SHADER });
+    screenShader->AddShader({ "Assets/Shaders/ScreenFragment.glsl", GL_FRAGMENT_SHADER });
     ResourceManager::AddShader(screenShader);
 
     FrameBuffer::FrameBufferProperties props = 
@@ -68,6 +70,7 @@ void Xeno::SceneRenderer::Init()
         { GL_RGB },
         GL_DEPTH24_STENCIL8
     };
+
     mData.mFBO = std::make_shared<FrameBuffer>(props);
 
     mData.mVAO = std::make_shared<VertexArray>();
@@ -151,8 +154,11 @@ void Xeno::SceneRenderer::Render() const
     }
 
     mData.mFBO->Unbind();
+
     glDisable(GL_DEPTH_TEST);
     Clear(Color::White(), GL_COLOR_BUFFER_BIT);
+
+    glBindTexture(GL_TEXTURE_2D, mData.mFBO->GetColorAttachment(0));
 
     mData.mVBO->SetDataNew(&mData.mScreenQuad.mVertices[0], 
                            (uint32_t)mData.mScreenQuad.mVertices.size() * sizeof(Mesh::Vertex),
@@ -162,9 +168,9 @@ void Xeno::SceneRenderer::Render() const
                               GL_DYNAMIC_DRAW);
 
     ResourceManager::GetShader("screenShader")->Bind();
-    
-    glBindTexture(GL_TEXTURE_2D, mData.mFBO->GetColorAttachment(0));
+
     mData.mEBO->Bind();
+
     glDrawElements(mData.mScreenQuad.mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 
     sCommandBuffer.clear();

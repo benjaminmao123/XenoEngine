@@ -27,6 +27,7 @@ namespace Xeno
     protected:
         virtual void OnRun();
         virtual void OnUpdate();
+        //virtual void OnRender() const;
 
     private:
         void PollEvents();

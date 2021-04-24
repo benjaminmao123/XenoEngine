@@ -1,16 +1,11 @@
-#include "XenoEditor.h"
-#include "MainEditor/EditorWindow.h"
+#include "Core/XenoEditor.h"
 
-#include <QtWidgets/QApplication>
+using namespace std;
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
+    XenoEditor::XenoEditor mApp({ "Xeno Editor" });
+    mApp.Run();
 
-    //XenoEditor editor({ "XenoEditor" });
-    //editor.Run();
-
-    EditorWindow w;
-    w.show();
-    return a.exec();
+    return 0;
 }

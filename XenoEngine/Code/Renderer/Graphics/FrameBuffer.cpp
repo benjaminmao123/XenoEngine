@@ -82,6 +82,8 @@ void Xeno::FrameBuffer::Invalidate()
                                    GL_TEXTURE_2D, 
                                    mColorAttachments[i], 
                                    0);
+
+        mColorAttachmentBuffer.emplace_back(GL_COLOR_ATTACHMENT0 + i);
     }
 
     if (mProps.mDepthStencilFormat != GL_NONE)
@@ -89,6 +91,11 @@ void Xeno::FrameBuffer::Invalidate()
         mRenderBuffer->SetStorage(mProps.mWidth, mProps.mHeight, mProps.mDepthStencilFormat, mProps.mNumSamples);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, mRenderBuffer->GetObjectID());
     }
+
+    if (!mColorAttachmentBuffer.empty())
+        glDrawBuffers(mColorAttachments.size(), &mColorAttachmentBuffer[0]);
+    else
+        glDrawBuffer(GL_NONE);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
