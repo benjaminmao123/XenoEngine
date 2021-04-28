@@ -34,12 +34,12 @@ void Xeno::SceneManager::LoadScene(const std::string& name)
 	}
 
 	if (sActiveScene)
-		sActiveScene->OnExit();
+		sActiveScene->Exit();
 
 	sActiveScene = GetScene(name);
 
 	if (sActiveScene)
-		sActiveScene->OnCreate();
+		sActiveScene->Create();
 }
 
 void Xeno::SceneManager::LoadScene(const std::size_t index)
@@ -53,12 +53,12 @@ void Xeno::SceneManager::LoadScene(const std::size_t index)
 	}
 
 	if (sActiveScene)
-		sActiveScene->OnExit();
+		sActiveScene->Exit();
 
 	sActiveScene = GetScene(index);
 
 	if (sActiveScene)
-		sActiveScene->OnCreate();
+		sActiveScene->Create();
 }
 
 Xeno::Scene* Xeno::SceneManager::GetScene(const std::string& name)
@@ -121,10 +121,10 @@ void Xeno::SceneManager::Render() const
 		sActiveScene->Render();
 }
 
-void Xeno::SceneManager::OnExit()
+void Xeno::SceneManager::Exit()
 {
 	if (sActiveScene)
-		sActiveScene->OnExit();
+		sActiveScene->Exit();
 }
 
 void Xeno::SceneManager::ProcessRemovals()

@@ -81,6 +81,29 @@ void Xeno::Window::Resize(const uint32_t width, const uint32_t height)
     SDL_SetWindowSize(mWindow, width, height);
 }
 
+void Xeno::Window::SetFullScreenMode(const FullScreenMode mode)
+{
+    if (mode != mFullScreenMode)
+    {
+        mFullScreenMode = mode;
+
+        switch (mFullScreenMode)
+        {
+        case FullScreenMode::NONE:
+            SDL_SetWindowFullscreen(mWindow, 0);
+            break;
+        case FullScreenMode::FULLSCREEN:
+            SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN);
+            break;
+        case FullScreenMode::BORDERLESS_WINDOWED:
+            SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 void Xeno::Window::SetWidth(const uint32_t value)
 {
     SDL_SetWindowSize(mWindow, value, mWindowProps.mHeight);

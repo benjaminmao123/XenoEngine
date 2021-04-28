@@ -1,49 +1,47 @@
 #include "pch.h"
 #include "Cube.h"
+#include "Core/Logger.h"
 
 Xeno::Cube::Cube(const uint32_t topology) :
     Mesh(topology)
 {
-    Vertex vertex[24];
+    mVertices.resize(24);
 
-    vertex[0].mPosition = { -1.0, -1.0, 1.0 };
-    vertex[1].mPosition = { 1.0, -1.0, 1.0 };
-    vertex[2].mPosition = { 1.0, 1.0, 1.0 };
-    vertex[3].mPosition = { -1.0, 1.0, 1.0 };
-    vertex[4].mPosition = { -1.0, 1.0, 1.0 };
-    vertex[5].mPosition = { 1.0, 1.0, 1.0 };
-    vertex[6].mPosition = { 1.0, 1.0, -1.0 };
-    vertex[7].mPosition = { -1.0, 1.0, -1.0 };
-    vertex[8].mPosition = { 1.0, -1.0, -1.0 };
-    vertex[9].mPosition = { -1.0, -1.0, -1.0 };
-    vertex[10].mPosition = { -1.0, 1.0, -1.0 };
-    vertex[11].mPosition = { 1.0, 1.0, -1.0 };
-    vertex[12].mPosition = { -1.0, -1.0, -1.0 };
-    vertex[13].mPosition = { 1.0, -1.0, -1.0 };
-    vertex[14].mPosition = { 1.0, -1.0, 1.0 };
-    vertex[15].mPosition = { -1.0, -1.0, 1.0 };
-    vertex[16].mPosition = { -1.0, -1.0, -1.0 };
-    vertex[17].mPosition = { -1.0, -1.0, 1.0 };
-    vertex[18].mPosition = { -1.0, 1.0, 1.0 };
-    vertex[19].mPosition = { -1.0, 1.0, -1.0 };
-    vertex[20].mPosition = { 1.0, -1.0, 1.0 };
-    vertex[21].mPosition = { 1.0, -1.0, -1.0 }; 
-    vertex[22].mPosition = { 1.0, 1.0, -1.0 };
-    vertex[23].mPosition = { 1.0, 1.0, 1.0 };
+    mVertices[0].mPosition = { -1.0, -1.0, 1.0 };
+    mVertices[1].mPosition = { 1.0, -1.0, 1.0 };
+    mVertices[2].mPosition = { 1.0, 1.0, 1.0 };
+    mVertices[3].mPosition = { -1.0, 1.0, 1.0 };
+    mVertices[4].mPosition = { -1.0, 1.0, 1.0 };
+    mVertices[5].mPosition = { 1.0, 1.0, 1.0 };
+    mVertices[6].mPosition = { 1.0, 1.0, -1.0 };
+    mVertices[7].mPosition = { -1.0, 1.0, -1.0 };
+    mVertices[8].mPosition = { 1.0, -1.0, -1.0 };
+    mVertices[9].mPosition = { -1.0, -1.0, -1.0 };
+    mVertices[10].mPosition = { -1.0, 1.0, -1.0 };
+    mVertices[11].mPosition = { 1.0, 1.0, -1.0 };
+    mVertices[12].mPosition = { -1.0, -1.0, -1.0 };
+    mVertices[13].mPosition = { 1.0, -1.0, -1.0 };
+    mVertices[14].mPosition = { 1.0, -1.0, 1.0 };
+    mVertices[15].mPosition = { -1.0, -1.0, 1.0 };
+    mVertices[16].mPosition = { -1.0, -1.0, -1.0 };
+    mVertices[17].mPosition = { -1.0, -1.0, 1.0 };
+    mVertices[18].mPosition = { -1.0, 1.0, 1.0 };
+    mVertices[19].mPosition = { -1.0, 1.0, -1.0 };
+    mVertices[20].mPosition = { 1.0, -1.0, 1.0 };
+    mVertices[21].mPosition = { 1.0, -1.0, -1.0 }; 
+    mVertices[22].mPosition = { 1.0, 1.0, -1.0 };
+    mVertices[23].mPosition = { 1.0, 1.0, 1.0 };
 
-    for (auto& i : vertex)
+    for (auto& i : mVertices)
         i.mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-    for (int i = 0; i < 24; i += 4)
+    for (size_t i = 0; i < 24; i += 4)
     {
-        vertex[i].mUV = { 0.0f, 0.0f };
-        vertex[i + 1].mUV = { 1.0f, 0.0f };
-        vertex[i + 2].mUV = { 1.0f, 1.0f };
-        vertex[i + 3].mUV = { 0.0f, 1.0f };
+        mVertices[i].mUV = { 0.0f, 0.0f };
+        mVertices[i + 1].mUV = { 1.0f, 0.0f };
+        mVertices[i + 2].mUV = { 1.0f, 1.0f };
+        mVertices[i + 3].mUV = { 0.0f, 1.0f };
     }
-
-    for (const auto& i : vertex)
-        mVertices.emplace_back(i);
 
     mIndices =
     {
@@ -66,4 +64,6 @@ Xeno::Cube::Cube(const uint32_t topology) :
         20, 21, 22,
         22, 23, 20
     };
+
+    ComputeNormals();
 }

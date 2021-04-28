@@ -9,6 +9,7 @@
 #include "Component/Transform.h"
 #include "Component/SceneCameraController.h"
 #include "Component/MeshRenderer.h"
+#include "Component/Light.h"
 
 #include "Core/Application.h"
 #include "Core/Input.h"

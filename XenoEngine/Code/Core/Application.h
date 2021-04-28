@@ -12,30 +12,36 @@
 
 #include <SDL2/SDL_events.h>
 
+int main(int argc, char* argv[]);
+
 namespace Xeno
 {
     class XENO_API Application : public NonCopyable
     {
     public:
-        Application(Window::WindowProperties props);
         virtual ~Application();
         
-        void Run();
+        static void Quit();
  
         static Window& GetGameWindow();
 
     protected:
+        Application(Window::WindowProperties props);
+
         virtual void OnRun();
         virtual void OnUpdate();
+        virtual void OnExit();
         //virtual void OnRender() const;
 
     private:
+        void Run();
+
         void PollEvents();
         void Awake();
         void Start();
         void Update();
         void Render() const;
-        void OnExit();
+        void Exit();
 
         Logger mLogger;
         static inline Window sWindow;
@@ -45,6 +51,8 @@ namespace Xeno
         ResourceManager mResourceManager;
         SceneManager mSceneManager;
         SDL_Event mEvent;
-        bool mIsRunning = false;
+        static inline bool sIsRunning = false;
+
+        friend int ::main(int argc, char* argv[]);
     };
 }

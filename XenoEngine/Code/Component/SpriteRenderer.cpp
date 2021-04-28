@@ -17,6 +17,11 @@ void Xeno::SpriteRenderer::OnStart()
 
 void Xeno::SpriteRenderer::OnRender() const
 {
-    SceneRenderer::Submit({ &GetTransform(), GetMaterial().GetColor(),
-        GetMaterial().GetTexture(), &mSprite->GetQuad(), GetMaterial().GetShader() });
+    SceneRenderer::Submit(
+    { 
+        SceneRenderer::RenderCommand::CommandType::SPRITE, 
+        &GetTransform(), 
+        &mSprite->GetQuad(), 
+        &GetMaterial() 
+    });
 }

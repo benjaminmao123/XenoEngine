@@ -10,6 +10,7 @@
 #include <deque>
 #include <memory>
 #include <SDL2/SDL.h>
+#include <vector>
 
 namespace Xeno
 {
@@ -19,23 +20,34 @@ namespace Xeno
     class Shader;
     class ElementBuffer;
     class FrameBuffer;
+    class Light;
+    class Material;
 
     class XENO_API SceneRenderer : public NonCopyable
     {
     public:
         struct RenderCommand
         {
+            enum class CommandType
+            {
+                MESH,
+                SPRITE,
+                GUI
+            };
+
+            CommandType mType;
             const Transform* mTransform = nullptr;
-            Color mColor = Color::White();
-            const Texture* mTexture = nullptr;
             const Mesh* mMesh = nullptr;
-            Shader* mShader = nullptr;
+            const Material* mMaterial = nullptr;
         };
 
         static void Submit(const RenderCommand& command);
 
-        void Clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a, uint32_t flags) const;
-        void Clear(const Color& color, uint32_t flags) const;
+        static void RegisterLight(const Light* light);
+        static void UnregisterLight(const Light* light);
+
+        static void SetClearColor(const Color& color);
+        static const Color& GetClearColor();
 
     private:
         struct RendererData
@@ -54,9 +66,26 @@ namespace Xeno
 
         void ProcessEvents(const SDL_Event& event);
         void Render() const;
+        void RenderMesh(const RenderCommand& command) const;
+        void RenderSprite(const RenderCommand& command) const;
+        void RenderGUI(const RenderCommand& command) const;
+
+        void Draw(uint32_t topology, 
+                  const VertexArray& vao, 
+                  const VertexBuffer& vbo,
+                  const Shader& shader) const;
+        void Draw(uint32_t topology,
+                  const VertexArray& vao, 
+                  const ElementBuffer& ebo, 
+                  const Shader& shader) const;
+
+        void Clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a, uint32_t flags) const;
+        void Clear(const Color& color, uint32_t flags) const;
 
         static inline std::deque<RenderCommand> sCommandBuffer;
         BatchManager mBatchManager;
+        static inline std::vector<const Light*> sLights;
+        static inline Color sClearColor = Color::Gray();
 
         friend class Application;
     };

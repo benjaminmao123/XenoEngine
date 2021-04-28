@@ -1,9 +1,13 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Core/Assert.h"
 
 #include <string>
 #include <date/date.h>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace Xeno::Utility
 {

@@ -28,7 +28,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\frag1.glsl" />
-    <None Include="Assets\Shaders\vertex1.glsl" />
+    <None Include="Assets\Shaders\ScreenFragment.glsl" />
+    <None Include="Assets\Shaders\ScreenVertex.glsl" />
+    <None Include="Assets\Shaders\PhongVertex.glsl" />
+    <None Include="Assets\Shaders\PhongFragment.glsl" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,8 @@ namespace Xeno
     class XENO_API Scene
     {
     public:
+        virtual ~Scene() = default;
+
         Entity* CreateEntity(std::string name);
         void DestroyEntity(const std::string& name);
 
@@ -25,17 +27,24 @@ namespace Xeno
         void SetMainCamera(Camera* camera);
         const Camera* GetMainCamera() const;
 
+    protected:
+        virtual void OnCreate();
+        virtual void OnAwake();
+        virtual void OnStart();
+        virtual void OnUpdate();
+        virtual void OnExit();
+
     private:
         explicit Scene(std::string name);
 
         void AddEntity(const std::shared_ptr<Entity>& entity);
 
-        void OnCreate();
+        void Create();
         void Awake();
         void Start();
         void Update();
         void Render() const;
-        void OnExit();
+        void Exit();
         void ProcessRemovals();
 
         std::string mName;

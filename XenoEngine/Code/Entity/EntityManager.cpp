@@ -6,7 +6,7 @@ void Xeno::EntityManager::Awake()
 {
 	for (const auto& entity : mEntities)
 	{
-		if (!entity->mIsDestroyed)
+		if (!entity->mIsDestroyed && !entity->GetParent())
 			entity->Awake();
 	}
 }
@@ -15,7 +15,8 @@ void Xeno::EntityManager::Start()
 {
 	for (const auto& entity : mEntities)
 	{
-		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy())
+		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy() &&
+			!entity->GetParent())
 			entity->Start();
 	}
 }
@@ -24,7 +25,8 @@ void Xeno::EntityManager::Update()
 {
 	for (const auto& entity : mEntities)
 	{
-		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy())
+		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy() &&
+			!entity->GetParent())
 			entity->Update();
 	}
 }
@@ -33,7 +35,8 @@ void Xeno::EntityManager::Render() const
 {
 	for (const auto& entity : mEntities)
 	{
-		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy())
+		if (!entity->mIsDestroyed && entity->IsActiveInHierarchy() &&
+			!entity->GetParent())
 			entity->Render();
 	}
 }

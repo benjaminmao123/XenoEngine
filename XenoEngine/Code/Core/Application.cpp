@@ -29,7 +29,7 @@ Xeno::Application::~Application()
 
 void Xeno::Application::Run()
 {
-    if (!mIsRunning)
+    if (!sIsRunning)
     {
         if (!sWindow.ConstructWindow())
         {
@@ -48,9 +48,9 @@ void Xeno::Application::Run()
         if (!SceneManager::GetActiveScene())
             SceneManager::LoadScene(0);
 
-        mIsRunning = true;
+        sIsRunning = true;
 
-        while (mIsRunning)
+        while (sIsRunning)
         {
             PollEvents();
 
@@ -64,7 +64,14 @@ void Xeno::Application::Run()
                 sWindow.Display();
             }
         }
+
+        Exit();
     }
+}
+
+void Xeno::Application::Quit()
+{
+    sIsRunning = false;
 }
 
 Xeno::Window& Xeno::Application::GetGameWindow()
@@ -78,6 +85,9 @@ void Xeno::Application::OnRun()
 void Xeno::Application::OnUpdate()
 { }
 
+void Xeno::Application::OnExit()
+{ }
+
 void Xeno::Application::PollEvents()
 {
     while (SDL_PollEvent(&mEvent))
@@ -89,7 +99,7 @@ void Xeno::Application::PollEvents()
         switch (mEvent.type)
         {
         case SDL_QUIT:
-            OnExit();
+            Quit();
             break;
         default:
             break;
@@ -123,8 +133,9 @@ void Xeno::Application::Render() const
     mRenderer.Render();
 }
 
-void Xeno::Application::OnExit()
+void Xeno::Application::Exit()
 {
-    mSceneManager.OnExit();
-    mIsRunning = false;
+    OnExit();
+
+    mSceneManager.Exit();
 }

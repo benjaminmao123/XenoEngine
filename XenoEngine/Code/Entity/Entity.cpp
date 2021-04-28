@@ -3,11 +3,12 @@
 #include "Component/Transform.h"
 #include "Component/Renderer.h"
 
-Xeno::Entity::Entity(std::string name) :
+Xeno::Entity::Entity(std::string name, const glm::vec3& pos) :
 	mName(std::move(name))
 {
 	mInstanceID = sInstanceID++;
 	mTransform = AddComponent<Transform>();
+	mTransform->SetPosition(pos);
 }
 
 void Xeno::Entity::Awake()
@@ -66,7 +67,7 @@ void Xeno::Entity::Render() const
 	}
 
 	for (const auto& entity : mChildren)
-		entity->Render();
+		entity->RenderChildren();
 }
 
 void Xeno::Entity::SetName(std::string name)

@@ -11,10 +11,37 @@
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Renderer/Graphics/FrameBuffer.h"
+#include "Component/Light.h"
+#include "Entity/Entity.h"
+#include "Renderer/Material/Material.h"
 
 void Xeno::SceneRenderer::Submit(const RenderCommand& command)
 {
     sCommandBuffer.emplace_back(command);
+}
+
+void Xeno::SceneRenderer::RegisterLight(const Light* light)
+{
+    sLights.emplace_back(light);
+}
+
+void Xeno::SceneRenderer::UnregisterLight(const Light* light)
+{
+    sLights.erase(std::remove_if(sLights.begin(), sLights.end(),
+    [&](const Light* l)
+    {
+        return l->GetEntity()->GetInstanceID() == light->GetEntity()->GetInstanceID();
+    }), sLights.end());
+}
+
+void Xeno::SceneRenderer::SetClearColor(const Color& color)
+{
+    sClearColor = color;
+}
+
+const Xeno::Color& Xeno::SceneRenderer::GetClearColor()
+{
+    return sClearColor;
 }
 
 void Xeno::SceneRenderer::Clear(const uint8_t r, const uint8_t g, const uint8_t b, 
@@ -43,7 +70,7 @@ void Xeno::SceneRenderer::Init()
 
     Texture::TextureProperties whiteTextureProps =
     {
-        "white",
+        "Default White",
         1, 1,
         GL_RGBA, GL_RGBA,
         GL_UNSIGNED_BYTE,
@@ -111,30 +138,36 @@ void Xeno::SceneRenderer::Render() const
     mData.mFBO->Bind();
 
     glEnable(GL_DEPTH_TEST);
-    Clear(Color::Gray(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Clear(sClearColor, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mData.mVAO->Bind();
 
+    //process commands
     for (const auto& command : sCommandBuffer)
     {
-        const glm::mat4 mvp = SceneManager::GetActiveScene()->GetMainCamera()->GetViewProjection() *
-            command.mTransform->GetModelMatrix();
-
-        if (!command.mShader)
-        {
+        if (!command.mMaterial->GetShader())
             XN_CORE_ASSERT(false, "Trying to render without a shader!");
 
-            return;
+        command.mMaterial->GetShader()->Bind();
+        command.mMaterial->GetShader()->SetMat4("uModel", command.mTransform->GetModelMatrix());
+
+        const glm::mat4 vp = SceneManager::GetActiveScene()->GetMainCamera()->GetViewProjection();
+
+        command.mMaterial->GetShader()->SetMat4("uViewProjection", vp);
+        command.mMaterial->GetShader()->SetFloat4("uColor", command.mMaterial->GetColor().ToVec4());
+
+        switch (command.mType)
+        {
+        case RenderCommand::CommandType::MESH:
+            RenderMesh(command);
+            break;
+        case RenderCommand::CommandType::SPRITE:
+            RenderSprite(command);
+            break;
+        case RenderCommand::CommandType::GUI:
+            RenderGUI(command);
+            break;
         }
-
-        command.mShader->Bind();
-        command.mShader->SetMat4("uMVP", mvp);
-        command.mShader->SetFloat4("uColor", command.mColor.ToVec4());
-
-        if (!command.mTexture)
-            ResourceManager::GetTexture("white")->Bind();
-        else
-            command.mTexture->Bind();
 
         mData.mVBO->SetDataNew(&command.mMesh->mVertices[0], 
                                (uint32_t)command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
@@ -145,17 +178,17 @@ void Xeno::SceneRenderer::Render() const
             mData.mEBO->SetIndicesNew(&command.mMesh->mIndices[0],
                                       (uint32_t)command.mMesh->mIndices.size(),
                                       GL_DYNAMIC_DRAW);
-            mData.mEBO->Bind();
 
-            glDrawElements(command.mMesh->mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Draw(command.mMesh->mTopology, *mData.mVAO, *mData.mEBO, *command.mMaterial->GetShader());
         }
         else
-            glDrawArrays(command.mMesh->mTopology, 0, (uint32_t)command.mMesh->mVertices.size());
+            Draw(command.mMesh->mTopology, *mData.mVAO, *mData.mVBO, *command.mMaterial->GetShader());
     }
 
     mData.mFBO->Unbind();
 
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     Clear(Color::White(), GL_COLOR_BUFFER_BIT);
 
     glBindTexture(GL_TEXTURE_2D, mData.mFBO->GetColorAttachment(0));
@@ -167,11 +200,121 @@ void Xeno::SceneRenderer::Render() const
                               (uint32_t)mData.mScreenQuad.mIndices.size(),
                               GL_DYNAMIC_DRAW);
 
-    ResourceManager::GetShader("screenShader")->Bind();
-
-    mData.mEBO->Bind();
-
-    glDrawElements(mData.mScreenQuad.mTopology, mData.mEBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+    Draw(mData.mScreenQuad.mTopology, *mData.mVAO, *mData.mEBO, *ResourceManager::GetShader("Screen Shader"));
 
     sCommandBuffer.clear();
+}
+
+void Xeno::SceneRenderer::RenderMesh(const RenderCommand& command) const
+{
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    const glm::vec3& viewPosition = SceneManager::GetActiveScene()->GetMainCamera()->GetTransform().GetPosition();
+
+    command.mMaterial->GetShader()->SetFloat3("uViewPosition", viewPosition);
+    command.mMaterial->GetShader()->SetFloat("uMaterial.mShininess", command.mMaterial->GetShininess());
+    command.mMaterial->GetShader()->SetInt("uNumLights", sLights.size());
+
+    for (size_t i = 0; i < sLights.size(); ++i)
+    {
+        command.mMaterial->GetShader()->SetInt("uLights[" + std::to_string(i) + "].mLightType", 
+                                               (int32_t)sLights[i]->GetLightType());
+
+        switch (sLights[i]->GetLightType())
+        {
+        case Light::LightType::DIRECTIONAL:
+        case Light::LightType::POINT:
+        case Light::LightType::SPOT:
+            command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mPosition",
+                                                      sLights[i]->GetTransform().GetPosition());
+            command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mAmbient",
+                                                      sLights[i]->GetAmbient());
+            command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mDiffuse",
+                                                      sLights[i]->GetDiffuse());
+            command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mSpecular",
+                                                      sLights[i]->GetSpecular());
+            command.mMaterial->GetShader()->SetFloat4("uLights[" + std::to_string(i) + "].mColor",
+                                                      sLights[i]->GetColor().ToVec4());
+            command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mIntensity",
+                                                     sLights[i]->GetIntensity());
+            switch (sLights[i]->GetLightType())
+            {
+            case Light::LightType::DIRECTIONAL:
+                command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mDirection",
+                                                          sLights[i]->GetTransform().GetForward());
+                break;
+            case Light::LightType::POINT:
+            case Light::LightType::SPOT:
+                command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mConstant",
+                                                         sLights[i]->GetConstant());
+                command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mLinear",
+                                                         sLights[i]->GetLinear());
+                command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mQuadratic",
+                                                         sLights[i]->GetQuadratic());
+                switch (sLights[i]->GetLightType())
+                {
+                case Light::LightType::SPOT:
+                    command.mMaterial->GetShader()->SetFloat3("uLights[" + std::to_string(i) + "].mDirection",
+                                                              sLights[i]->GetTransform().GetForward());
+                    command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mCutoff",
+                                                             sLights[i]->GetCutoff());
+                    command.mMaterial->GetShader()->SetFloat("uLights[" + std::to_string(i) + "].mOuterCutoff",
+                                                             sLights[i]->GetOuterCutoff());
+                    break;
+                default:
+                    break;
+                }
+                break;
+            }
+            break;
+        }
+    }
+
+    command.mMaterial->GetTexture()->Bind();
+}
+
+void Xeno::SceneRenderer::RenderSprite(const RenderCommand& command) const
+{
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+
+    if (!command.mMaterial->GetTexture())
+        ResourceManager::GetTexture("Default White")->Bind();
+    else
+        command.mMaterial->GetTexture()->Bind();
+}
+
+void Xeno::SceneRenderer::RenderGUI(const RenderCommand& command) const
+{
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+
+    if (!command.mMaterial->GetTexture())
+        ResourceManager::GetTexture("Default White")->Bind();
+    else
+        command.mMaterial->GetTexture()->Bind();
+}
+
+void Xeno::SceneRenderer::Draw(const uint32_t topology, 
+                               const VertexArray& vao, 
+                               const VertexBuffer& vbo, 
+                               const Shader& shader) const
+{
+    vao.Bind();
+    shader.Bind();
+
+    glDrawArrays(topology, 0, vbo.GetSize());
+}
+
+void Xeno::SceneRenderer::Draw(const uint32_t topology,
+                               const VertexArray& vao, 
+                               const ElementBuffer& ebo, 
+                               const Shader& shader) const
+{
+    vao.Bind();
+    ebo.Bind();
+    shader.Bind();
+
+    glDrawElements(topology, ebo.GetCount(), GL_UNSIGNED_INT, nullptr);
 }

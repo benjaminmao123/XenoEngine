@@ -25,15 +25,27 @@ namespace Xeno
             uint32_t mFilterMax = GL_LINEAR;
         };
 
-        explicit Texture(TextureProperties props, int32_t mipMapLevel = 0);
-        explicit Texture(void* data, TextureProperties props, int32_t mipMapLevel = 0);
-        explicit Texture(TextureProperties props, int32_t numSamples, bool fixed);
+        explicit Texture(TextureProperties props, 
+                         bool mipMap = false, 
+                         int32_t mipMapLevel = 0);
+        explicit Texture(void* data, 
+                         TextureProperties props, 
+                         bool mipMap = false, 
+                         int32_t mipMapLevel = 0);
+        explicit Texture(TextureProperties props, 
+                         int32_t numSamples, 
+                         bool fixed, 
+                         bool mipMap = false, 
+                         int32_t mipMapLevel = 0);
         ~Texture();
         Texture& operator=(const Texture& other) = delete;
 
         void Bind(uint32_t slot = 0) const;
 
-        void SetDataNew(void* data, TextureProperties props, int32_t mipMapLevel = 0);
+        void SetDataNew(void* data, 
+                        TextureProperties props, 
+                        bool mipMap = false, 
+                        int32_t mipMapLevel = 0);
         void SetDataExisting(void* data, int32_t mipMapLevel = 0) const;
 
         void SetWrapS(uint32_t mode);
@@ -49,7 +61,7 @@ namespace Xeno
         [[nodiscard]] bool InitSuccess() const;
 
     private:
-        bool GenerateTextureFromFile(int32_t mipMapLevel);
+        bool GenerateTextureFromFile(bool mipMap, int32_t mipMapLevel);
 
         uint32_t mObjectID = 0;
         TextureProperties mProps;

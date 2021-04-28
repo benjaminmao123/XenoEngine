@@ -27,7 +27,7 @@ namespace Xeno
         void Start();
         void Update();
         void Render() const;
-        void OnExit();
+        void Exit();
         void ProcessRemovals();
 
         static inline std::vector<std::shared_ptr<Scene>> sScenes;

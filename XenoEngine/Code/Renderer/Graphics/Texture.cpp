@@ -6,27 +6,31 @@
 #include <stb/stb_image.h>
 #include <utility>
 
-Xeno::Texture::Texture(TextureProperties props, const int32_t mipMapLevel) :
+Xeno::Texture::Texture(TextureProperties props, const bool mipMap, const int32_t mipMapLevel) :
     mProps(std::move(props))
 {
     stbi_set_flip_vertically_on_load(1);
 
     glGenTextures(1, &mObjectID);
 
-    mInitSuccess = GenerateTextureFromFile(mipMapLevel);
+    mInitSuccess = GenerateTextureFromFile(mipMap, mipMapLevel);
 }
 
-Xeno::Texture::Texture(void* data, TextureProperties props, const int32_t mipMapLevel) :
+Xeno::Texture::Texture(void* data, TextureProperties props, const bool mipMap, const int32_t mipMapLevel) :
     mProps(std::move(props))
 {
     stbi_set_flip_vertically_on_load(1);
 
     glGenTextures(1, &mObjectID);
 
-    SetDataNew(data, mProps, mipMapLevel);
+    SetDataNew(data, mProps, mipMap, mipMapLevel);
 }
 
-Xeno::Texture::Texture(TextureProperties props, const int32_t numSamples, const bool fixed) :
+Xeno::Texture::Texture(TextureProperties props, 
+                       const int32_t numSamples,
+                       const bool fixed,
+                       const bool mipMap, 
+                       const int32_t mipMapLevel) :
     mProps(std::move(props))
 {
     glGenTextures(1, &mObjectID);
@@ -50,6 +54,9 @@ Xeno::Texture::Texture(TextureProperties props, const int32_t numSamples, const 
                      mProps.mDataType,
                      nullptr);
 
+        if (mipMap)
+            glGenerateMipmap(GL_TEXTURE_2D);
+
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mProps.mFilterMin);
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mProps.mFilterMax);
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mProps.mWrapS);
@@ -68,7 +75,7 @@ void Xeno::Texture::Bind(const uint32_t slot) const
     glBindTexture(GL_TEXTURE_2D, mObjectID);
 }
 
-void Xeno::Texture::SetDataNew(void* data, TextureProperties props, const int32_t mipMapLevel)
+void Xeno::Texture::SetDataNew(void* data, TextureProperties props, const bool mipMap, const int32_t mipMapLevel)
 {
     mProps = std::move(props);
 
@@ -84,13 +91,13 @@ void Xeno::Texture::SetDataNew(void* data, TextureProperties props, const int32_
                  mProps.mDataType,
                  data);
 
+    if (mipMap)
+        glGenerateMipmap(GL_TEXTURE_2D);
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mProps.mWrapS);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mProps.mWrapT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mProps.mFilterMin);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mProps.mFilterMax);
-
-    if (mipMapLevel)
-        glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void Xeno::Texture::SetDataExisting(void* data, const int32_t mipMapLevel) const
@@ -161,7 +168,7 @@ bool Xeno::Texture::InitSuccess() const
     return mInitSuccess;
 }
 
-bool Xeno::Texture::GenerateTextureFromFile(const int32_t mipMapLevel)
+bool Xeno::Texture::GenerateTextureFromFile(const bool mipMap, const int32_t mipMapLevel)
 {
     XN_CORE_INFO("Generating texture: {0}", mProps.mPath);
 
@@ -197,7 +204,7 @@ bool Xeno::Texture::GenerateTextureFromFile(const int32_t mipMapLevel)
     mProps.mWidth = width;
     mProps.mHeight = height;
 
-    SetDataNew(data, mProps, mipMapLevel);
+    SetDataNew(data, mProps, mipMap, mipMapLevel);
 
     stbi_image_free(data);
 

@@ -19,6 +19,11 @@ void Xeno::MeshRenderer::OnStart()
 
 void Xeno::MeshRenderer::OnRender() const
 {
-    SceneRenderer::Submit({ &GetTransform(), GetMaterial().GetColor(),
-        GetMaterial().GetTexture(), mMeshFilter->GetMesh(), GetMaterial().GetShader() });
+    SceneRenderer::Submit(
+    { 
+        SceneRenderer::RenderCommand::CommandType::MESH, 
+        &GetTransform(), 
+        mMeshFilter->GetMesh(), 
+        &GetMaterial() 
+    });
 }

@@ -16,7 +16,8 @@ namespace Xeno
     class XENO_API Entity : public NonCopyable, std::enable_shared_from_this<Entity>
     {
     public:
-        explicit Entity(std::string name = "");
+        explicit Entity(std::string name = "", const glm::vec3& pos = glm::vec3(0.0f, 0.0f, 0.0f));
+        virtual ~Entity() = default;
 
         template <typename T, typename... Ts>
         T* AddComponent(Ts&&... args);
@@ -43,6 +44,7 @@ namespace Xeno
         void Start();
         void Update();
         void Render() const;
+        void RenderChildren(Transform* parentTransform) const;
 
         std::string mName;
         static inline uint32_t sInstanceID = 0;

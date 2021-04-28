@@ -46,7 +46,7 @@ void Xeno::Transform::Rotate(const float x, const float y, const float z, const 
 
 void Xeno::Transform::Rotate(const glm::vec3& axis, const float angle, const Space space)
 {
-	const glm::quat rot = angleAxis(glm::radians(angle), axis);
+	const glm::quat rot = angleAxis(glm::radians(angle), glm::normalize(axis));
 
 	switch (space)
 	{
@@ -68,7 +68,7 @@ void Xeno::Transform::SetPosition(const glm::vec3& position)
 
 void Xeno::Transform::SetPosition(const float x, const float y, const float z)
 {
-	SetPosition({x, y, z});
+	SetPosition({ x, y, z });
 }
 
 glm::vec3& Xeno::Transform::GetPosition()
@@ -93,7 +93,7 @@ void Xeno::Transform::SetRotationEuler(const glm::vec3& eulers)
 
 void Xeno::Transform::SetRotationEuler(const float x, const float y, const float z)
 {
-	SetRotationEuler({x, y, z});
+	SetRotationEuler({ x, y, z });
 }
 
 const glm::quat& Xeno::Transform::GetRotation() const
@@ -104,6 +104,31 @@ const glm::quat& Xeno::Transform::GetRotation() const
 glm::vec3 Xeno::Transform::GetRotationEuler() const
 {
 	return glm::vec3(eulerAngles(mRotation));
+}
+
+void Xeno::Transform::SetLocalRotation(const glm::quat& rotation)
+{
+	mLocalRotation = rotation;
+}
+
+void Xeno::Transform::SetLocalRotationEuler(const glm::vec3& eulers)
+{
+	mLocalRotation = glm::quat(radians(eulers));
+}
+
+void Xeno::Transform::SetLocalRotationEuler(const float x, const float y, const float z)
+{
+	SetLocalRotationEuler({ x, y, z });
+}
+
+const glm::quat& Xeno::Transform::GetLocalRotation() const
+{
+	return mLocalRotation;
+}
+
+glm::vec3 Xeno::Transform::GetLocalRotationEuler() const
+{
+	return glm::vec3(eulerAngles(mLocalRotation));
 }
 
 void Xeno::Transform::SetScale(const glm::vec3& scale)

@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Code\Component\Camera.cpp" />
     <ClCompile Include="Code\Component\Component.cpp" />
+    <ClCompile Include="Code\Component\Light.cpp" />
     <ClCompile Include="Code\Component\MeshFilter.cpp" />
     <ClCompile Include="Code\Component\MeshRenderer.cpp" />
     <ClCompile Include="Code\Component\SceneCameraController.cpp" />
@@ -209,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="Code\Component\Camera.h" />
     <ClInclude Include="Code\Component\Component.h" />
+    <ClInclude Include="Code\Component\Light.h" />
     <ClInclude Include="Code\Component\MeshFilter.h" />
     <ClInclude Include="Code\Component\MeshRenderer.h" />
     <ClInclude Include="Code\Component\SceneCameraController.h" />
@@ -242,6 +244,7 @@
     <ClInclude Include="Code\Renderer\Graphics\VertexBuffer.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Scene\SceneManager.h" />
+    <ClInclude Include="Code\Utility\Graph.h" />
     <ClInclude Include="Code\Utility\NonCopyable.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
     <ClInclude Include="Code\Xeno.h" />

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Utility/Graph.h"
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -23,6 +24,9 @@ namespace Xeno
 
         explicit Mesh(uint32_t topology);
         virtual ~Mesh() = default;
+
+        glm::vec3 ComputeNormal(size_t index);
+        void ComputeNormals();
 
         uint32_t mTopology;
         std::vector<Vertex> mVertices;

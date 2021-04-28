@@ -31,5 +31,6 @@ namespace Xeno
         float mCameraPanSpeed = 10.0f;
         float mSensitivity = 10.0f;
         float mZoomFactor = 1.0f;
+        float mRotationX = 0.0f;
     };
 }

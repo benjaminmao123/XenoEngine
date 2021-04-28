@@ -20,6 +20,12 @@ namespace Xeno
             JOYSTICK
         };
 
+        enum class CursorLockState
+        {
+            NONE,
+            LOCKED
+        };
+
         ~Input();
 
         // @brief Gets the key state.
@@ -35,6 +41,7 @@ namespace Xeno
         // @return glm::vec2: The mouse x and y mPosition.
         static glm::vec2 GetAxis(AxisType type);
         static const glm::vec2& GetMouseScrollDelta();
+        static void SetCursorLockState(CursorLockState state);
 
     private:
         // @brief Default constructor.
@@ -59,6 +66,7 @@ namespace Xeno
         // @brief Stores the value of the joystick axis.
         static inline glm::vec<2, int32_t> sJoystickAxis;
         static inline glm::vec<2, int32_t> sMouseScrollDelta;
+        static inline CursorLockState sCursorLockState;
 
         friend class Application;
     };

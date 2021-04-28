@@ -58,6 +58,21 @@ const Xeno::Camera* Xeno::Scene::GetMainCamera() const
 	return mMainCamera;
 }
 
+void Xeno::Scene::OnCreate()
+{ }
+
+void Xeno::Scene::OnAwake()
+{ }
+
+void Xeno::Scene::OnStart()
+{ }
+
+void Xeno::Scene::OnUpdate()
+{ }
+
+void Xeno::Scene::OnExit()
+{ }
+
 void Xeno::Scene::AddEntity(const std::shared_ptr<Entity>& entity)
 {
 	return mEntityManager.AddEntity(entity);
@@ -73,21 +88,29 @@ void Xeno::Scene::DestroyEntity(const std::string& name)
 	mEntityManager.DestroyEntity(name);
 }
 
-void Xeno::Scene::OnCreate()
-{ }
+void Xeno::Scene::Create()
+{
+	OnCreate();
+}
 
 void Xeno::Scene::Awake()
 {
+	OnAwake();
+
 	mEntityManager.Awake();
 }
 
 void Xeno::Scene::Start()
 {
+	OnStart();
+
 	mEntityManager.Start();
 }
 
 void Xeno::Scene::Update()
 {
+	OnUpdate();
+
 	mEntityManager.Update();
 }
 
@@ -96,8 +119,10 @@ void Xeno::Scene::Render() const
 	mEntityManager.Render();
 }
 
-void Xeno::Scene::OnExit()
-{ }
+void Xeno::Scene::Exit()
+{
+	OnExit();
+}
 
 void Xeno::Scene::ProcessRemovals()
 {

@@ -38,6 +38,12 @@ namespace Xeno
 		[[nodiscard]] const glm::quat& GetRotation() const;		
 		[[nodiscard]] glm::vec3 GetRotationEuler() const;
 
+		void SetLocalRotation(const glm::quat& rotation);
+		void SetLocalRotationEuler(const glm::vec3& eulers);
+		void SetLocalRotationEuler(float x, float y, float z);
+		[[nodiscard]] const glm::quat& GetLocalRotation() const;
+		[[nodiscard]] glm::vec3 GetLocalRotationEuler() const;
+
 		void SetScale(const glm::vec3& scale);
 		void SetScale(float x, float y, float z);
 		[[nodiscard]] glm::vec3 GetScale() const;
@@ -53,6 +59,7 @@ namespace Xeno
 	private:
 		glm::vec3 mPosition;
 		glm::quat mRotation;
+		glm::quat mLocalRotation;
 		glm::vec3 mScale;
 	};
 }

@@ -18,18 +18,25 @@ namespace Xeno
 
         void SetTexture(const std::shared_ptr<Texture>& texture);
         [[nodiscard]] const Texture* GetTexture() const;
+        void SetDiffuseMap(const std::shared_ptr<Texture>& map);
+        [[nodiscard]] const Texture* GetDiffuseMap() const;
+        void SetSpecularMap(const std::shared_ptr<Texture>& map);
+        [[nodiscard]] const Texture* GetSpecularMap() const;
         void SetColor(const Color& color);
         [[nodiscard]] const Color& GetColor() const;
         void SetShader(const std::shared_ptr<Shader>& shader);
         [[nodiscard]] Shader* GetShader() const;
+        void SetShininess(float value);
+        [[nodiscard]] float GetShininess() const;
 
     private:
-        std::shared_ptr<Texture> mTexture = nullptr;
         std::shared_ptr<Shader> mShader = nullptr;
+
+        std::shared_ptr<Texture> mDiffuseMap = nullptr;
+        std::shared_ptr<Texture> mSpecularMap = nullptr;
+        std::shared_ptr<Texture> mTexture = nullptr;
+        
         Color mColor;
-        glm::vec3 mAmbient;
-        glm::vec3 mDiffuse;
-        glm::vec3 mSpecular;
-        float mShininess;
+        float mShininess = 32.0f;
     };
 }

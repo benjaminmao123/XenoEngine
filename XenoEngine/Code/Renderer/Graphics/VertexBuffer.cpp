@@ -44,14 +44,17 @@ void Xeno::VertexBuffer::PushElement(const VertexBufferLayout::VertexBufferEleme
 void Xeno::VertexBuffer::SetDataNew(const void* data, const uint32_t size, const uint32_t drawType)
 {
     mDrawType = drawType;
+    mSize = size;
 
     Bind();
     glBufferData(GL_ARRAY_BUFFER, size, data, mDrawType);
     Unbind();
 }
 
-void Xeno::VertexBuffer::SetDataExisting(const void* data, const uint32_t size) const
+void Xeno::VertexBuffer::SetDataExisting(const void* data, const uint32_t size)
 {
+    mSize = size;
+
     Bind();
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
     Unbind();
@@ -70,4 +73,9 @@ const Xeno::VertexBuffer::VertexBufferLayout& Xeno::VertexBuffer::GetLayout() co
 void Xeno::VertexBuffer::ClearLayout()
 {
     mLayout.Clear();
+}
+
+uint32_t Xeno::VertexBuffer::GetSize() const
+{
+    return mSize;
 }

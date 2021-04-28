@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Renderer/Mesh/Mesh.h"
+#include "Utility/Graph.h"
 
 namespace Xeno
 {

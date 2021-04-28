@@ -20,8 +20,6 @@ namespace Xeno
 
 		Transform& GetTransform();
 		[[nodiscard]] const Transform& GetTransform() const;
-
-	protected:
 		Entity* GetEntity();
 		[[nodiscard]] const Entity* GetEntity() const;
 

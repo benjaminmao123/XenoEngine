@@ -49,6 +49,21 @@ const glm::vec2& Xeno::Input::GetMouseScrollDelta()
 	return sMouseScrollDelta;
 }
 
+void Xeno::Input::SetCursorLockState(const CursorLockState state)
+{
+	sCursorLockState = state;
+
+	switch (sCursorLockState)
+	{
+	case CursorLockState::LOCKED:
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		break;
+	default:
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		break;
+	}
+}
+
 void Xeno::Input::ProcessEvents(const SDL_Event& event)
 {
 	switch (event.type)

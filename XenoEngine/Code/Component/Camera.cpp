@@ -6,14 +6,12 @@
 #include <glm/ext/matrix_transform.hpp>
 
 Xeno::Camera::Camera(Entity* owner,
-                     const glm::vec3& position,
                      const ProjectionType type) :
     Component(owner),
     mLeft(0.0f), mRight(Application::GetGameWindow().GetWidth()),
     mBottom(Application::GetGameWindow().GetHeight()), mTop(0.0f)
 {
     SetProjectionType(type);
-    GetTransform().SetPosition(position);
 }
 
 void Xeno::Camera::SetProjectionType(const ProjectionType type)

@@ -91,6 +91,12 @@ void Xeno::SceneCameraController::UpdateMovement()
         if (Input::GetKey(KeyCode::D))
             mCamera->GetTransform().Translate(mCamera->GetTransform().GetRight() *
                                               mCameraPanSpeed * Time::GetDeltaTime());
+        if (Input::GetKey(KeyCode::SPACE))
+            mCamera->GetTransform().Translate(glm::vec3(0.0f, 1.0f, 0.0f) *
+                                              mCameraPanSpeed * Time::GetDeltaTime());
+        if (Input::GetKey(KeyCode::LCTRL))
+            mCamera->GetTransform().Translate(glm::vec3(0.0f, -1.0f, 0.0f) *
+                                              mCameraPanSpeed * Time::GetDeltaTime());
     }
 }
 
@@ -103,6 +109,12 @@ void Xeno::SceneCameraController::UpdateRotation()
     else
     {
         const glm::vec2 mouse = Input::GetAxis(Input::AxisType::MOUSE);
+
+        float mouseX = mouse.x * mSensitivity * Time::GetDeltaTime();
+        float mouseY = mouse.y * mSensitivity * Time::GetDeltaTime();
+
+        mRotationX -= mouseY;
+        mRotationX = std::clamp(mRotationX, -90.0f, 90.0f);
 
         mCamera->GetTransform().Rotate(0.0f, mouse.x * mSensitivity *
                                        Time::GetDeltaTime(), 0.0f, Transform::Space::SELF);

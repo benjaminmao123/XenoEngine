@@ -107,15 +107,18 @@ namespace Xeno
 		void PushElement(const VertexBufferLayout::VertexBufferElement& element);
 
 		void SetDataNew(const void* data, uint32_t size, uint32_t drawType = GL_STATIC_DRAW);
-		void SetDataExisting(const void* data, uint32_t size) const;
+		void SetDataExisting(const void* data, uint32_t size);
 
 		void SetLayout(const VertexBufferLayout& layout);
 		[[nodiscard]] const VertexBufferLayout& GetLayout() const;
 		void ClearLayout();
 
+		[[nodiscard]] uint32_t GetSize() const;
+
     private:
         uint32_t mObjectID;
         VertexBufferLayout mLayout;
 		uint32_t mDrawType;
+		uint32_t mSize;
     };
 }

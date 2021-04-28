@@ -13,6 +13,13 @@ namespace Xeno
     class XENO_API Window : public NonCopyable
     {
     public:
+        enum class FullScreenMode
+        {
+            NONE,
+            FULLSCREEN,
+            BORDERLESS_WINDOWED
+        };
+
         struct WindowProperties
         {
             std::string mTitle = "My App";
@@ -31,6 +38,7 @@ namespace Xeno
         void ProcessEvents(const SDL_Event& event);
         void SetWindowProps(WindowProperties props);
         void Resize(uint32_t width, uint32_t height);
+        void SetFullScreenMode(FullScreenMode mode);
 
         void SetWidth(uint32_t value);
         uint32_t GetWidth();
@@ -51,6 +59,7 @@ namespace Xeno
         SDL_GLContext mContext;
 
         bool mIsInitialized = false;
+        FullScreenMode mFullScreenMode = FullScreenMode::NONE;
 
         friend class Application;
     };

@@ -172,11 +172,19 @@ xcopy /y /d "..\..\XenoEngine\$(IntDir)XenoEngine64.lib" "$(ProjectDir)Lib\XenoE
     <ClInclude Include="Code\Sandbox.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\frag1.glsl">
+    <None Include="Assets\Shaders\ScreenFragment.glsl">
       <SubType>
       </SubType>
     </None>
-    <None Include="Assets\Shaders\vertex1.glsl">
+    <None Include="Assets\Shaders\PhongFragment.glsl">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Assets\Shaders\PhongVertex.glsl">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Assets\Shaders\ScreenVertex.glsl">
       <SubType>
       </SubType>
     </None>
