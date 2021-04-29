@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 #include "Component/Component.h"
-#include "Renderer/Graphics/Color.h"
+#include "Graphics/Color.h"
 
 #include <memory>
 #include <glm/glm.hpp>

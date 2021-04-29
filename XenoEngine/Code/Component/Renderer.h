@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 #include "Component/Component.h"
-#include "Renderer/Material/Material.h"
+#include "Material/Material.h"
 
 namespace Xeno
 {

@@ -67,7 +67,7 @@ void Xeno::Entity::Render() const
 	}
 
 	for (const auto& entity : mChildren)
-		entity->RenderChildren();
+		entity->Render();
 }
 
 void Xeno::Entity::SetName(std::string name)

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Graphics/VertexBuffer.h"
-#include "Renderer/Graphics/ElementBuffer.h"
+#include "Graphics/VertexBuffer.h"
+#include "Graphics/ElementBuffer.h"
 
 #include <vector>
 #include <memory>

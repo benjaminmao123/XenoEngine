@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "FrameBuffer.h"
-#include "Renderer/Graphics/Texture.h"
+#include "Graphics/Texture.h"
 #include "Core/Window.h"
-#include "Renderer/Graphics/RenderBuffer.h"
+#include "Graphics/RenderBuffer.h"
 #include "Core/Logger.h"
 #include "Core/Assert.h"
 

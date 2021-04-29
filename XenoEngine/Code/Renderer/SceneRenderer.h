@@ -3,9 +3,9 @@
 #include "Core/Core.h"
 #include "Utility/NonCopyable.h"
 #include "Component/Camera.h"
-#include "Renderer/Graphics/Color.h"
+#include "Graphics/Color.h"
 #include "Renderer/BatchManager.h"
-#include "Renderer/Mesh/Quad.h"
+#include "Mesh/Quad.h"
 
 #include <deque>
 #include <memory>
@@ -44,7 +44,7 @@ namespace Xeno
         static void Submit(const RenderCommand& command);
 
         static void RegisterLight(const Light* light);
-        static void UnregisterLight(const Light* light);
+        static void UnRegisterLight(const Light* light);
 
         static void SetClearColor(const Color& color);
         static const Color& GetClearColor();
@@ -64,7 +64,7 @@ namespace Xeno
 
         void Init();
 
-        void ProcessEvents(const SDL_Event& event);
+        void ProcessEvents(const SDL_Event& event) const;
         void Render() const;
         void RenderMesh(const RenderCommand& command) const;
         void RenderSprite(const RenderCommand& command) const;

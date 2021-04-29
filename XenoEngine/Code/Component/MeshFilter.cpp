@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MeshFilter.h"
-#include "Renderer/Mesh/Mesh.h"
+#include "Mesh/Mesh.h"
 
 Xeno::MeshFilter::MeshFilter(Entity* owner) :
     Component(owner)

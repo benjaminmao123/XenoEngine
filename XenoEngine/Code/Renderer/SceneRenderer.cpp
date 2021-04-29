@@ -3,17 +3,17 @@
 #include "Core/Assert.h"
 #include "Core/Application.h"
 #include "Resource/ResourceManager.h"
-#include "Renderer/Graphics/VertexArray.h"
-#include "Renderer/Graphics/VertexBuffer.h"
-#include "Renderer/Graphics/Texture.h"
-#include "Renderer/Graphics/Shader.h"
-#include "Renderer/Graphics/ElementBuffer.h"
+#include "Graphics/VertexArray.h"
+#include "Graphics/VertexBuffer.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Shader.h"
+#include "Graphics/ElementBuffer.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
-#include "Renderer/Graphics/FrameBuffer.h"
+#include "Graphics/FrameBuffer.h"
 #include "Component/Light.h"
 #include "Entity/Entity.h"
-#include "Renderer/Material/Material.h"
+#include "Material/Material.h"
 
 void Xeno::SceneRenderer::Submit(const RenderCommand& command)
 {
@@ -25,7 +25,7 @@ void Xeno::SceneRenderer::RegisterLight(const Light* light)
     sLights.emplace_back(light);
 }
 
-void Xeno::SceneRenderer::UnregisterLight(const Light* light)
+void Xeno::SceneRenderer::UnRegisterLight(const Light* light)
 {
     sLights.erase(std::remove_if(sLights.begin(), sLights.end(),
     [&](const Light* l)
@@ -114,7 +114,7 @@ void Xeno::SceneRenderer::Init()
     mData.mVAO->AddBuffer(mData.mVBO, mData.mEBO);
 }
 
-void Xeno::SceneRenderer::ProcessEvents(const SDL_Event& event)
+void Xeno::SceneRenderer::ProcessEvents(const SDL_Event& event) const
 {
     switch (event.type)
     {
@@ -207,9 +207,6 @@ void Xeno::SceneRenderer::Render() const
 
 void Xeno::SceneRenderer::RenderMesh(const RenderCommand& command) const
 {
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-
     const glm::vec3& viewPosition = SceneManager::GetActiveScene()->GetMainCamera()->GetTransform().GetPosition();
 
     command.mMaterial->GetShader()->SetFloat3("uViewPosition", viewPosition);
@@ -271,7 +268,10 @@ void Xeno::SceneRenderer::RenderMesh(const RenderCommand& command) const
         }
     }
 
-    command.mMaterial->GetTexture()->Bind();
+    if (!command.mMaterial->GetTexture())
+        ResourceManager::GetTexture("Default White")->Bind();
+    else
+        command.mMaterial->GetTexture()->Bind();
 }
 
 void Xeno::SceneRenderer::RenderSprite(const RenderCommand& command) const

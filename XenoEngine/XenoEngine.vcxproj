@@ -176,6 +176,7 @@
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\Entity\Entity.cpp" />
     <ClCompile Include="Code\Entity\EntityManager.cpp" />
+    <ClCompile Include="Code\Mesh\Plane.cpp" />
     <ClCompile Include="Code\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -183,15 +184,15 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Code\Renderer\BatchManager.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\FrameBuffer.cpp" />
-    <ClCompile Include="Code\Renderer\Material\Material.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\RenderBuffer.cpp" />
-    <ClCompile Include="Code\Renderer\Mesh\Cube.cpp" />
-    <ClCompile Include="Code\Renderer\Mesh\Mesh.cpp" />
+    <ClCompile Include="Code\Graphics\FrameBuffer.cpp" />
+    <ClCompile Include="Code\Material\Material.cpp" />
+    <ClCompile Include="Code\Graphics\RenderBuffer.cpp" />
+    <ClCompile Include="Code\Mesh\Cube.cpp" />
+    <ClCompile Include="Code\Mesh\Mesh.cpp" />
     <ClCompile Include="Code\Renderer\SceneRenderer.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\Texture.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\VertexArray.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="Code\Graphics\Texture.cpp" />
+    <ClCompile Include="Code\Graphics\VertexArray.cpp" />
+    <ClCompile Include="Code\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="Code\Resource\ResourceManager.cpp" />
     <ClCompile Include="Code\Scene\Scene.cpp" />
     <ClCompile Include="Code\Scene\SceneManager.cpp" />
@@ -203,9 +204,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\ElementBuffer.cpp" />
-    <ClCompile Include="Code\Renderer\Graphics\Shader.cpp" />
-    <ClCompile Include="Code\Renderer\Mesh\Quad.cpp" />
+    <ClCompile Include="Code\Graphics\ElementBuffer.cpp" />
+    <ClCompile Include="Code\Graphics\Shader.cpp" />
+    <ClCompile Include="Code\Mesh\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Component\Camera.h" />
@@ -226,31 +227,32 @@
     <ClInclude Include="Code\Core\Logger.h" />
     <ClInclude Include="Code\Entity\Entity.h" />
     <ClInclude Include="Code\Entity\EntityManager.h" />
+    <ClInclude Include="Code\Mesh\Plane.h" />
     <ClInclude Include="Code\Renderer\BatchManager.h" />
-    <ClInclude Include="Code\Renderer\Graphics\FrameBuffer.h" />
-    <ClInclude Include="Code\Renderer\Graphics\RenderPass.h" />
-    <ClInclude Include="Code\Renderer\Material\Material.h" />
-    <ClInclude Include="Code\Renderer\Graphics\RenderBuffer.h" />
-    <ClInclude Include="Code\Renderer\Mesh\Cube.h" />
+    <ClInclude Include="Code\Graphics\FrameBuffer.h" />
+    <ClInclude Include="Code\Graphics\RenderPass.h" />
+    <ClInclude Include="Code\Material\Material.h" />
+    <ClInclude Include="Code\Graphics\RenderBuffer.h" />
+    <ClInclude Include="Code\Mesh\Cube.h" />
     <ClInclude Include="Code\Resource\ResourceManager.h" />
     <ClInclude Include="Code\Core\Time.h" />
     <ClInclude Include="Code\Core\Window.h" />
     <ClInclude Include="Code\pch.h" />
-    <ClInclude Include="Code\Renderer\Graphics\Color.h" />
-    <ClInclude Include="Code\Renderer\Mesh\Mesh.h" />
+    <ClInclude Include="Code\Graphics\Color.h" />
+    <ClInclude Include="Code\Mesh\Mesh.h" />
     <ClInclude Include="Code\Renderer\SceneRenderer.h" />
-    <ClInclude Include="Code\Renderer\Graphics\Texture.h" />
-    <ClInclude Include="Code\Renderer\Graphics\VertexArray.h" />
-    <ClInclude Include="Code\Renderer\Graphics\VertexBuffer.h" />
+    <ClInclude Include="Code\Graphics\Texture.h" />
+    <ClInclude Include="Code\Graphics\VertexArray.h" />
+    <ClInclude Include="Code\Graphics\VertexBuffer.h" />
     <ClInclude Include="Code\Scene\Scene.h" />
     <ClInclude Include="Code\Scene\SceneManager.h" />
     <ClInclude Include="Code\Utility\Graph.h" />
     <ClInclude Include="Code\Utility\NonCopyable.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
     <ClInclude Include="Code\Xeno.h" />
-    <ClInclude Include="Code\Renderer\Graphics\ElementBuffer.h" />
-    <ClInclude Include="Code\Renderer\Graphics\Shader.h" />
-    <ClInclude Include="Code\Renderer\Mesh\Quad.h" />
+    <ClInclude Include="Code\Graphics\ElementBuffer.h" />
+    <ClInclude Include="Code\Graphics\Shader.h" />
+    <ClInclude Include="Code\Mesh\Quad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -95,15 +95,25 @@ private:
         Light* spotLight = cameraEntity->AddComponent<Light>(Light::LightType::SPOT);
         spotLight->SetColor(Color(1.0f, 0.0f, 0.0f));
 
-        Entity* boxEntity = mScene->CreateEntity("box");
-        Renderer* boxRenderer = boxEntity->AddComponent<MeshRenderer>();
+        Entity* planeEntity = mScene->CreateEntity("plane");
+        Renderer* planeRenderer = planeEntity->AddComponent<MeshRenderer>();
         //boxRenderer->GetMaterial().SetDiffuseMap(ResourceManager::GetTextureRef("Assets/Textures/container2.png"));
         //boxRenderer->GetMaterial().SetSpecularMap(ResourceManager::GetTextureRef("Assets/Textures/container2_specular.png"));
-        boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+        //planeRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
 
-        const auto cubeMesh = std::make_shared<Cube>();
-        auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
-        meshFilter->SetMesh(cubeMesh);
+        const auto planeMesh = std::make_shared<Plane>();
+        auto* planeMeshFilter = planeEntity->GetComponent<MeshFilter>();
+        planeMeshFilter->SetMesh(planeMesh);
+
+        //Entity* boxEntity = mScene->CreateEntity("box");
+        //Renderer* boxRenderer = boxEntity->AddComponent<MeshRenderer>();
+        ////boxRenderer->GetMaterial().SetDiffuseMap(ResourceManager::GetTextureRef("Assets/Textures/container2.png"));
+        ////boxRenderer->GetMaterial().SetSpecularMap(ResourceManager::GetTextureRef("Assets/Textures/container2_specular.png"));
+        //boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+
+        //const auto cubeMesh = std::make_shared<Cube>();
+        //auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
+        //meshFilter->SetMesh(cubeMesh);
     }
 
     Camera* mCameraComponent = nullptr;

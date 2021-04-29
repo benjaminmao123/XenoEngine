@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 #include "Component/Component.h"
-#include "Renderer/Mesh/Quad.h"
+#include "Mesh/Quad.h"
 
 namespace Xeno
 {

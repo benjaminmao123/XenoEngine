@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Graphics/FrameBuffer.h"
+#include "Graphics/FrameBuffer.h"
 
 namespace Xeno
 {

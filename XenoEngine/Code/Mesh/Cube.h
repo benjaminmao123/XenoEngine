@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Mesh/Mesh.h"
+#include "Mesh/Mesh.h"
 
 namespace Xeno
 {

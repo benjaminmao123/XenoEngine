@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ResourceManager.h"
-#include "Renderer/Graphics/Texture.h"
-#include "Renderer/Graphics/Shader.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Shader.h"
 
 bool Xeno::ResourceManager::AddTexture(const std::shared_ptr<Texture>& texture)
 {

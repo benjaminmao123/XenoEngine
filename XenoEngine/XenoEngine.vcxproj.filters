@@ -36,25 +36,25 @@
     <ClCompile Include="Code\Vendor\Glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\Texture.cpp">
+    <ClCompile Include="Code\Graphics\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Vendor\stb\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\VertexBuffer.cpp">
+    <ClCompile Include="Code\Graphics\VertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\VertexArray.cpp">
+    <ClCompile Include="Code\Graphics\VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\ElementBuffer.cpp">
+    <ClCompile Include="Code\Graphics\ElementBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Renderer\SceneRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\Shader.cpp">
+    <ClCompile Include="Code\Graphics\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Component\Transform.cpp">
@@ -63,10 +63,10 @@
     <ClCompile Include="Code\Component\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Mesh\Mesh.cpp">
+    <ClCompile Include="Code\Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Mesh\Quad.cpp">
+    <ClCompile Include="Code\Mesh\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Resource\ResourceManager.cpp">
@@ -93,10 +93,10 @@
     <ClCompile Include="Code\Renderer\BatchManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\FrameBuffer.cpp">
+    <ClCompile Include="Code\Graphics\FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Graphics\RenderBuffer.cpp">
+    <ClCompile Include="Code\Graphics\RenderBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Component\Sprite.cpp">
@@ -111,16 +111,19 @@
     <ClCompile Include="Code\Component\SceneCameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Mesh\Cube.cpp">
+    <ClCompile Include="Code\Mesh\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Component\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Material\Material.cpp">
+    <ClCompile Include="Code\Material\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\Component\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Mesh\Plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,19 +155,19 @@
     <ClInclude Include="Code\Renderer\SceneRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\Texture.h">
+    <ClInclude Include="Code\Graphics\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\VertexArray.h">
+    <ClInclude Include="Code\Graphics\VertexArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\VertexBuffer.h">
+    <ClInclude Include="Code\Graphics\VertexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\ElementBuffer.h">
+    <ClInclude Include="Code\Graphics\ElementBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\Shader.h">
+    <ClInclude Include="Code\Graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Component\Transform.h">
@@ -176,13 +179,13 @@
     <ClInclude Include="Code\Utility\NonCopyable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\Color.h">
+    <ClInclude Include="Code\Graphics\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Mesh\Mesh.h">
+    <ClInclude Include="Code\Mesh\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Mesh\Quad.h">
+    <ClInclude Include="Code\Mesh\Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Resource\ResourceManager.h">
@@ -215,10 +218,10 @@
     <ClInclude Include="Code\Renderer\BatchManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\FrameBuffer.h">
+    <ClInclude Include="Code\Graphics\FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\RenderBuffer.h">
+    <ClInclude Include="Code\Graphics\RenderBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Component\Sprite.h">
@@ -233,25 +236,28 @@
     <ClInclude Include="Code\Component\SceneCameraController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Mesh\Cube.h">
+    <ClInclude Include="Code\Mesh\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Component\MeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Material\Material.h">
+    <ClInclude Include="Code\Material\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Core\KeyCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderer\Graphics\RenderPass.h">
+    <ClInclude Include="Code\Graphics\RenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Component\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Utility\Graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Mesh\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

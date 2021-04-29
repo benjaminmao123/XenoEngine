@@ -143,5 +143,5 @@ float Xeno::Light::GetOuterCutoff() const
 
 void Xeno::Light::OnDestroy()
 {
-    SceneRenderer::UnregisterLight(this);
+    SceneRenderer::UnRegisterLight(this);
 }

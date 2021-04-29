@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Renderer/Graphics/Color.h"
+#include "Graphics/Color.h"
 
 #include <memory>
 #include <glm/glm.hpp>
