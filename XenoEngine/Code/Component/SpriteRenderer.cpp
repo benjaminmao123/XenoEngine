@@ -3,11 +3,13 @@
 #include "Component/Sprite.h"
 #include "Renderer/SceneRenderer.h"
 #include "Entity/Entity.h"
+#include "Resource/ResourceManager.h"
 
 Xeno::SpriteRenderer::SpriteRenderer(Entity* owner) :
     Renderer(owner)
 {
     GetEntity()->AddComponent<Sprite>();
+    GetMaterial().SetShader(ResourceManager::GetShader("Default Sprite Shader"));
 }
 
 void Xeno::SpriteRenderer::OnStart()

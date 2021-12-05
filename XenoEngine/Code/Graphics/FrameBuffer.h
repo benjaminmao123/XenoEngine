@@ -9,6 +9,7 @@
 namespace Xeno
 {
     class RenderBuffer;
+    class Texture;
 
     class XENO_API FrameBuffer
     {
@@ -36,13 +37,13 @@ namespace Xeno
         [[nodiscard]] uint32_t GetWidth() const;
         [[nodiscard]] uint32_t GetHeight() const;
 
-        [[nodiscard]] uint32_t GetColorAttachment(uint32_t index) const;
+        [[nodiscard]] const Texture* GetColorAttachment(uint32_t index) const;
 
     private:
         uint32_t mObjectID = 0;
 
         FrameBufferProperties mProps;
-        std::vector<uint32_t> mColorAttachments;
+        std::vector<Texture*> mColorAttachments;
         std::vector<uint32_t> mColorAttachmentBuffer;
         RenderBuffer* mRenderBuffer;
 

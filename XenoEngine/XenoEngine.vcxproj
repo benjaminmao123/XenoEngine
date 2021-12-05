@@ -176,6 +176,7 @@
     <ClCompile Include="Code\Core\Window.cpp" />
     <ClCompile Include="Code\Entity\Entity.cpp" />
     <ClCompile Include="Code\Entity\EntityManager.cpp" />
+    <ClCompile Include="Code\Mesh\Model.cpp" />
     <ClCompile Include="Code\Mesh\Plane.cpp" />
     <ClCompile Include="Code\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -207,6 +208,7 @@
     <ClCompile Include="Code\Graphics\ElementBuffer.cpp" />
     <ClCompile Include="Code\Graphics\Shader.cpp" />
     <ClCompile Include="Code\Mesh\Quad.cpp" />
+    <ClCompile Include="Code\Graphics\Uniform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Component\Camera.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="Code\Core\Logger.h" />
     <ClInclude Include="Code\Entity\Entity.h" />
     <ClInclude Include="Code\Entity\EntityManager.h" />
+    <ClInclude Include="Code\Mesh\Model.h" />
     <ClInclude Include="Code\Mesh\Plane.h" />
     <ClInclude Include="Code\Renderer\BatchManager.h" />
     <ClInclude Include="Code\Graphics\FrameBuffer.h" />
@@ -253,6 +256,7 @@
     <ClInclude Include="Code\Graphics\ElementBuffer.h" />
     <ClInclude Include="Code\Graphics\Shader.h" />
     <ClInclude Include="Code\Mesh\Quad.h" />
+    <ClInclude Include="Code\Graphics\Uniform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

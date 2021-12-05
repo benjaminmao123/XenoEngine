@@ -2,38 +2,54 @@
 #include "Material.h"
 #include "Resource/ResourceManager.h"
 
-Xeno::Material::Material() :
-    mShader(ResourceManager::GetShaderRef("Default Shader"))
-{ }
-
-void Xeno::Material::SetTexture(const std::shared_ptr<Texture>& texture)
+void Xeno::Material::SetTexture(Texture* texture)
 {
     mTexture = texture;
 }
 
 const Xeno::Texture* Xeno::Material::GetTexture() const
 {
-    return mTexture.get();
+    return mTexture;
 }
 
-void Xeno::Material::SetDiffuseMap(const std::shared_ptr<Texture>& map)
+void Xeno::Material::SetDiffuseMap(Texture* map)
 {
     mDiffuseMap = map;
 }
 
 const Xeno::Texture* Xeno::Material::GetDiffuseMap() const
 {
-    return mDiffuseMap.get();
+    return mDiffuseMap;
 }
 
-void Xeno::Material::SetSpecularMap(const std::shared_ptr<Texture>& map)
+void Xeno::Material::SetSpecularMap(Texture* map)
 {
     mSpecularMap = map;
 }
 
 const Xeno::Texture* Xeno::Material::GetSpecularMap() const
 {
-    return mSpecularMap.get();
+    return mSpecularMap;
+}
+
+void Xeno::Material::SetNormalMap(Texture* map)
+{
+    mNormalMap = map;
+}
+
+const Xeno::Texture* Xeno::Material::GetNormalMap() const
+{
+    return mNormalMap;
+}
+
+void Xeno::Material::SetHeightMap(Texture* map)
+{
+    mHeightMap = map;
+}
+
+const Xeno::Texture* Xeno::Material::GetHeightMap() const
+{
+    return mHeightMap;
 }
 
 void Xeno::Material::SetColor(const Color& color)
@@ -46,14 +62,14 @@ const Xeno::Color& Xeno::Material::GetColor() const
     return mColor;
 }
 
-void Xeno::Material::SetShader(const std::shared_ptr<Shader>& shader)
+void Xeno::Material::SetShader(Shader* shader)
 {
     mShader = shader;
 }
 
 Xeno::Shader* Xeno::Material::GetShader() const
 {
-    return mShader.get();
+    return mShader;
 }
 
 void Xeno::Material::SetShininess(const float value)

@@ -1,15 +1,16 @@
 #include "pch.h"
 #include "MeshRenderer.h"
-
 #include "Sprite.h"
 #include "Component/MeshFilter.h"
 #include "Entity/Entity.h"
 #include "Renderer/SceneRenderer.h"
+#include "Resource/ResourceManager.h"
 
 Xeno::MeshRenderer::MeshRenderer(Entity* owner) :
     Renderer(owner)
 {
     GetEntity()->AddComponent<MeshFilter>();
+    GetMaterial().SetShader(ResourceManager::GetShader("Default Mesh Shader"));
 }
 
 void Xeno::MeshRenderer::OnStart()

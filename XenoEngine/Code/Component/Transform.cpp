@@ -24,7 +24,7 @@ void Xeno::Transform::Translate(const float x, const float y, const float z)
 
 void Xeno::Transform::Rotate(const glm::vec3& eulers, const Space space)
 {
-	const glm::quat rot = glm::quat(radians(eulers));
+	const glm::quat rot = glm::quat(glm::radians(eulers));
 
 	switch (space)
 	{
@@ -46,7 +46,7 @@ void Xeno::Transform::Rotate(const float x, const float y, const float z, const 
 
 void Xeno::Transform::Rotate(const glm::vec3& axis, const float angle, const Space space)
 {
-	const glm::quat rot = angleAxis(glm::radians(angle), glm::normalize(axis));
+	const glm::quat rot = glm::angleAxis(glm::radians(angle), glm::normalize(axis));
 
 	switch (space)
 	{
@@ -88,7 +88,7 @@ void Xeno::Transform::SetRotation(const glm::quat& rotation)
 
 void Xeno::Transform::SetRotationEuler(const glm::vec3& eulers)
 {
-	mRotation = glm::quat(radians(eulers));
+	mRotation = glm::quat(glm::radians(eulers));
 }
 
 void Xeno::Transform::SetRotationEuler(const float x, const float y, const float z)
@@ -103,7 +103,7 @@ const glm::quat& Xeno::Transform::GetRotation() const
 
 glm::vec3 Xeno::Transform::GetRotationEuler() const
 {
-	return glm::vec3(eulerAngles(mRotation));
+	return glm::vec3(glm::eulerAngles(mRotation));
 }
 
 void Xeno::Transform::SetLocalRotation(const glm::quat& rotation)
@@ -113,7 +113,7 @@ void Xeno::Transform::SetLocalRotation(const glm::quat& rotation)
 
 void Xeno::Transform::SetLocalRotationEuler(const glm::vec3& eulers)
 {
-	mLocalRotation = glm::quat(radians(eulers));
+	mLocalRotation = glm::quat(glm::radians(eulers));
 }
 
 void Xeno::Transform::SetLocalRotationEuler(const float x, const float y, const float z)
@@ -128,7 +128,7 @@ const glm::quat& Xeno::Transform::GetLocalRotation() const
 
 glm::vec3 Xeno::Transform::GetLocalRotationEuler() const
 {
-	return glm::vec3(eulerAngles(mLocalRotation));
+	return glm::vec3(glm::eulerAngles(mLocalRotation));
 }
 
 void Xeno::Transform::SetScale(const glm::vec3& scale)
@@ -148,17 +148,17 @@ glm::vec3 Xeno::Transform::GetScale() const
 
 glm::vec3 Xeno::Transform::GetForward() const
 {
-	return inverse(mRotation) * glm::vec3(0.0f, 0.0f, -1.0f);
+	return glm::inverse(mRotation) * glm::vec3(0.0f, 0.0f, -1.0f);
 }
 
 glm::vec3 Xeno::Transform::GetRight() const
 {
-	return inverse(mRotation) * glm::vec3(1.0f, 0.0f, 0.0f);
+	return glm::inverse(mRotation) * glm::vec3(1.0f, 0.0f, 0.0f);
 }
 
 glm::vec3 Xeno::Transform::GetUp() const
 {
-	return inverse(mRotation) * glm::vec3(0.0f, 1.0f, 0.0f);
+	return glm::inverse(mRotation) * glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 glm::mat4 Xeno::Transform::GetModelMatrix() const
@@ -166,7 +166,7 @@ glm::mat4 Xeno::Transform::GetModelMatrix() const
 	glm::mat4 model(1.0f);
 
 	const glm::mat4 translate = glm::translate(model, mPosition);
-	const glm::mat4 rotate = toMat4(mRotation);
+	const glm::mat4 rotate = glm::toMat4(mRotation);
 	const glm::mat4 scale = glm::scale(model, mScale);
 
 	model = translate * rotate * scale;
@@ -184,10 +184,10 @@ Xeno::Transform& Xeno::Transform::operator*=(const Transform& rhs)
 	glm::vec3 skew;
 	glm::vec4 perspective;
 
-	decompose(model, scale, rotation, translation, skew, perspective);
+	glm::decompose(model, scale, rotation, translation, skew, perspective);
 
 	Translate(translation);
-	Rotate(eulerAngles(rotation));
+	Rotate(glm::eulerAngles(rotation));
 	SetScale(scale);
 
 	return *this;

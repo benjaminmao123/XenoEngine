@@ -41,6 +41,7 @@ Xeno::Plane::Plane(const int32_t xSegments, const int32_t ySegments, const uint3
                 mIndices.emplace_back(y * (xSegments + 1) + x);
             }
         }
+
         oddRow = !oddRow;
     }
 }

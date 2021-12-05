@@ -1,15 +1,16 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Utility/Graph.h"
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <cstdint>
+#include <string>
 
 namespace Xeno
 {
+    class Texture;
+
     struct XENO_API Mesh
     {
         struct Vertex
@@ -23,6 +24,9 @@ namespace Xeno
         };
 
         explicit Mesh(uint32_t topology);
+        explicit Mesh(uint32_t topology,
+                      std::vector<Vertex> vertices,
+                      std::vector<uint32_t> indices);
         virtual ~Mesh() = default;
 
         glm::vec3 ComputeNormal(size_t index);

@@ -2,9 +2,10 @@
 
 #include "Core/Core.h"
 #include "Graphics/Color.h"
+#include "Resource/ResourceManager.h"
 
 #include <memory>
-#include <glm/glm.hpp>
+#include <unordered_map>
 
 namespace Xeno
 {
@@ -14,27 +15,50 @@ namespace Xeno
     class XENO_API Material
     {
     public:
-        Material();
+        enum class TextureMap
+        {
+            NONE,
+            DIFFUSE,
+            SPECULAR,
+            NORMAL,
+            HEIGHT
+        };
 
-        void SetTexture(const std::shared_ptr<Texture>& texture);
+        Material() = default;
+
+        template <typename T>
+        void SetValue(const T& value)
+        {
+            
+        }
+
+        void SetTexture(Texture* texture);
         [[nodiscard]] const Texture* GetTexture() const;
-        void SetDiffuseMap(const std::shared_ptr<Texture>& map);
+        void SetDiffuseMap(Texture* map);
         [[nodiscard]] const Texture* GetDiffuseMap() const;
-        void SetSpecularMap(const std::shared_ptr<Texture>& map);
+        void SetSpecularMap(Texture* map);
         [[nodiscard]] const Texture* GetSpecularMap() const;
+        void SetNormalMap(Texture* map);
+        [[nodiscard]] const Texture* GetNormalMap() const;
+        void SetHeightMap(Texture* map);
+        [[nodiscard]] const Texture* GetHeightMap() const;
         void SetColor(const Color& color);
         [[nodiscard]] const Color& GetColor() const;
-        void SetShader(const std::shared_ptr<Shader>& shader);
+        void SetShader(Shader* shader);
         [[nodiscard]] Shader* GetShader() const;
         void SetShininess(float value);
         [[nodiscard]] float GetShininess() const;
 
     private:
-        std::shared_ptr<Shader> mShader = nullptr;
+        Shader* mShader = nullptr;
 
-        std::shared_ptr<Texture> mDiffuseMap = nullptr;
-        std::shared_ptr<Texture> mSpecularMap = nullptr;
-        std::shared_ptr<Texture> mTexture = nullptr;
+        Texture* mDiffuseMap = nullptr;
+        Texture* mSpecularMap = nullptr;
+        Texture* mNormalMap = nullptr;
+        Texture* mHeightMap = nullptr;
+        Texture* mTexture = nullptr;
+
+        std::unordered_map<std::string, float> mFloatUniforms;
         
         Color mColor;
         float mShininess = 32.0f;

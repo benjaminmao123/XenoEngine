@@ -2,7 +2,8 @@
 
 #include "Core/Core.h"
 #include "Mesh/Mesh.h"
-#include "Utility/Graph.h"
+
+#include <glad/glad.h>
 
 namespace Xeno
 {

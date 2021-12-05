@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Material/Material.h"
 
 #include <cstdint>
 #include <string>
@@ -14,6 +15,7 @@ namespace Xeno
         struct TextureProperties
         {
             std::string mPath;
+            Material::TextureMap mType = Material::TextureMap::NONE;
             uint32_t mWidth = 1;
             uint32_t mHeight = 1;
             uint32_t mInternalFormat = GL_RGBA;
@@ -35,12 +37,11 @@ namespace Xeno
         explicit Texture(TextureProperties props, 
                          int32_t numSamples, 
                          bool fixed, 
-                         bool mipMap = false, 
-                         int32_t mipMapLevel = 0);
+                         bool mipMap = false);
         ~Texture();
         Texture& operator=(const Texture& other) = delete;
 
-        void Bind(uint32_t slot = 0) const;
+        void Bind(bool activeTexture = true, uint32_t slot = 0) const;
 
         void SetDataNew(void* data, 
                         TextureProperties props, 
@@ -57,6 +58,7 @@ namespace Xeno
         [[nodiscard]] uint32_t GetHeight() const;
         [[nodiscard]] uint32_t GetObjectID() const;
         [[nodiscard]] const std::string& GetPath() const;
+        [[nodiscard]] Material::TextureMap GetType() const;
 
         [[nodiscard]] bool InitSuccess() const;
 

@@ -30,7 +30,9 @@
   <ItemGroup>
     <None Include="Assets\Shaders\ScreenFragment.glsl" />
     <None Include="Assets\Shaders\ScreenVertex.glsl" />
-    <None Include="Assets\Shaders\PhongVertex.glsl" />
-    <None Include="Assets\Shaders\PhongFragment.glsl" />
+    <None Include="Assets\Shaders\DefaultSpriteVertex.glsl" />
+    <None Include="Assets\Shaders\DefaultSpriteFragment.glsl" />
+    <None Include="Assets\Shaders\DefaultMeshFragment.glsl" />
+    <None Include="Assets\Shaders\DefaultMeshVertex.glsl" />
   </ItemGroup>
 </Project>

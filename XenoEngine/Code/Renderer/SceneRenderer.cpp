@@ -71,6 +71,7 @@ void Xeno::SceneRenderer::Init()
     Texture::TextureProperties whiteTextureProps =
     {
         "Default White",
+        Material::TextureMap::NONE,
         1, 1,
         GL_RGBA, GL_RGBA,
         GL_UNSIGNED_BYTE,
@@ -81,10 +82,15 @@ void Xeno::SceneRenderer::Init()
     const auto whiteTexture = std::make_shared<Texture>(whiteTextureData, whiteTextureProps);
     ResourceManager::AddTexture(whiteTexture);
 
-    auto meshShader = std::make_shared<Shader>("Default Shader");
-    meshShader->AddShader({ "Assets/Shaders/DefaultVertex.glsl", GL_VERTEX_SHADER });
-    meshShader->AddShader({ "Assets/Shaders/DefaultFragment.glsl", GL_FRAGMENT_SHADER });
-    ResourceManager::AddShader(meshShader);
+    auto entityShader = std::make_shared<Shader>("Default Mesh Shader");
+    entityShader->AddShader({ "Assets/Shaders/DefaultMeshVertex.glsl", GL_VERTEX_SHADER });
+    entityShader->AddShader({ "Assets/Shaders/DefaultMeshFragment.glsl", GL_FRAGMENT_SHADER });
+    ResourceManager::AddShader(entityShader);
+
+    entityShader = std::make_shared<Shader>("Default Sprite Shader");
+    entityShader->AddShader({ "Assets/Shaders/DefaultSpriteVertex.glsl", GL_VERTEX_SHADER });
+    entityShader->AddShader({ "Assets/Shaders/DefaultSpriteFragment.glsl", GL_FRAGMENT_SHADER });
+    ResourceManager::AddShader(entityShader);
 
     auto screenShader = std::make_shared<Shader>("Screen Shader");
     screenShader->AddShader({ "Assets/Shaders/ScreenVertex.glsl", GL_VERTEX_SHADER });
@@ -145,8 +151,7 @@ void Xeno::SceneRenderer::Render() const
     //process commands
     for (const auto& command : sCommandBuffer)
     {
-        if (!command.mMaterial->GetShader())
-            XN_CORE_ASSERT(false, "Trying to render without a shader!");
+        XN_CORE_ASSERT(command.mMaterial->GetShader(), "Trying to render without a shader!")
 
         command.mMaterial->GetShader()->Bind();
         command.mMaterial->GetShader()->SetMat4("uModel", command.mTransform->GetModelMatrix());
@@ -164,19 +169,16 @@ void Xeno::SceneRenderer::Render() const
         case RenderCommand::CommandType::SPRITE:
             RenderSprite(command);
             break;
-        case RenderCommand::CommandType::GUI:
-            RenderGUI(command);
-            break;
         }
 
         mData.mVBO->SetDataNew(&command.mMesh->mVertices[0], 
-                               (uint32_t)command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
+                               command.mMesh->mVertices.size() * sizeof(Mesh::Vertex), 
                                GL_DYNAMIC_DRAW);
 
         if (!command.mMesh->mIndices.empty())
         {
             mData.mEBO->SetIndicesNew(&command.mMesh->mIndices[0],
-                                      (uint32_t)command.mMesh->mIndices.size(),
+                                      command.mMesh->mIndices.size(),
                                       GL_DYNAMIC_DRAW);
 
             Draw(command.mMesh->mTopology, *mData.mVAO, *mData.mEBO, *command.mMaterial->GetShader());
@@ -188,16 +190,15 @@ void Xeno::SceneRenderer::Render() const
     mData.mFBO->Unbind();
 
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
     Clear(Color::White(), GL_COLOR_BUFFER_BIT);
 
-    glBindTexture(GL_TEXTURE_2D, mData.mFBO->GetColorAttachment(0));
+    mData.mFBO->GetColorAttachment(0)->Bind();
 
     mData.mVBO->SetDataNew(&mData.mScreenQuad.mVertices[0], 
-                           (uint32_t)mData.mScreenQuad.mVertices.size() * sizeof(Mesh::Vertex),
+                           mData.mScreenQuad.mVertices.size() * sizeof(Mesh::Vertex),
                            GL_DYNAMIC_DRAW);
     mData.mEBO->SetIndicesNew(&mData.mScreenQuad.mIndices[0],
-                              (uint32_t)mData.mScreenQuad.mIndices.size(),
+                              mData.mScreenQuad.mIndices.size(),
                               GL_DYNAMIC_DRAW);
 
     Draw(mData.mScreenQuad.mTopology, *mData.mVAO, *mData.mEBO, *ResourceManager::GetShader("Screen Shader"));
@@ -207,6 +208,8 @@ void Xeno::SceneRenderer::Render() const
 
 void Xeno::SceneRenderer::RenderMesh(const RenderCommand& command) const
 {
+    glEnable(GL_DEPTH_TEST);
+
     const glm::vec3& viewPosition = SceneManager::GetActiveScene()->GetMainCamera()->GetTransform().GetPosition();
 
     command.mMaterial->GetShader()->SetFloat3("uViewPosition", viewPosition);
@@ -268,27 +271,20 @@ void Xeno::SceneRenderer::RenderMesh(const RenderCommand& command) const
         }
     }
 
-    if (!command.mMaterial->GetTexture())
+    if (!command.mMaterial->GetDiffuseMap())
         ResourceManager::GetTexture("Default White")->Bind();
     else
-        command.mMaterial->GetTexture()->Bind();
+        command.mMaterial->GetDiffuseMap()->Bind();
+
+    if (!command.mMaterial->GetSpecularMap())
+        ResourceManager::GetTexture("Default White")->Bind(true, 1);
+    else
+        command.mMaterial->GetSpecularMap()->Bind(true, 1);
 }
 
 void Xeno::SceneRenderer::RenderSprite(const RenderCommand& command) const
 {
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-
-    if (!command.mMaterial->GetTexture())
-        ResourceManager::GetTexture("Default White")->Bind();
-    else
-        command.mMaterial->GetTexture()->Bind();
-}
-
-void Xeno::SceneRenderer::RenderGUI(const RenderCommand& command) const
-{
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
 
     if (!command.mMaterial->GetTexture())
         ResourceManager::GetTexture("Default White")->Bind();

@@ -19,6 +19,7 @@ protected:
         const Texture::TextureProperties containerDiffuse = 
         {
             "Assets/Textures/container2.png",
+            Material::TextureMap::DIFFUSE,
             0, 0,
             GL_RGBA, GL_RGBA,
             GL_UNSIGNED_BYTE,
@@ -31,6 +32,7 @@ protected:
         const Texture::TextureProperties containerSpecular =
         {
             "Assets/Textures/container2_specular.png",
+            Material::TextureMap::SPECULAR,
             0, 0,
             GL_RGBA, GL_RGBA,
             GL_UNSIGNED_BYTE,
@@ -43,6 +45,7 @@ protected:
         const Texture::TextureProperties container =
         {
             "Assets/Textures/container.jpg",
+            Material::TextureMap::NONE,
             0, 0,
             GL_RGB, GL_RGB
         };
@@ -74,7 +77,7 @@ private:
 
         Entity* boxEntity = mScene->CreateEntity("box");
         Renderer* boxRenderer = boxEntity->AddComponent<SpriteRenderer>();
-        boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+        boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTexture("Assets/Textures/container.jpg"));
 
         boxEntity->GetTransform().SetScale(100, 100, 1);
         boxEntity->GetTransform().SetPosition(GetGameWindow().GetCenter().x, GetGameWindow().GetCenter().y, 0);
@@ -92,31 +95,38 @@ private:
         mCameraController->SetSensitivity(30.0f);
         mCameraComponent->SetProjectionType(Camera::ProjectionType::PERSPECTIVE);
         mScene->SetMainCamera(mCameraComponent);
-        Light* spotLight = cameraEntity->AddComponent<Light>(Light::LightType::SPOT);
-        spotLight->SetColor(Color(1.0f, 0.0f, 0.0f));
+        mSpotLight = cameraEntity->AddComponent<Light>(Light::LightType::SPOT);
 
-        Entity* planeEntity = mScene->CreateEntity("plane");
-        Renderer* planeRenderer = planeEntity->AddComponent<MeshRenderer>();
-        //boxRenderer->GetMaterial().SetDiffuseMap(ResourceManager::GetTextureRef("Assets/Textures/container2.png"));
-        //boxRenderer->GetMaterial().SetSpecularMap(ResourceManager::GetTextureRef("Assets/Textures/container2_specular.png"));
-        //planeRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+        //auto* planeEntity = mScene->CreateEntity("plane");
+        //planeEntity->GetTransform().SetRotationEuler(270.0f, 0.0f, 0.0f);
+        //planeEntity->GetTransform().SetScale(10.0f, 10.0f, 10.0f);
+        //auto* planeRenderer = planeEntity->AddComponent<MeshRenderer>();
 
-        const auto planeMesh = std::make_shared<Plane>();
-        auto* planeMeshFilter = planeEntity->GetComponent<MeshFilter>();
-        planeMeshFilter->SetMesh(planeMesh);
+        //const auto planeMesh = std::make_shared<Plane>();
+        //auto* planeMeshFilter = planeEntity->GetComponent<MeshFilter>();
+        //planeMeshFilter->SetMesh(planeMesh);
 
-        //Entity* boxEntity = mScene->CreateEntity("box");
-        //Renderer* boxRenderer = boxEntity->AddComponent<MeshRenderer>();
-        ////boxRenderer->GetMaterial().SetDiffuseMap(ResourceManager::GetTextureRef("Assets/Textures/container2.png"));
-        ////boxRenderer->GetMaterial().SetSpecularMap(ResourceManager::GetTextureRef("Assets/Textures/container2_specular.png"));
-        //boxRenderer->GetMaterial().SetTexture(ResourceManager::GetTextureRef("Assets/Textures/container.jpg"));
+        auto* boxEntity = mScene->CreateEntity("box");
+        boxEntity->GetTransform().SetPosition(0.0f, 1.1f, 0.0f);
+        auto* boxRenderer = boxEntity->AddComponent<MeshRenderer>();
+        boxRenderer->GetMaterial().SetDiffuseMap(ResourceManager::GetTexture("Assets/Textures/container2.png"));
+        boxRenderer->GetMaterial().SetSpecularMap(ResourceManager::GetTexture("Assets/Textures/container2_specular.png"));
 
-        //const auto cubeMesh = std::make_shared<Cube>();
-        //auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
-        //meshFilter->SetMesh(cubeMesh);
+        const auto cubeMesh = std::make_shared<Cube>();
+        auto* meshFilter = boxEntity->GetComponent<MeshFilter>();
+        meshFilter->SetMesh(cubeMesh);
+
+        auto* directionalLightEntity = mScene->CreateEntity("directional light");
+        mDirectionalLight = directionalLightEntity->AddComponent<Light>(Light::LightType::DIRECTIONAL);
+        mDirectionalLight->SetAmbient(0.5f, 0.5f, 0.5f);
+        directionalLightEntity->GetTransform().SetPosition(0.0f, 10.0f, 0.0f);
+        directionalLightEntity->GetTransform().SetRotationEuler(70.0f, 0.0f, 0.0f);
     }
 
     Camera* mCameraComponent = nullptr;
     SceneCameraController* mCameraController = nullptr;
     Scene* mScene = nullptr;
+    Light* mDirectionalLight = nullptr;
+    Light* mSpotLight = nullptr;
+    Light* mPointLight = nullptr;
 };

@@ -31,8 +31,7 @@ namespace Xeno
             enum class CommandType
             {
                 MESH,
-                SPRITE,
-                GUI
+                SPRITE
             };
 
             CommandType mType;
@@ -68,7 +67,6 @@ namespace Xeno
         void Render() const;
         void RenderMesh(const RenderCommand& command) const;
         void RenderSprite(const RenderCommand& command) const;
-        void RenderGUI(const RenderCommand& command) const;
 
         void Draw(uint32_t topology, 
                   const VertexArray& vao, 

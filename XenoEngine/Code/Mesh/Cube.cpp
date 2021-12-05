@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Cube.h"
-#include "Core/Logger.h"
 
 Xeno::Cube::Cube(const uint32_t topology) :
     Mesh(topology)

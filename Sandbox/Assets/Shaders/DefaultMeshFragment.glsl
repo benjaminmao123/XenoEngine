@@ -1,12 +1,16 @@
 #version 460 core
 
-#define MAX_LIGHTS 50
+#define MAX_LIGHTS 10
 
 out vec4 vFragColor;
 
 struct Material 
 {
-    sampler2D mTexture;
+    sampler2D mDiffuseMap;
+    sampler2D mSpecularMap;
+    sampler2D mNormalMap;
+    sampler2D mHeightMap;
+
     float mShininess;
 }; 
 
@@ -42,42 +46,39 @@ uniform Material uMaterial;
 uniform int uNumLights;
 uniform vec4 uColor;
 
-// function prototypes
-vec3 computeLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor);
-vec3 computeDirectionalLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor);
-vec3 computePointLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor);
-vec3 computeSpotLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor);
+vec3 computeLight(Light light, vec3 normal, vec3 viewDir);
+vec3 computeDirectionalLight(Light light, vec3 normal, vec3 viewDir);
+vec3 computePointLight(Light light, vec3 normal, vec3 viewDir);
+vec3 computeSpotLight(Light light, vec3 normal, vec3 viewDir);
 
 void main()
 {    
     vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(uViewPosition - vFragPosition);
-    vec4 texColor = texture(uMaterial.mTexture, vUV);
     
     vec3 result;
 
     for (int i = 0; i < uNumLights; ++i)
-        result += computeLight(uLights[i], normal, viewDir, texColor);
+        result += computeLight(uLights[i], normal, viewDir);
 
     vFragColor = uColor * vec4(result, 1.0);
 }
 
-vec3 computeLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
+vec3 computeLight(Light light, vec3 normal, vec3 viewDir)
 {
     vec3 result;
 
     if (light.mLightType == 0)
-        result = computeDirectionalLight(light, normal, viewDir, texColor);
+        result = computeDirectionalLight(light, normal, viewDir);
     else if (light.mLightType == 1)
-        result = computePointLight(light, normal, viewDir, texColor);
+        result = computePointLight(light, normal, viewDir);
     else if (light.mLightType == 2)
-        result = computeSpotLight(light, normal, viewDir, texColor);
+        result = computeSpotLight(light, normal, viewDir);
 
     return result;
 }
 
-// calculates the color when using a directional light.
-vec3 computeDirectionalLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
+vec3 computeDirectionalLight(Light light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(-light.mDirection);
 
@@ -88,15 +89,15 @@ vec3 computeDirectionalLight(Light light, vec3 normal, vec3 viewDir, vec4 texCol
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.mShininess);
 
     // combine results
-    vec3 ambient = light.mAmbient * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 diffuse = light.mDiffuse * diff * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 specular = light.mSpecular * spec * texColor.rgb * light.mColor.xyz * light.mIntensity;
+    vec3 ambient = light.mAmbient * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 diffuse = light.mDiffuse * diff * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 specular = light.mSpecular * spec * light.mColor.xyz * light.mIntensity * texture(uMaterial.mSpecularMap, vUV).rgb;
 
-    return (ambient + diffuse + specular);
+    return ambient + diffuse + specular;
 }
 
-// calculates the color when using a point light.
-vec3 computePointLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
+
+vec3 computePointLight(Light light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.mPosition - vFragPosition);
 
@@ -111,19 +112,19 @@ vec3 computePointLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
     float attenuation = 1.0 / (light.mConstant + light.mLinear * distance + light.mQuadratic * (distance * distance));
     
     // combine results
-    vec3 ambient = light.mAmbient * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 diffuse = light.mDiffuse * diff * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 specular = light.mSpecular * spec * texColor.rgb * light.mColor.xyz * light.mIntensity;
+    vec3 ambient = light.mAmbient * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 diffuse = light.mDiffuse * diff * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 specular = light.mSpecular * spec * light.mColor.xyz * light.mIntensity * texture(uMaterial.mSpecularMap, vUV).rgb;
 
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
 
-    return (ambient + diffuse + specular);
+    return ambient + diffuse + specular;
 }
 
-// calculates the color when using a spot light.
-vec3 computeSpotLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
+
+vec3 computeSpotLight(Light light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.mPosition - vFragPosition);
 
@@ -143,13 +144,13 @@ vec3 computeSpotLight(Light light, vec3 normal, vec3 viewDir, vec4 texColor)
     float intensity = clamp((theta - light.mOuterCutoff) / epsilon, 0.0, 1.0);
 
     // combine results
-    vec3 ambient = light.mAmbient * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 diffuse = light.mDiffuse * diff * texColor.rgb * light.mColor.xyz * light.mIntensity;
-    vec3 specular = light.mSpecular * spec * texColor.rgb * light.mColor.xyz * light.mIntensity;
+    vec3 ambient = light.mAmbient * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 diffuse = light.mDiffuse * diff * light.mColor.xyz * light.mIntensity * texture(uMaterial.mDiffuseMap, vUV).rgb;
+    vec3 specular = light.mSpecular * spec * light.mColor.xyz * light.mIntensity * texture(uMaterial.mSpecularMap, vUV).rgb;
 
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
 
-    return (ambient + diffuse + specular);
+    return ambient + diffuse + specular;
 }
